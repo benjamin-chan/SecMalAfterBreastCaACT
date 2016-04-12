@@ -80,3 +80,7 @@ for (i in 1:4) {  # Only convert a subset of mal* columns
 }
 
 
+# Save to RData
+save(D, file="SecMal.RData")
+file.info("SecMal.RData")
+load("SecMal.RData")
