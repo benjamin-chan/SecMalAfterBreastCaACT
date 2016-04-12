@@ -63,3 +63,14 @@ for (i in 1:length(col)) {
   D[, col[i]] <- recode(col[i])
 }
 
+# Substitute non-numeric text in mal* values
+substitute <- function (x) {
+  vec <- D[, get(x)]
+  vec <- gsub("[[:alpha:]]", "", vec)
+  vec
+}
+col <- grep("^mal", names(D), value=TRUE)
+for (i in 1:4) {  # Only substitute a subset of mal* columns
+  D[, col[i]] <- substitute(col[i])
+}
+
