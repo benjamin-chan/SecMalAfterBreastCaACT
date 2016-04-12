@@ -74,3 +74,9 @@ for (i in 1:4) {  # Only substitute a subset of mal* columns
   D[, col[i]] <- substitute(col[i])
 }
 
+# Convert mal* values to numeric
+for (i in 1:4) {  # Only convert a subset of mal* columns
+  D <- D[, col[i] := as.numeric(get(col[i]))]
+}
+
+
