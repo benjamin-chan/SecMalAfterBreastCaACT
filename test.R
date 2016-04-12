@@ -51,3 +51,15 @@ D[11, col] <- D[10, col, with=FALSE]
 # D[11, ]
 # D[10, ]
 
+# Recode mal* values of "NR" and "-" to NA
+recode <- function (x) {
+  missval <- c("-", "NR", " ")
+  vec <- D[, get(x)]
+  vec[vec %in% missval] <- NA
+  vec
+}
+col <- grep("^mal", names(D), value=TRUE)
+for (i in 1:length(col)) {
+  D[, col[i]] <- recode(col[i])
+}
+
