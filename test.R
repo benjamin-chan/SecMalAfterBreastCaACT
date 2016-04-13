@@ -79,6 +79,12 @@ for (i in 1:4) {  # Only convert a subset of mal* columns
   D <- D[, col[i] := as.numeric(get(col[i]))]
 }
 
+# Remove text from nITT column
+D <- D[authorYear == "Misset (1996)" & arm == 2, nITT := "137"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 1, nITT := "210"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 2, nITT := "197"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 3, nITT := "195"]
+D <- D[, nITT := as.integer(nITT)]
 
 # Save to RData
 save(D, file="SecMal.RData")
