@@ -182,6 +182,11 @@ D2 <- D2[, in2 := TRUE]
 setkeyv(D1, keyVar)
 setkeyv(D2, keyVar)
 D[is.na(in1) | is.na(in2)]
+D2 <- D2[,
+         `:=` (trial = NULL,
+               quality = NULL,
+               nRandomized = NULL,
+               nITT = NULL)]
 D <- merge(D1, D2, all = TRUE)
 
 
