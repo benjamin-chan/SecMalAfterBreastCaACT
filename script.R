@@ -156,7 +156,7 @@ setnames(D, oldnames, newnames)
 # Tidy data
 
 # Input missing data for Bergh (2000); year is missing a digit
-D[grep("Bergh (200)", authorYear), authorYear := "Bergh (2000)"]
+D[, authorYear := gsub("Bergh \\(200\\)", "Bergh \\(2000\\)", authorYear)]
 
 # Recode values of "NR" and "-" to NA
 D[, "menopausalStatus"] <- recode("menopausalStatus")
