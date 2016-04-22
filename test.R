@@ -103,3 +103,24 @@ write.table(D[, .N, c("regimen", doseVar), with=TRUE][order(regimen)],
 save(D, file="SecMal.RData")
 file.info("SecMal.RData")
 load("SecMal.RData")
+
+
+D[,
+  `:=` (isAnthra = !is.na(anthracyclineTotalDose),
+        isCyclo = !is.na(cyclophosphamideDose),
+        isTaxane = !is.na(taxaneTotalDose),
+        isFluoro = !is.na(fluoroucilTotalDose))]
+summaryRegimens <- D[,
+                     .(sumAML = sum(malAML, na.rm=TRUE),
+                       sumMDS = sum(malMDS, na.rm=TRUE),
+                       sumAMLOrMDS = sum(malAMLOrMDS, na.rm=TRUE),
+                       sumNonBreastSolid = sum(malNonBreastSolid, na.rm=TRUE)),
+                     .(isAnthra,
+                       isCyclo,
+                       isTaxane,
+                       isFluoro)]
+summaryRegimens <- summaryRegimens[order(-isAnthra, -isCyclo, -isTaxane, -isFluoro)]
+write.table(summaryRegimens,
+            file="summaryRegimens.md",
+            sep=" | ", quote=FALSE,
+            row.names=FALSE)
