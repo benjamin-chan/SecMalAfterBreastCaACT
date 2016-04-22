@@ -181,13 +181,13 @@ D1 <- D1[, in1 := TRUE]
 D2 <- D2[, in2 := TRUE]
 setkeyv(D1, keyVar)
 setkeyv(D2, keyVar)
-D[is.na(in1) | is.na(in2)]
 D2 <- D2[,
          `:=` (trial = NULL,
                quality = NULL,
                nRandomized = NULL,
                nITT = NULL)]
 D <- merge(D1, D2, all = TRUE)
+D[is.na(in1) | is.na(in2), .(id, authorYear, arm, trial, in1, in2)]
 
 
 # Save to RData
