@@ -4,7 +4,7 @@ pathBox <- "C:/Users/chanb/Box Sync/NCI Systematic Review - Secondary Malignanci
 f <- file.path(pathBox, "SecondaryMalignancies_Data_BG_3_4.xlsx")
 library(openxlsx)
 library(data.table)
-D <- read.xlsx(f, startRow=3, colNames=FALSE)
+D <- read.xlsx(f, sheet="Results", startRow=3, colNames=FALSE)
 D <- data.table(D)
 oldnames <- names(D)
 newnames <- c("id",
