@@ -1,6 +1,7 @@
 setwd("~/GitHub repositories/AEAfterBreastCaACT/SecondaryMalignancies")
 list.files()
-f <- "SecondaryMalignancies_Data_BG_3_4.xlsx"
+pathBox <- "C:/Users/chanb/Box Sync/NCI Systematic Review - Secondary Malignancies"
+f <- file.path(pathBox, "SecondaryMalignancies_Data_BG_3_4.xlsx")
 library(openxlsx)
 library(data.table)
 D <- read.xlsx(f, startRow=3, colNames=FALSE)
