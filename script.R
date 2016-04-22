@@ -176,13 +176,13 @@ D2 <- D
 
 
 # Merge sheets
-keyVar <- c("id", "authorYear", "trial", "arm")
+keyVar <- c("id", "authorYear", "arm")
 D1 <- D1[, in1 := TRUE]
 D2 <- D2[, in2 := TRUE]
 setkeyv(D1, keyVar)
 setkeyv(D2, keyVar)
-D <- merge(D1[, c(keyVar, "in1"), with = FALSE], D2[, c(keyVar, "in2"), with = FALSE], all = TRUE)
 D[is.na(in1) | is.na(in2)]
+D <- merge(D1, D2, all = TRUE)
 
 
 # Save to RData
