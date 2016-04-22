@@ -57,6 +57,9 @@ D[11, col] <- D[10, col, with = FALSE]
 # D[11, ]
 # D[10, ]
 
+# Fix trial column for Romond (2005)
+D[grep("Romond", authorYear), trial := gsub("&N", "& N", trial)]
+
 # Recode mal* values of "NR" and "-" to NA
 recode <- function(x) {
     missval <- c("-", "NR", " ")
