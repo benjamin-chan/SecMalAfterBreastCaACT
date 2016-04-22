@@ -86,6 +86,19 @@ D <- D[authorYear == "Fumoleu (2003)" & arm == 2, nITT := "197"]
 D <- D[authorYear == "Fumoleu (2003)" & arm == 3, nITT := "195"]
 D <- D[, nITT := as.integer(nITT)]
 
+# Clean up the regimen and dose columns
+D <- D[, regimen := gsub("\\s$", "", regimen)]
+D <- D[, regimen := gsub("\\r\\n", " ", regimen)]
+doseVar <- grep("dose", names(D), ignore.case=TRUE, value=TRUE)
+for (i in 1:length(doseVar)) {
+  D <- D[, doseVar[i] := gsub("\\r\\n", " ", get(doseVar[i]))]
+}
+D[, .N, c("regimen", doseVar), with=TRUE][order(regimen)]
+write.table(D[, .N, c("regimen", doseVar), with=TRUE][order(regimen)],
+            file="regimens.md",
+            sep=" | ", quote=FALSE,
+            row.names=FALSE)
+
 # Save to RData
 save(D, file="SecMal.RData")
 file.info("SecMal.RData")
