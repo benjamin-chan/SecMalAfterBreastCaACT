@@ -162,6 +162,15 @@ summaryRegimens <- D[,
                        sumNonBreastSolid = sum(malNonBreastSolid, na.rm = TRUE),
                        #meanPctNonBreastSolid = sprintf(prec, mean(malNonBreastSolid / nITT, na.rm = TRUE) * 100),
                        medianPctNonBreastSolid = sprintf(prec, median(malNonBreastSolid / nITT, na.rm = TRUE) * 100)),
+D1 <- melt(D,
+           id.vars=c("id", "authorYear", "arm", "isAnthra", "isCyclo", "isTaxane", "isFluoro", "nITT", "medianFU"),
+           measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
+           value.name="malN",
+           variable.name="malType")
+D1 <- D1[, malType := gsub("^mal", "", malType)]
+D1 <- D1[, malType := factor(malType,
+                             levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
+                             labels=c("AML", "MDS", "AML or MDS", "Non-Breast Solid"))]
                      .(isAnthra,
                        isCyclo,
                        isTaxane,
