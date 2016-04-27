@@ -64,6 +64,21 @@ D[11, col] <- D[10, col, with = FALSE]
 # Fix trial column for Romond (2005)
 D[grep("Romond", authorYear), trial := gsub("&N", "& N", trial)]
 
+# Make medianFU numeric
+D <- D[grep("-", medianFU, invert = TRUE), medianFUNum := round(as.numeric(medianFU), digits = 2)]
+x <- D[grep("-", medianFU), medianFU]
+x <- as.numeric(unlist(strsplit(x, "-")))
+x1 <- x[seq(1, length(x), 2)]
+x2 <- x[seq(2, length(x), 2)]
+xbar <- rowMeans(cbind(x1, x2))
+D <- D[grep("-", medianFU), medianFUNum := xbar]
+D <- D[,
+       `:=` (medianFUChar = medianFU,
+             medianFU = medianFUNum,
+             medianFUNum = NULL)]
+unique(D[, .(medianFU, medianFUChar)])
+D <- D[, medianFUChar := NULL]
+
 # Recode mal* values of "NR" and "-" to NA
 recode <- function(x) {
     missval <- c("-", "NR", " ")
