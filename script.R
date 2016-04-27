@@ -109,6 +109,18 @@ for (i in 1:4) {
     D <- D[, col[i] := as.numeric(get(col[i]))]
 }
 
+# The malAMLOrMDS column, as entered, captures number of AML or MDS malignancies if the study reported them grouped as opposed to separately.
+# If the study reported them as separately, then these counts are captures in the malAML and malMDS columns.
+# I.e., the malAML, malMDS, and malAMLOrMDS columns are mutually exclusive counts.
+# We want to create another column, malAMLOrMDSTotal, to be non-mutually exclusive from malAML, malMDS, and malAMLOrMDS.
+# If none of the malAML, malMDS, and malAMLOrMDS values are populated, then set malAMLOrMDSTotal to NA, also.
+# NOTE: Couldn't get this to work: http://stackoverflow.com/a/16513949/1427069
+s <- sample(D[, rowid], 12)
+malAMLOrMDSTotal <- rowSums(D[, .(malAML, malMDS, malAMLOrMDS)], na.rm=TRUE)
+D <- D[, malAMLOrMDSTotal := malAMLOrMDSTotal]
+D <- D[is.na(malAML) & is.na(malMDS) & is.na(malAMLOrMDS), malAMLOrMDSTotal := NA]
+D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
+
 # Remove text from nITT column
 D <- D[authorYear == "Misset (1996)" & arm == 2, nITT := "137"]
 D <- D[authorYear == "Fumoleu (2003)" & arm == 1, nITT := "210"]
