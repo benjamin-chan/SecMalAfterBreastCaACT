@@ -147,7 +147,8 @@ D[,
         isCyclo = !is.na(cyclophosphamideDose),
         isTaxane = !is.na(taxaneTotalDose),
         isFluoro = !is.na(fluoroucilTotalDose))]
-prec <- "%.3g"
+calcPct <- function (x, n) {
+  prec <- "%.3g"
 summaryRegimens <- D[,
                      .(sumNITT = sum(nITT, na.rm = TRUE),
                        sumAML = sum(malAML, na.rm = TRUE),
@@ -162,6 +163,15 @@ summaryRegimens <- D[,
                        sumNonBreastSolid = sum(malNonBreastSolid, na.rm = TRUE),
                        #meanPctNonBreastSolid = sprintf(prec, mean(malNonBreastSolid / nITT, na.rm = TRUE) * 100),
                        medianPctNonBreastSolid = sprintf(prec, median(malNonBreastSolid / nITT, na.rm = TRUE) * 100)),
+  sprintf(paste0(prec, "%%"),
+          median(x / n, na.rm = TRUE) * 100)
+}
+calcRate <- function (x, n, y) {
+  py <- 10000
+  sprintf(paste(prec, "per %s p-y"),
+          median(x / (n * (y / 12)), na.rm=TRUE) * py,
+          py)
+}
 D1 <- melt(D,
            id.vars=c("id", "authorYear", "arm", "isAnthra", "isCyclo", "isTaxane", "isFluoro", "nITT", "medianFU"),
            measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
