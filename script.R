@@ -51,6 +51,10 @@ setnames(D, oldnames, newnames[1:33])
 
 # Tidy data
 
+# Create a rowid variable
+# This will be handy later
+D[, rowid := .I]
+
 # Input missing data for Bergh (2000); row was split
 col <- grep("^cyclophosphamide", names(D), invert = TRUE)
 D[11, col] <- D[10, col, with = FALSE]
