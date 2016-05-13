@@ -177,6 +177,7 @@ calcPct <- function (x, n) {
           median(x / n, na.rm = TRUE) * 100)
 }
 calcRate <- function (x, n, y) {
+  prec <- "%.3g"
   py <- 10000
   sprintf(paste(prec, "per %s p-y"),
           median(x / (n * (y / 12)), na.rm=TRUE) * py,
