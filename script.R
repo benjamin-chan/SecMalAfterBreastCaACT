@@ -141,6 +141,30 @@ write.table(D[, .N, c("regimen", doseVar), with = TRUE][order(regimen)],
             sep = " | ", quote = FALSE,
             row.names = FALSE)
 
+# Calculate cumulative dose: total dose * number of courses
+D <- D[, anthracyclineTotalDose := as.numeric(anthracyclineTotalDose)]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", anthracyclineTotalDose := 75]
+D <- D[authorYear == "Henderson (2003)", anthracyclineTotalDose := 75]
+D <- D[authorYear == "Colleoni (2009)" & regimen == "AC-CMF", anthracyclineTotalDose := 75]
+D <- D[, cyclophosphamideDose := as.numeric(cyclophosphamideDose)]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", cyclophosphamideDose := 900]
+D <- D[authorYear == "Henderson (2003)", anthracyclineTotalDose := 75]
+D <- D[, taxaneCourses := as.numeric(taxaneCourses)]
+D <- D[authorYear == "Shulman (2014)" & regimen == "T" & arm == 3, taxaneCourses := 4]
+D <- D[authorYear == "Shulman (2014)" & regimen == "T" & arm == 4, taxaneCourses := 6]
+D <- D[, fluoroucilTotalDose := as.numeric(fluoroucilTotalDose)]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", fluoroucilTotalDose := 600]
+D <- D[authorYear == "Joensuu (2012)" & regimen == "TX-CEX", fluoroucilTotalDose := NA]
+D <- D[,
+       `:=` (anthracyclineCumulDose = anthracyclineTotalDose * anthracyclineCourses,
+             cyclophosphamideCumulDose = cyclophosphamideDose * cyclophosphamideCourses,
+             taxaneCumulDose = as.numeric(taxaneTotalDose) * taxaneCourses,
+             fluoroucilCumulDose = fluoroucilTotalDose * fluoroucilCourses)]
+D[, .(authorYear, regimen, anthracyclineCumulDose, anthracyclineTotalDose, anthracyclineCourses)]
+D[, .(authorYear, regimen, cyclophosphamideCumulDose, cyclophosphamideDose, cyclophosphamideCourses)]
+D[, .(authorYear, regimen, taxaneCumulDose, taxaneTotalDose, taxaneCourses)]
+D[, .(authorYear, regimen, fluoroucilCumulDose, fluoroucilTotalDose, fluoroucilCourses)]
+
 
 D[,
   `:=`(isAnthra = !is.na(anthracyclineTotalDose),
@@ -173,9 +197,9 @@ summaryRegimens <- D1[,
                         totalMalignancies = sum(malN, na.rm = TRUE),
                         medianPct = calcPct(malN, nITT),
                         medianRate = calcRate(malN, nITT, medianFU)),
-                     .(isAnthra,
-                       isCyclo,
-                       isTaxane,
+                      .(isAnthra,
+                        isCyclo,
+                        isTaxane,
                         isFluoro,
                         malType)]
 summaryRegimens <- summaryRegimens[order(-isAnthra, -isCyclo, -isTaxane, -isFluoro, malType)]
@@ -183,6 +207,19 @@ write.table(summaryRegimens,
             file = "summaryRegimens.md",
             sep = " | ", quote = FALSE,
             row.names = FALSE)
+
+D3 <- D[isAnthra == TRUE & isCyclo == TRUE & isTaxane == FALSE & isFluoro == FALSE,
+       .(isAnthra,
+         isCyclo,
+         isTaxane,
+         isFluoro,
+         malAML,
+         nITT,
+         medianFU,
+         propAML = malAML / nITT,
+         rateAML = malAML / medianFU)]
+D3 <- D3[, medianPropAML := median(propAML, na.rm = TRUE)]
+D3
 
 # Hold the 1st sheet
 D1 <- D
