@@ -222,7 +222,10 @@ plot <- function (D, xlab, xbreaks) {
   G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
   G <- G + theme_bw()
   G <- G + theme(legend.position="none")
-  ggsave(filename=sprintf("%s.png", gsub("\\s+", "", toTitleCase(xlab))))
+  filename <- gsub("\\s+", "", toTitleCase(xlab))
+  ggsave(filename=sprintf("%s.png", filename))
+  write.csv(D, file=sprintf("%s.csv", filename))
+  show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
   G
 }
 
