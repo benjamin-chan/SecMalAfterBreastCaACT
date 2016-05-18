@@ -192,6 +192,7 @@ D1 <- D1[, malType := gsub("^mal", "", malType)]
 D1 <- D1[, malType := factor(malType,
                              levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
                              labels=c("AML", "MDS", "AML or MDS", "Non-Breast Solid"))]
+D1 <- D1[, rate := malN / (nITT * (medianFU / 12)) * 10000]
 summaryRegimens <- D1[,
                       .(totalN = sum(nITT, na.rm = TRUE),
                         totalPersonYears = round(sum(nITT * (medianFU / 12), na.rm = TRUE)),
@@ -208,6 +209,33 @@ write.table(summaryRegimens,
             file = "summaryRegimens.md",
             sep = " | ", quote = FALSE,
             row.names = FALSE)
+
+plot <- function (D, xlab, xbreaks) {
+  require(ggplot2)
+  require(tools)
+  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
+  G <- G + geom_point(alpha=1/2)
+  G <- G + geom_smooth(method="lm", se=FALSE)
+  G <- G + scale_x_log10(xlab, breaks=xbreaks)
+  G <- G + scale_y_log10("Rate per 10,000 person-years")
+  G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
+  G <- G + theme_bw()
+  G <- G + theme(legend.position="none")
+  ggsave(filename=sprintf("%s.png", gsub("\\s+", "", toTitleCase(xlab))))
+  G
+}
+
+plot(D1[isCyclo == TRUE, x := cyclophosphamideCumulDose], "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
+D1 <- D1[, x := NULL]
+plot(D1[isAnthra == TRUE, x := anthracyclineCumulDose], "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8))
+D1 <- D1[, x := NULL]
+plot(D1[isTaxane == TRUE, x := taxaneCumulDose], "Taxane cumulative dose", 100 * c(1, 2, 4, 8))
+D1 <- D1[, x := NULL]
+plot(D1[isFluoro == TRUE, x := fluoroucilCumulDose], "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
+D1 <- D1[, x := NULL]
+
+
 
 D3 <- D[isAnthra == TRUE & isCyclo == TRUE & isTaxane == FALSE & isFluoro == FALSE,
        .(isAnthra,
