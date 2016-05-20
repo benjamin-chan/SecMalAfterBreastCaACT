@@ -166,11 +166,7 @@ D[, .(authorYear, regimen, taxaneCumulDose, taxaneTotalDose, taxaneCourses)]
 D[, .(authorYear, regimen, fluoroucilCumulDose, fluoroucilTotalDose, fluoroucilCourses)]
 
 
-D[,
-  `:=`(isAnthra = !is.na(anthracyclineTotalDose),
-        isCyclo = !is.na(cyclophosphamideDose),
-        isTaxane = !is.na(taxaneTotalDose),
-        isFluoro = !is.na(fluoroucilTotalDose))]
+# Define some functions
 calcPct <- function (x, n) {
   prec <- "%.3g"
   sprintf(paste0(prec, "%%"),
@@ -183,8 +179,21 @@ calcRate <- function (x, n, y) {
           median(x / (n * (y / 12)), na.rm=TRUE) * py,
           py)
 }
+
+
+# Summarize
+D[,
+  `:=`(isAnthra = !is.na(anthracyclineTotalDose),
+        isCyclo = !is.na(cyclophosphamideDose),
+        isTaxane = !is.na(taxaneTotalDose),
+        isFluoro = !is.na(fluoroucilTotalDose))]
 D1 <- melt(D,
-           id.vars=c("id", "authorYear", "arm", "isAnthra", "isCyclo", "isTaxane", "isFluoro", "nITT", "medianFU"),
+           id.vars=c("id", "authorYear", "arm",
+                     "isAnthra", "anthracyclineCumulDose",
+                     "isCyclo", "cyclophosphamideCumulDose",
+                     "isTaxane", "taxaneCumulDose",
+                     "isFluoro", "fluoroucilCumulDose",
+                     "nITT", "medianFU"),
            measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
            value.name="malN",
            variable.name="malType")
@@ -224,7 +233,7 @@ plot <- function (D, xlab, xbreaks) {
   G <- G + theme(legend.position="none")
   filename <- gsub("\\s+", "", toTitleCase(xlab))
   ggsave(filename=sprintf("%s.png", filename))
-  write.csv(D, file=sprintf("%s.csv", filename))
+  write.csv(D, file=sprintf("%s.csv", filename), row.names=FALSE)
   show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
   G
 }
