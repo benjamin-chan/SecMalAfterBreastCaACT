@@ -312,6 +312,48 @@ D1 <- D1[, x := NULL]
 ```
 
 
+# Meta-regression
+
+Estimate meta-regression models for log transformed incidence rate.
+
+## Cyclophosphamide
+
+```{r}
+library(metafor)
+D2 <- D1[isCyclo == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isCyclo,
+           cyclophosphamideCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+rma.glmm(xi = malN,
+              ti = py,
+              mods = log10(cyclophosphamideCumulDose),
+              measure="IRLN",
+              data=D2[malType == "AML" & !is.na(malN)])
+rma.glmm(xi = malN,
+              ti = py,
+              mods = log10(cyclophosphamideCumulDose),
+              measure="IRLN",
+              data=D2[malType == "MDS" & !is.na(malN)])
+rma.glmm(xi = malN,
+              ti = py,
+              mods = log10(cyclophosphamideCumulDose),
+              measure="IRLN",
+              data=D2[malType == "AML or MDS" & !is.na(malN)])
+rma.glmm(xi = malN,
+              ti = py,
+              mods = log10(cyclophosphamideCumulDose),
+              measure="IRLN",
+              data=D2[malType == "Non-Breast Solid" & !is.na(malN)])
+```
+
+
 # More stuff I'm not sure I need
 
 ```{r, eval=FALSE}
