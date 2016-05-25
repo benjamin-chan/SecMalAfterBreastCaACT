@@ -260,10 +260,11 @@ D1 <- D1[, malType := gsub("^mal", "", malType)]
 D1 <- D1[, malType := factor(malType,
                              levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
                              labels=c("AML", "MDS", "AML or MDS", "Non-Breast Solid"))]
-D1 <- D1[, rate := malN / (nITT * (medianFU / 12)) * 10000]
+D1 <- D1[, py := nITT * (medianFU / 12)]
+D1 <- D1[, rate := malN / py * 10000]
 summaryRegimens <- D1[,
                       .(totalN = sum(nITT, na.rm = TRUE),
-                        totalPersonYears = round(sum(nITT * (medianFU / 12), na.rm = TRUE)),
+                        totalPersonYears = round(sum(py, na.rm = TRUE)),
                         totalMalignancies = sum(malN, na.rm = TRUE),
                         medianPct = calcPct(malN, nITT),
                         medianRate = calcRate(malN, nITT, medianFU)),
