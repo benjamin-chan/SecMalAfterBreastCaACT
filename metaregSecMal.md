@@ -247,18 +247,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    22     NA     NA          NA               NA
-##  2:    70     NA     NA          NA               NA
-##  3:    50     NA     NA          NA               NA
-##  4:    33      0      0          NA                0
-##  5:    92     NA     NA          NA               NA
-##  6:    58     NA     NA          NA               NA
-##  7:    45     NA     NA           0                0
-##  8:    43      0     NA          NA                0
-##  9:    90     NA     NA          NA               NA
-## 10:    30      0      0          NA                0
-## 11:    15     NA     NA           2                2
-## 12:    62      1     NA          NA                1
+##  1:    30      0      0          NA                0
+##  2:    88     NA     NA          11               11
+##  3:    27     NA     NA          NA               NA
+##  4:    14      3      0          NA                3
+##  5:    45     NA     NA           0                0
+##  6:    35     NA     NA           2                2
+##  7:    77     NA     NA          NA               NA
+##  8:    46      2      0          NA                2
+##  9:    18     NA     NA           2                2
+## 10:    50     NA     NA          NA               NA
+## 11:    96     NA     NA          NA               NA
+## 12:    60     11      4          NA               15
 ```
 
 Remove text from `nITT` column.
@@ -1358,17 +1358,37 @@ write.table(summaryRegimens,
             row.names = FALSE)
 ```
 
-Plot.
+
+# Meta-regression
+
+Estimate meta-regression models for log transformed incidence rate.
+
+Define meta-regression functions.
 
 
 ```r
-plot <- function (D, xlab, xbreaks) {
+metareg <- function (D) {
+  require(metafor)
+  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  M <- rma.glmm(xi = malN, ti = py, mods = log10(x), measure="IRLN", data=D)
+  pvalue <- M$pval[which(row.names(M$b) == "mods")]
+  if (pvalue < 0.001) {
+    pvalue <- "p < 0.001"
+  } else {
+    pvalue <- sprintf("p = %.03f", pvalue)
+  }
+  list(rma.glmm = M,
+       pvalue = pvalue)
+}
+plotreg <- function (D, xlab, xbreaks, text) {
   require(ggplot2)
   require(tools)
   D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
+  G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE), group=malType))
   G <- G + geom_point(alpha=1/2)
   G <- G + geom_smooth(method="lm", se=FALSE)
+  G <- G + geom_text(data=data.frame(x=Inf, y=1, label=text, malType=levels(D[, malType])),
+                     aes(x, y, label=label, group=malType), inherit.aes=FALSE, hjust=1, color="blue")
   G <- G + scale_x_log10(xlab, breaks=xbreaks)
   G <- G + scale_y_log10("Rate per 10,000 person-years")
   G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
@@ -1380,82 +1400,7 @@ plot <- function (D, xlab, xbreaks) {
   show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
   G
 }
-plot(D1[isCyclo == TRUE, x := cyclophosphamideCumulDose], "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
 ```
-
-```
-## Loading required package: ggplot2
-## Loading required package: tools
-## Saving 7 x 5 in image
-```
-
-```
-##                                     size               mtime
-## CyclophosphamideCumulativeDose.png 52129 2016-05-25 15:48:56
-## CyclophosphamideCumulativeDose.csv 15501 2016-05-25 15:48:56
-```
-
-![](metaregSecMal_files/figure-html/unnamed-chunk-15-1.png) 
-
-```r
-D1 <- D1[, x := NULL]
-plot(D1[isAnthra == TRUE, x := anthracyclineCumulDose], "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8))
-```
-
-```
-## Saving 7 x 5 in image
-```
-
-```
-##                                  size               mtime
-## AnthracyclineCumulativeDose.png 49599 2016-05-25 15:48:57
-## AnthracyclineCumulativeDose.csv 17163 2016-05-25 15:48:57
-```
-
-![](metaregSecMal_files/figure-html/unnamed-chunk-15-2.png) 
-
-```r
-D1 <- D1[, x := NULL]
-plot(D1[isTaxane == TRUE, x := taxaneCumulDose], "Taxane cumulative dose", 100 * c(1, 2, 4, 8))
-```
-
-```
-## Saving 7 x 5 in image
-```
-
-```
-##                           size               mtime
-## TaxaneCumulativeDose.png 39554 2016-05-25 15:48:58
-## TaxaneCumulativeDose.csv  4690 2016-05-25 15:48:58
-```
-
-![](metaregSecMal_files/figure-html/unnamed-chunk-15-3.png) 
-
-```r
-D1 <- D1[, x := NULL]
-plot(D1[isFluoro == TRUE, x := fluoroucilCumulDose], "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
-```
-
-```
-## Saving 7 x 5 in image
-```
-
-```
-##                               size               mtime
-## FluoroucilCumulativeDose.png 44484 2016-05-25 15:48:59
-## FluoroucilCumulativeDose.csv  6024 2016-05-25 15:48:59
-```
-
-![](metaregSecMal_files/figure-html/unnamed-chunk-15-4.png) 
-
-```r
-D1 <- D1[, x := NULL]
-```
-
-
-# Meta-regression
-
-Estimate meta-regression models for log transformed incidence rate.
 
 ## Cyclophosphamide
 
@@ -1475,147 +1420,146 @@ D2 <- D1[isCyclo == TRUE,
          .(id = factor(id),
            authorYear,
            isCyclo,
-           cyclophosphamideCumulDose,
+           x = cyclophosphamideCumulDose,
            nITT,
            medianFU,
            malType,
            malN,
            py,
            rate)]
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "AML" & !is.na(malN)])
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
 
 ```
-## 
-## Mixed-Effects Model (k = 35; tau^2 estimator: ML)
-## 
-## tau^2 (estimated amount of residual heterogeneity):     0.1253
-## tau (square root of estimated tau^2 value):             0.3540
-## I^2 (residual heterogeneity / unaccounted variability): 22.97%
-## H^2 (unaccounted variability / sampling variability):   1.30
-## 
-## Tests for Residual Heterogeneity: 
-## Wld(df = 33) = 30.8193, p-val = 0.5761
-## LRT(df = 33) = 49.5323, p-val = 0.0323
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 19.9479, p-val < .0001
-## 
-## Model Results:
-## 
-##          estimate      se     zval    pval     ci.lb     ci.ub     
-## intrcpt  -18.0512  2.3684  -7.6216  <.0001  -22.6932  -13.4092  ***
-## mods       2.9279  0.6556   4.4663  <.0001    1.6431    4.2128  ***
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Loading required package: ggplot2
+## Loading required package: tools
+## Saving 7 x 5 in image
 ```
+
+```
+##                                     size               mtime
+## CyclophosphamideCumulativeDose.png 55912 2016-05-26 09:55:03
+## CyclophosphamideCumulativeDose.csv 10968 2016-05-26 09:55:03
+```
+
+![](metaregSecMal_files/figure-html/unnamed-chunk-16-1.png) 
+
+
+## Anthracycline
+
 
 ```r
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "MDS" & !is.na(malN)])
+library(metafor)
+D2 <- D1[isAnthra == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isAnthra,
+           x = anthracyclineCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
 ```
-## 
-## Mixed-Effects Model (k = 22; tau^2 estimator: ML)
-## 
-## tau^2 (estimated amount of residual heterogeneity):     0.4541
-## tau (square root of estimated tau^2 value):             0.6739
-## I^2 (residual heterogeneity / unaccounted variability): 39.88%
-## H^2 (unaccounted variability / sampling variability):   1.66
-## 
-## Tests for Residual Heterogeneity: 
-## Wld(df = 20) = 18.6866, p-val = 0.5423
-## LRT(df = 20) = 31.7067, p-val = 0.0465
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 4.5990, p-val = 0.0320
-## 
-## Model Results:
-## 
-##          estimate      se     zval    pval     ci.lb    ci.ub     
-## intrcpt  -18.5519  4.8322  -3.8392  0.0001  -28.0228  -9.0810  ***
-## mods       2.8108  1.3107   2.1445  0.0320    0.2419   5.3797    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-```r
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "AML or MDS" & !is.na(malN)])
+## Saving 7 x 5 in image
 ```
 
 ```
-## 
-## Mixed-Effects Model (k = 50; tau^2 estimator: ML)
-## 
-## tau^2 (estimated amount of residual heterogeneity):     0.3905
-## tau (square root of estimated tau^2 value):             0.6249
-## I^2 (residual heterogeneity / unaccounted variability): 57.21%
-## H^2 (unaccounted variability / sampling variability):   2.34
-## 
-## Tests for Residual Heterogeneity: 
-## Wld(df = 48) =  80.5362, p-val = 0.0023
-## LRT(df = 48) = 111.4232, p-val < .0001
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 12.0605, p-val = 0.0005
-## 
-## Model Results:
-## 
-##          estimate      se     zval    pval     ci.lb     ci.ub     
-## intrcpt  -15.0863  2.2386  -6.7393  <.0001  -19.4738  -10.6988  ***
-## mods       2.2166  0.6383   3.4728  0.0005    0.9656    3.4677  ***
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##                                  size               mtime
+## AnthracyclineCumulativeDose.png 53133 2016-05-26 09:55:05
+## AnthracyclineCumulativeDose.csv 12104 2016-05-26 09:55:05
 ```
+
+![](metaregSecMal_files/figure-html/unnamed-chunk-17-1.png) 
+
+
+## Taxane
+
 
 ```r
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "Non-Breast Solid" & !is.na(malN)])
+library(metafor)
+D2 <- D1[isTaxane == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isTaxane,
+           x = taxaneCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Taxane cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
 ```
-## 
-## Mixed-Effects Model (k = 29; tau^2 estimator: ML)
-## 
-## tau^2 (estimated amount of residual heterogeneity):     0.0949
-## tau (square root of estimated tau^2 value):             0.3081
-## I^2 (residual heterogeneity / unaccounted variability): 44.40%
-## H^2 (unaccounted variability / sampling variability):   1.80
-## 
-## Tests for Residual Heterogeneity: 
-## Wld(df = 27) = 47.1902, p-val = 0.0094
-## LRT(df = 27) = 48.3812, p-val = 0.0070
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 3.2631, p-val = 0.0709
-## 
-## Model Results:
-## 
-##          estimate      se     zval    pval     ci.lb    ci.ub     
-## intrcpt   -8.4464  1.4058  -6.0082  <.0001  -11.2018  -5.6911  ***
-## mods       0.7174  0.3971   1.8064  0.0709   -0.0610   1.4957    .
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## Saving 7 x 5 in image
 ```
+
+```
+##                           size               mtime
+## TaxaneCumulativeDose.png 43067 2016-05-26 09:55:06
+## TaxaneCumulativeDose.csv  3282 2016-05-26 09:55:06
+```
+
+![](metaregSecMal_files/figure-html/unnamed-chunk-18-1.png) 
+
+
+## Fluoroucil
+
+
+```r
+library(metafor)
+D2 <- D1[isFluoro == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isFluoro,
+           x = fluoroucilCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
+```
+
+```
+## Saving 7 x 5 in image
+```
+
+```
+##                               size               mtime
+## FluoroucilCumulativeDose.png 48572 2016-05-26 09:55:08
+## FluoroucilCumulativeDose.csv  4208 2016-05-26 09:55:08
+```
+
+![](metaregSecMal_files/figure-html/unnamed-chunk-19-1.png) 
+
 
 
 # More stuff I'm not sure I need
