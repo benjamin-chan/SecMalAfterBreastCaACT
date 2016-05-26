@@ -280,16 +280,36 @@ write.table(summaryRegimens,
             row.names = FALSE)
 ```
 
-Plot.
+
+# Meta-regression
+
+Estimate meta-regression models for log transformed incidence rate.
+
+Define meta-regression functions.
 
 ```{r}
-plot <- function (D, xlab, xbreaks) {
+metareg <- function (D) {
+  require(metafor)
+  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  M <- rma.glmm(xi = malN, ti = py, mods = log10(x), measure="IRLN", data=D)
+  pvalue <- M$pval[which(row.names(M$b) == "mods")]
+  if (pvalue < 0.001) {
+    pvalue <- "p < 0.001"
+  } else {
+    pvalue <- sprintf("p = %.03f", pvalue)
+  }
+  list(rma.glmm = M,
+       pvalue = pvalue)
+}
+plotreg <- function (D, xlab, xbreaks, text) {
   require(ggplot2)
   require(tools)
   D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
+  G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE), group=malType))
   G <- G + geom_point(alpha=1/2)
   G <- G + geom_smooth(method="lm", se=FALSE)
+  G <- G + geom_text(data=data.frame(x=Inf, y=1, label=text, malType=levels(D[, malType])),
+                     aes(x, y, label=label, group=malType), inherit.aes=FALSE, hjust=1, color="blue")
   G <- G + scale_x_log10(xlab, breaks=xbreaks)
   G <- G + scale_y_log10("Rate per 10,000 person-years")
   G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
@@ -301,20 +321,7 @@ plot <- function (D, xlab, xbreaks) {
   show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
   G
 }
-plot(D1[isCyclo == TRUE, x := cyclophosphamideCumulDose], "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
-D1 <- D1[, x := NULL]
-plot(D1[isAnthra == TRUE, x := anthracyclineCumulDose], "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8))
-D1 <- D1[, x := NULL]
-plot(D1[isTaxane == TRUE, x := taxaneCumulDose], "Taxane cumulative dose", 100 * c(1, 2, 4, 8))
-D1 <- D1[, x := NULL]
-plot(D1[isFluoro == TRUE, x := fluoroucilCumulDose], "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16))
-D1 <- D1[, x := NULL]
 ```
-
-
-# Meta-regression
-
-Estimate meta-regression models for log transformed incidence rate.
 
 ## Cyclophosphamide
 
@@ -324,34 +331,93 @@ D2 <- D1[isCyclo == TRUE,
          .(id = factor(id),
            authorYear,
            isCyclo,
-           cyclophosphamideCumulDose,
+           x = cyclophosphamideCumulDose,
            nITT,
            medianFU,
            malType,
            malN,
            py,
            rate)]
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "AML" & !is.na(malN)])
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "MDS" & !is.na(malN)])
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "AML or MDS" & !is.na(malN)])
-rma.glmm(xi = malN,
-              ti = py,
-              mods = log10(cyclophosphamideCumulDose),
-              measure="IRLN",
-              data=D2[malType == "Non-Breast Solid" & !is.na(malN)])
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
+
+
+## Anthracycline
+
+```{r}
+library(metafor)
+D2 <- D1[isAnthra == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isAnthra,
+           x = anthracyclineCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
+```
+
+
+## Taxane
+
+```{r}
+library(metafor)
+D2 <- D1[isTaxane == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isTaxane,
+           x = taxaneCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Taxane cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
+```
+
+
+## Fluoroucil
+
+```{r}
+library(metafor)
+D2 <- D1[isFluoro == TRUE,
+         .(id = factor(id),
+           authorYear,
+           isFluoro,
+           x = fluoroucilCumulDose,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+M1 <- metareg(D2[malType == "AML"             ])
+M2 <- metareg(D2[malType == "MDS"             ])
+M3 <- metareg(D2[malType == "AML or MDS"      ])
+M4 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+plotreg(D2, "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
+```
+
 
 
 # More stuff I'm not sure I need
