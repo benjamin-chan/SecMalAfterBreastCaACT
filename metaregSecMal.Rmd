@@ -305,6 +305,8 @@ plotreg <- function (D, xlab, xbreaks, text) {
   require(ggplot2)
   require(tools)
   D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  D <- D[malType %in% c("AML or MDS", "Non-Breast Solid")]
+  D <- D[, malType := droplevels(malType)]
   G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE), group=malType))
   G <- G + geom_point(alpha=1/2)
   G <- G + geom_smooth(method="lm", se=FALSE)
@@ -312,7 +314,7 @@ plotreg <- function (D, xlab, xbreaks, text) {
                      aes(x, y, label=label, group=malType), inherit.aes=FALSE, hjust=1, color="blue")
   G <- G + scale_x_log10(xlab, breaks=xbreaks)
   G <- G + scale_y_log10("Rate per 10,000 person-years")
-  G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
+  G <- G + facet_wrap(~ malType, nrow=2, ncol=1)
   G <- G + theme_bw()
   G <- G + theme(legend.position="none")
   filename <- gsub("\\s+", "", toTitleCase(xlab))
@@ -338,11 +340,9 @@ D2 <- D1[isCyclo == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
 
@@ -362,11 +362,9 @@ D2 <- D1[isAnthra == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
@@ -386,11 +384,9 @@ D2 <- D1[isTaxane == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Taxane cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
@@ -410,11 +406,9 @@ D2 <- D1[isFluoro == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
 

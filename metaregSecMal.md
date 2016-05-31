@@ -247,18 +247,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    30      0      0          NA                0
-##  2:    88     NA     NA          11               11
-##  3:    27     NA     NA          NA               NA
-##  4:    14      3      0          NA                3
-##  5:    45     NA     NA           0                0
-##  6:    35     NA     NA           2                2
-##  7:    77     NA     NA          NA               NA
-##  8:    46      2      0          NA                2
-##  9:    18     NA     NA           2                2
-## 10:    50     NA     NA          NA               NA
-## 11:    96     NA     NA          NA               NA
-## 12:    60     11      4          NA               15
+##  1:    83     NA     NA           5                5
+##  2:    78     NA     NA          NA               NA
+##  3:    95      0     NA          NA                0
+##  4:    90     NA     NA          NA               NA
+##  5:    89     NA     NA          NA               NA
+##  6:    52      1      1          NA                2
+##  7:    59      9      4          NA               13
+##  8:    34      0      1          NA                1
+##  9:    27     NA     NA          NA               NA
+## 10:    38      1     NA          NA                1
+## 11:    49     NA     NA          NA               NA
+## 12:    73     NA     NA           2                2
 ```
 
 Remove text from `nITT` column.
@@ -1384,6 +1384,8 @@ plotreg <- function (D, xlab, xbreaks, text) {
   require(ggplot2)
   require(tools)
   D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  D <- D[malType %in% c("AML or MDS", "Non-Breast Solid")]
+  D <- D[, malType := droplevels(malType)]
   G <- ggplot(D, aes(x=x, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE), group=malType))
   G <- G + geom_point(alpha=1/2)
   G <- G + geom_smooth(method="lm", se=FALSE)
@@ -1391,7 +1393,7 @@ plotreg <- function (D, xlab, xbreaks, text) {
                      aes(x, y, label=label, group=malType), inherit.aes=FALSE, hjust=1, color="blue")
   G <- G + scale_x_log10(xlab, breaks=xbreaks)
   G <- G + scale_y_log10("Rate per 10,000 person-years")
-  G <- G + facet_wrap(~ malType, nrow=2, ncol=2)
+  G <- G + facet_wrap(~ malType, nrow=2, ncol=1)
   G <- G + theme_bw()
   G <- G + theme(legend.position="none")
   filename <- gsub("\\s+", "", toTitleCase(xlab))
@@ -1427,11 +1429,9 @@ D2 <- D1[isCyclo == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
 
@@ -1443,8 +1443,8 @@ plotreg(D2, "Cyclophosphamide cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), p
 
 ```
 ##                                     size               mtime
-## CyclophosphamideCumulativeDose.png 55912 2016-05-26 09:55:03
-## CyclophosphamideCumulativeDose.csv 10968 2016-05-26 09:55:03
+## CyclophosphamideCumulativeDose.png 43644 2016-05-31 13:15:24
+## CyclophosphamideCumulativeDose.csv  6822 2016-05-31 13:15:24
 ```
 
 ![](metaregSecMal_files/figure-html/unnamed-chunk-16-1.png) 
@@ -1466,11 +1466,9 @@ D2 <- D1[isAnthra == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
@@ -1480,8 +1478,8 @@ plotreg(D2, "Anthracycline cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 
 ```
 ##                                  size               mtime
-## AnthracyclineCumulativeDose.png 53133 2016-05-26 09:55:05
-## AnthracyclineCumulativeDose.csv 12104 2016-05-26 09:55:05
+## AnthracyclineCumulativeDose.png 41946 2016-05-31 13:15:25
+## AnthracyclineCumulativeDose.csv  7552 2016-05-31 13:15:25
 ```
 
 ![](metaregSecMal_files/figure-html/unnamed-chunk-17-1.png) 
@@ -1503,11 +1501,9 @@ D2 <- D1[isTaxane == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Taxane cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 ```
 
@@ -1517,8 +1513,8 @@ plotreg(D2, "Taxane cumulative dose", 100 * c(1, 2, 4, 8), pvalues)
 
 ```
 ##                           size               mtime
-## TaxaneCumulativeDose.png 43067 2016-05-26 09:55:06
-## TaxaneCumulativeDose.csv  3282 2016-05-26 09:55:06
+## TaxaneCumulativeDose.png 36670 2016-05-31 13:15:26
+## TaxaneCumulativeDose.csv  2479 2016-05-31 13:15:26
 ```
 
 ![](metaregSecMal_files/figure-html/unnamed-chunk-18-1.png) 
@@ -1540,11 +1536,9 @@ D2 <- D1[isFluoro == TRUE,
            malN,
            py,
            rate)]
-M1 <- metareg(D2[malType == "AML"             ])
-M2 <- metareg(D2[malType == "MDS"             ])
-M3 <- metareg(D2[malType == "AML or MDS"      ])
-M4 <- metareg(D2[malType == "Non-Breast Solid"])
-pvalues <- c(M1$pvalue, M2$pvalue, M3$pvalue, M4$pvalue)
+M1 <- metareg(D2[malType == "AML or MDS"      ])
+M2 <- metareg(D2[malType == "Non-Breast Solid"])
+pvalues <- c(M1$pvalue, M2$pvalue)
 plotreg(D2, "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues)
 ```
 
@@ -1554,8 +1548,8 @@ plotreg(D2, "Fluoroucil cumulative dose", 1000 * c(0.5, 1, 2, 4, 8, 16), pvalues
 
 ```
 ##                               size               mtime
-## FluoroucilCumulativeDose.png 48572 2016-05-26 09:55:08
-## FluoroucilCumulativeDose.csv  4208 2016-05-26 09:55:08
+## FluoroucilCumulativeDose.png 41358 2016-05-31 13:15:28
+## FluoroucilCumulativeDose.csv  2750 2016-05-31 13:15:28
 ```
 
 ![](metaregSecMal_files/figure-html/unnamed-chunk-19-1.png) 
