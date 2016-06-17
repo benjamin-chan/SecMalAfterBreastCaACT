@@ -176,8 +176,7 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Secondary-Malignancies">Secondary Malignancies<a class="anchor-link" href="#Secondary-Malignancies">&#182;</a></h1><p><a href="http://careers.stackoverflow.com/benjaminchan">Benjamin Chan</a></p>
-<h2 id="Load-data">Load data<a class="anchor-link" href="#Load-data">&#182;</a></h2><p>Load the data from <a href="https://github.com/benjamin-chan/AEAfterBreastCaACT/tree/master/SecondaryMalignancies">GitHub</a>.</p>
+<h1 id="Risks-of-Long-term-Secondary-Malignancies-in-Breast-Cancer-Patients-Treated-with-Adjuvant-Chemotherapy">Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy<a class="anchor-link" href="#Risks-of-Long-term-Secondary-Malignancies-in-Breast-Cancer-Patients-Treated-with-Adjuvant-Chemotherapy">&#182;</a></h1><p><a href="http://careers.stackoverflow.com/benjaminchan">Benjamin Chan</a></p>
 
 </div>
 </div>
@@ -187,11 +186,48 @@ div#notebook {
 <div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">message</span><span class="p">(</span><span class="kp">sprintf</span><span class="p">(</span><span class="s">&quot;Run date: %s&quot;</span><span class="p">,</span> <span class="kp">Sys.time</span><span class="p">()))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Run date: 2016-06-17 14:34:41
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Load-data">Load data<a class="anchor-link" href="#Load-data">&#182;</a></h2><p>Load the data from <a href="https://github.com/benjamin-chan/SecMalAfterBreastCaACT">GitHub</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kn">require</span><span class="p">(</span>openxlsx<span class="p">))</span> <span class="p">{</span>install.packages<span class="p">(</span><span class="s">&quot;openxlsx&quot;</span><span class="p">,</span> dependencies<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> repos<span class="o">=</span><span class="s">&quot;https://cloud.r-project.org&quot;</span><span class="p">)}</span>
 <span class="kn">library</span><span class="p">(</span>openxlsx<span class="p">)</span>
 <span class="kr">if</span> <span class="p">(</span><span class="o">!</span><span class="kn">require</span><span class="p">(</span>data.table<span class="p">))</span> <span class="p">{</span>install.packages<span class="p">(</span><span class="s">&quot;data.table&quot;</span><span class="p">,</span> dependencies<span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span> repos<span class="o">=</span><span class="s">&quot;https://cloud.r-project.org&quot;</span><span class="p">)}</span>
 <span class="kn">library</span><span class="p">(</span>data.table<span class="p">)</span>
-url <span class="o">&lt;-</span> <span class="s">&quot;https://github.com/benjamin-chan/AEAfterBreastCaACT/raw/master/SecondaryMalignancies/SecondaryMalignancies_Data_BG_3_4.xlsx&quot;</span>
+url <span class="o">&lt;-</span> <span class="s">&quot;https://github.com/benjamin-chan/SecMalAfterBreastCaACT/raw/master/SecondaryMalignancies_Data_BG_3_4.xlsx&quot;</span>
 f <span class="o">&lt;-</span> <span class="kp">tempfile</span><span class="p">()</span>
 download.file<span class="p">(</span><span class="kp">url</span><span class="p">,</span> f<span class="p">,</span> mode<span class="o">=</span><span class="s">&quot;wb&quot;</span><span class="p">)</span>
 sheets <span class="o">&lt;-</span> getSheetNames<span class="p">(</span>f<span class="p">)</span>
@@ -269,7 +305,7 @@ This will be handy later.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[,</span> rowid <span class="o">:=</span> <span class="m">.</span><span class="kp">I</span><span class="p">]</span>
@@ -292,7 +328,7 @@ This will be handy later.</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>col <span class="o">&lt;-</span> <span class="kp">grep</span><span class="p">(</span><span class="s">&quot;^cyclophosphamide&quot;</span><span class="p">,</span> <span class="kp">names</span><span class="p">(</span>D<span class="p">),</span> invert <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
@@ -318,7 +354,7 @@ D<span class="p">[</span><span class="m">11</span><span class="p">,</span> <span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[</span><span class="kp">grep</span><span class="p">(</span><span class="s">&quot;Romond&quot;</span><span class="p">,</span> authorYear<span class="p">),</span> trial <span class="o">:=</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;&amp;N&quot;</span><span class="p">,</span> <span class="s">&quot;&amp; N&quot;</span><span class="p">,</span> trial<span class="p">)]</span>
@@ -341,7 +377,7 @@ D<span class="p">[</span><span class="m">11</span><span class="p">,</span> <span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[</span><span class="kp">grep</span><span class="p">(</span><span class="s">&quot;-&quot;</span><span class="p">,</span> medianFU<span class="p">,</span> invert <span class="o">=</span> <span class="kc">TRUE</span><span class="p">),</span> medianFUNum <span class="o">:=</span> <span class="kp">round</span><span class="p">(</span><span class="kp">as.numeric</span><span class="p">(</span>medianFU<span class="p">),</span> digits <span class="o">=</span> <span class="m">2</span><span class="p">)]</span>
@@ -400,7 +436,7 @@ D <span class="o">&lt;-</span> D<span class="p">[,</span> medianFUChar <span cla
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>recode <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
@@ -432,7 +468,7 @@ col <span class="o">&lt;-</span> <span class="kp">grep</span><span class="p">(</
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>substitute <span class="o">&lt;-</span> <span class="kr">function</span><span class="p">(</span>x<span class="p">)</span> <span class="p">{</span>
@@ -464,7 +500,7 @@ col <span class="o">&lt;-</span> <span class="kp">grep</span><span class="p">(</
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="m">4</span><span class="p">)</span> <span class="p">{</span>
@@ -495,7 +531,7 @@ NOTE: Couldn't get this to work: <a href="http://stackoverflow.com/a/16513949/14
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>s <span class="o">&lt;-</span> <span class="kp">sample</span><span class="p">(</span>D<span class="p">[,</span> rowid<span class="p">],</span> <span class="m">12</span><span class="p">)</span>
@@ -519,18 +555,18 @@ D<span class="p">[</span>s<span class="p">,</span> <span class="m">.</span><span
 <table>
 <thead><tr><th></th><th scope=col>rowid</th><th scope=col>malAML</th><th scope=col>malMDS</th><th scope=col>malAMLOrMDS</th><th scope=col>malAMLOrMDSTotal</th></tr></thead>
 <tbody>
-	<tr><th scope=row>1</th><td>68</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>2</th><td>89</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>3</th><td>55</td><td> 4</td><td> 2</td><td>NA</td><td> 6</td></tr>
-	<tr><th scope=row>4</th><td>81</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>5</th><td>10</td><td> 0</td><td> 0</td><td>NA</td><td> 0</td></tr>
-	<tr><th scope=row>6</th><td> 5</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>7</th><td>93</td><td> 2</td><td>NA</td><td>NA</td><td> 2</td></tr>
-	<tr><th scope=row>8</th><td>31</td><td> 6</td><td> 2</td><td>NA</td><td> 8</td></tr>
-	<tr><th scope=row>9</th><td>33</td><td> 0</td><td> 0</td><td>NA</td><td> 0</td></tr>
-	<tr><th scope=row>10</th><td>58</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
-	<tr><th scope=row>11</th><td>20</td><td> 0</td><td> 0</td><td>NA</td><td> 0</td></tr>
-	<tr><th scope=row>12</th><td> 6</td><td> 4</td><td> 0</td><td>NA</td><td> 4</td></tr>
+	<tr><th scope=row>1</th><td>18</td><td>NA</td><td>NA</td><td> 2</td><td> 2</td></tr>
+	<tr><th scope=row>2</th><td>91</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>3</th><td>28</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>4</th><td>16</td><td>NA</td><td>NA</td><td> 3</td><td> 3</td></tr>
+	<tr><th scope=row>5</th><td>43</td><td> 0</td><td>NA</td><td>NA</td><td> 0</td></tr>
+	<tr><th scope=row>6</th><td>26</td><td>NA</td><td>NA</td><td> 7</td><td> 7</td></tr>
+	<tr><th scope=row>7</th><td>86</td><td>NA</td><td>NA</td><td> 5</td><td> 5</td></tr>
+	<tr><th scope=row>8</th><td>45</td><td>NA</td><td>NA</td><td> 0</td><td> 0</td></tr>
+	<tr><th scope=row>9</th><td>95</td><td> 0</td><td>NA</td><td>NA</td><td> 0</td></tr>
+	<tr><th scope=row>10</th><td>85</td><td>NA</td><td>NA</td><td> 0</td><td> 0</td></tr>
+	<tr><th scope=row>11</th><td>49</td><td>NA</td><td>NA</td><td>NA</td><td>NA</td></tr>
+	<tr><th scope=row>12</th><td>47</td><td> 0</td><td> 0</td><td>NA</td><td> 0</td></tr>
 </tbody>
 </table>
 
@@ -554,7 +590,7 @@ D<span class="p">[</span>s<span class="p">,</span> <span class="m">.</span><span
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[</span>authorYear <span class="o">==</span> <span class="s">&quot;Misset (1996)&quot;</span> <span class="o">&amp;</span> arm <span class="o">==</span> <span class="m">2</span><span class="p">,</span> nITT <span class="o">:=</span> <span class="s">&quot;137&quot;</span><span class="p">]</span>
@@ -574,14 +610,15 @@ D <span class="o">&lt;-</span> D<span class="p">[,</span> nITT <span class="o">:
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Clean up the <code>regimen</code> and <code>dose</code> columns.</p>
+<p>Clean up the <code>regimen</code> and <code>dose</code> columns.
+Output to <a href="regimens.md">regimens.md</a> for checking.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[,</span> regimen <span class="o">:=</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;\\s$&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> regimen<span class="p">)]</span>
@@ -590,11 +627,11 @@ doseVar <span class="o">&lt;-</span> <span class="kp">grep</span><span class="p"
 <span class="kr">for</span> <span class="p">(</span>i <span class="kr">in</span> <span class="m">1</span><span class="o">:</span><span class="kp">length</span><span class="p">(</span>doseVar<span class="p">))</span> <span class="p">{</span>
     D <span class="o">&lt;-</span> D<span class="p">[,</span> doseVar<span class="p">[</span>i<span class="p">]</span> <span class="o">:=</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;\\r\\n&quot;</span><span class="p">,</span> <span class="s">&quot; &quot;</span><span class="p">,</span> <span class="kp">get</span><span class="p">(</span>doseVar<span class="p">[</span>i<span class="p">]))]</span>
 <span class="p">}</span>
-D<span class="p">[,</span> <span class="m">.</span>N<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;regimen&quot;</span><span class="p">,</span> doseVar<span class="p">),</span> with <span class="o">=</span> <span class="kc">TRUE</span><span class="p">][</span><span class="kp">order</span><span class="p">(</span>regimen<span class="p">)]</span>
 write.table<span class="p">(</span>D<span class="p">[,</span> <span class="m">.</span>N<span class="p">,</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;regimen&quot;</span><span class="p">,</span> doseVar<span class="p">),</span> with <span class="o">=</span> <span class="kc">TRUE</span><span class="p">][</span><span class="kp">order</span><span class="p">(</span>regimen<span class="p">)],</span>
             file <span class="o">=</span> <span class="s">&quot;regimens.md&quot;</span><span class="p">,</span>
             sep <span class="o">=</span> <span class="s">&quot; | &quot;</span><span class="p">,</span> quote <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
             row.names <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="kp">file.info</span><span class="p">(</span><span class="s">&quot;regimens.md&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -607,74 +644,12 @@ write.table<span class="p">(</span>D<span class="p">[,</span> <span class="m">.<
 
 <div class="output_area"><div class="prompt"></div>
 
-<div class="output_html rendered_html output_subarea ">
-<table>
-<thead><tr><th></th><th scope=col>regimen</th><th scope=col>anthracyclineTotalDose</th><th scope=col>cyclophosphamideDose</th><th scope=col>taxaneTotalDose</th><th scope=col>fluoroucilTotalDose</th><th scope=col>N</th></tr></thead>
-<tbody>
-	<tr><th scope=row>1</th><td>3 FEC 50</td><td>50      </td><td>500     </td><td>NA      </td><td>500     </td><td>1       </td></tr>
-	<tr><th scope=row>2</th><td>A-C </td><td>81  </td><td>2400</td><td>NA  </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>3</th><td>A-CMF</td><td>75   </td><td>NA   </td><td>NA   </td><td>NA   </td><td>1    </td></tr>
-	<tr><th scope=row>4</th><td>A-T-C</td><td>60   </td><td>600  </td><td>175  </td><td>NA   </td><td>2    </td></tr>
-	<tr><th scope=row>5</th><td>A-T-CMF</td><td>75     </td><td>NA     </td><td>100    </td><td>NA     </td><td>1      </td></tr>
-	<tr><th scope=row>6</th><td>AC </td><td>60 </td><td>600</td><td>NA </td><td>NA </td><td>8  </td></tr>
-	<tr><th scope=row>7</th><td>AC  </td><td>60  </td><td>1200</td><td>NA  </td><td>NA  </td><td>3   </td></tr>
-	<tr><th scope=row>8</th><td>AC  </td><td>60  </td><td>2400</td><td>NA  </td><td>NA  </td><td>2   </td></tr>
-	<tr><th scope=row>9</th><td>AC        </td><td>60, 75, 90</td><td>600       </td><td>NA        </td><td>NA        </td><td>1         </td></tr>
-	<tr><th scope=row>10</th><td>AC  </td><td>54  </td><td>1200</td><td>NA  </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>11</th><td>AC </td><td>80 </td><td>600</td><td>NA </td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>12</th><td>AC-CMF</td><td>60    </td><td>600   </td><td>NA    </td><td>NA    </td><td>2     </td></tr>
-	<tr><th scope=row>13</th><td>AC-CMF</td><td>60 90 </td><td>600   </td><td>NA    </td><td>NA    </td><td>1     </td></tr>
-	<tr><th scope=row>14</th><td>AC-T</td><td>60  </td><td>600 </td><td>175 </td><td>NA  </td><td>4   </td></tr>
-	<tr><th scope=row>15</th><td>AC-T      </td><td>60, 75, 90</td><td>600       </td><td>175       </td><td>NA        </td><td>1         </td></tr>
-	<tr><th scope=row>16</th><td>AC-T</td><td>60  </td><td>600 </td><td>225 </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>17</th><td>AC-T</td><td>60  </td><td>600 </td><td>100 </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>18</th><td>AC-T</td><td>NA  </td><td>NA  </td><td>NA  </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>19</th><td>AC-T+Trast</td><td>NA        </td><td>NA        </td><td>NA        </td><td>NA        </td><td>1         </td></tr>
-	<tr><th scope=row>20</th><td>AC-T-Trast</td><td>NA        </td><td>NA        </td><td>NA        </td><td>NA        </td><td>1         </td></tr>
-	<tr><th scope=row>21</th><td>AC-TG</td><td>60   </td><td>600  </td><td>175  </td><td>NA   </td><td>1    </td></tr>
-	<tr><th scope=row>22</th><td>AC-Tam</td><td>60    </td><td>600   </td><td>NA    </td><td>NA    </td><td>1     </td></tr>
-	<tr><th scope=row>23</th><td>ACT</td><td>80 </td><td>300</td><td>200</td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>24</th><td>ACT</td><td>50 </td><td>500</td><td>75 </td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>25</th><td>ACT-T-Trast</td><td>60         </td><td>600        </td><td>175        </td><td>NA         </td><td>1          </td></tr>
-	<tr><th scope=row>26</th><td>AT</td><td>60</td><td>NA</td><td>60</td><td>NA</td><td>1 </td></tr>
-	<tr><th scope=row>27</th><td>AT-CMF</td><td>50    </td><td>NA    </td><td>75    </td><td>NA    </td><td>1     </td></tr>
-	<tr><th scope=row>28</th><td>AVCF</td><td>30  </td><td>1200</td><td>NA  </td><td>1600</td><td>1   </td></tr>
-	<tr><th scope=row>29</th><td>CMF</td><td>NA </td><td>NA </td><td>NA </td><td>NA </td><td>7  </td></tr>
-	<tr><th scope=row>30</th><td>CMF-Tam</td><td>NA     </td><td>NA     </td><td>NA     </td><td>NA     </td><td>1      </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>34</th><td>EC </td><td>60 </td><td>500</td><td>NA </td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>35</th><td>EC </td><td>100</td><td>830</td><td>NA </td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>36</th><td>EC </td><td>120</td><td>600</td><td>NA </td><td>NA </td><td>1  </td></tr>
-	<tr><th scope=row>37</th><td>EC  </td><td>200 </td><td>4???</td><td>NA  </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>38</th><td>EC-T</td><td>90  </td><td>600 </td><td>175 </td><td>NA  </td><td>2   </td></tr>
-	<tr><th scope=row>39</th><td>EC-T</td><td>90  </td><td>600 </td><td>100 </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>40</th><td>EPI-Tam</td><td>90     </td><td>NA     </td><td>NA     </td><td>NA     </td><td>1      </td></tr>
-	<tr><th scope=row>41</th><td>EPI-Tam</td><td>100    </td><td>NA     </td><td>NA     </td><td>NA     </td><td>1      </td></tr>
-	<tr><th scope=row>42</th><td>FAC</td><td>50 </td><td>500</td><td>NA </td><td>500</td><td>3  </td></tr>
-	<tr><th scope=row>43</th><td>FAC-T</td><td>50   </td><td>500  </td><td>100  </td><td>500  </td><td>1    </td></tr>
-	<tr><th scope=row>44</th><td>FEC</td><td>60 </td><td>600</td><td>NA </td><td>600</td><td>2  </td></tr>
-	<tr><th scope=row>45</th><td>FEC</td><td>100</td><td>500</td><td>NA </td><td>500</td><td>3  </td></tr>
-	<tr><th scope=row>46</th><td>FEC</td><td>50 </td><td>600</td><td>NA </td><td>600</td><td>1  </td></tr>
-	<tr><th scope=row>47</th><td>FEC </td><td>50  </td><td>1200</td><td>NA  </td><td>1200</td><td>1   </td></tr>
-	<tr><th scope=row>48</th><td>FEC</td><td>50 </td><td>500</td><td>NA </td><td>500</td><td>1  </td></tr>
-	<tr><th scope=row>49</th><td>FEC 100</td><td>100    </td><td>500    </td><td>NA     </td><td>500    </td><td>1      </td></tr>
-	<tr><th scope=row>50</th><td>FEC 50</td><td>50    </td><td>500   </td><td>NA    </td><td>500   </td><td>2     </td></tr>
-	<tr><th scope=row>51</th><td>FEC 75</td><td>75    </td><td>500   </td><td>NA    </td><td>500   </td><td>1     </td></tr>
-	<tr><th scope=row>52</th><td>FEC CTCb</td><td>60      </td><td>600     </td><td>NA      </td><td>NA      </td><td>1       </td></tr>
-	<tr><th scope=row>53</th><td>FEC CTCb</td><td>60      </td><td>1200    </td><td>NA      </td><td>NA      </td><td>1       </td></tr>
-	<tr><th scope=row>54</th><td>FEC Tailored  </td><td>75 (38-120)   </td><td>900 (450-1800)</td><td>NA            </td><td>600 (300-600) </td><td>1             </td></tr>
-	<tr><th scope=row>55</th><td>FEC-T</td><td>100  </td><td>500  </td><td>100  </td><td>500  </td><td>1    </td></tr>
-	<tr><th scope=row>56</th><td>FEC-T</td><td>90   </td><td>600  </td><td>175  </td><td>600  </td><td>2    </td></tr>
-	<tr><th scope=row>57</th><td>Neo-AC</td><td>60    </td><td>600   </td><td>NA    </td><td>NA    </td><td>1     </td></tr>
-	<tr><th scope=row>58</th><td>T </td><td>NA</td><td>NA</td><td>80</td><td>NA</td><td>2 </td></tr>
-	<tr><th scope=row>59</th><td>T-EC</td><td>120 </td><td>600 </td><td>100 </td><td>NA  </td><td>1   </td></tr>
-	<tr><th scope=row>60</th><td>T-FEC</td><td>75   </td><td>600  </td><td>80   </td><td>600  </td><td>1    </td></tr>
-	<tr><th scope=row>61</th><td>TAC</td><td>50 </td><td>500</td><td>75 </td><td>NA </td><td>3  </td></tr>
-	<tr><th scope=row>62</th><td>TX-CEX                    </td><td>75                        </td><td>600                       </td><td>60                        </td><td>Include capecitabine here?</td><td>1                         </td></tr>
-	<tr><th scope=row>63</th><td>Tamoxifen</td><td>NA       </td><td>NA       </td><td>NA       </td><td>NA       </td><td>3        </td></tr>
-</tbody>
-</table>
 
+<div class="output_text output_subarea ">
+<pre>            size isdir mode               mtime               ctime
+regimens.md 2150 FALSE  664 2016-06-17 14:34:42 2016-06-17 14:34:42
+                          atime  uid  gid  uname grname
+regimens.md 2016-06-17 07:16:23 1000 1000 ubuntu ubuntu</pre>
 </div>
 
 </div>
@@ -695,7 +670,7 @@ write.table<span class="p">(</span>D<span class="p">[,</span> <span class="m">.<
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[,</span> anthracyclineTotalDose <span class="o">:=</span> <span class="kp">as.numeric</span><span class="p">(</span>anthracyclineTotalDose<span class="p">)]</span>
@@ -716,10 +691,6 @@ D <span class="o">&lt;-</span> D<span class="p">[,</span>
              cyclophosphamideCumulDose <span class="o">=</span> cyclophosphamideDose <span class="o">*</span> cyclophosphamideCourses<span class="p">,</span>
              taxaneCumulDose <span class="o">=</span> <span class="kp">as.numeric</span><span class="p">(</span>taxaneTotalDose<span class="p">)</span> <span class="o">*</span> taxaneCourses<span class="p">,</span>
              fluoroucilCumulDose <span class="o">=</span> fluoroucilTotalDose <span class="o">*</span> fluoroucilCourses<span class="p">)]</span>
-D<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> anthracyclineCumulDose<span class="p">,</span> anthracyclineTotalDose<span class="p">,</span> anthracyclineCourses<span class="p">)]</span>
-D<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> cyclophosphamideCumulDose<span class="p">,</span> cyclophosphamideDose<span class="p">,</span> cyclophosphamideCourses<span class="p">)]</span>
-D<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> taxaneCumulDose<span class="p">,</span> taxaneTotalDose<span class="p">,</span> taxaneCourses<span class="p">)]</span>
-D<span class="p">[,</span> <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> fluoroucilCumulDose<span class="p">,</span> fluoroucilTotalDose<span class="p">,</span> fluoroucilCourses<span class="p">)]</span>
 </pre></div>
 
 </div>
@@ -740,6 +711,43 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 </div>
 </div>
 
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Check.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kp">head</span><span class="p">(</span>D<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>anthracyclineCumulDose<span class="p">),</span>
+       <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> anthracyclineCumulDose<span class="p">,</span> anthracyclineTotalDose<span class="p">,</span> anthracyclineCourses<span class="p">)])</span>
+<span class="kp">head</span><span class="p">(</span>D<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>cyclophosphamideCumulDose<span class="p">),</span>
+       <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> cyclophosphamideCumulDose<span class="p">,</span> cyclophosphamideDose<span class="p">,</span> cyclophosphamideCourses<span class="p">)])</span>
+<span class="kp">head</span><span class="p">(</span>D<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>taxaneCumulDose<span class="p">),</span>
+       <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> taxaneCumulDose<span class="p">,</span> taxaneTotalDose<span class="p">,</span> taxaneCourses<span class="p">)])</span>
+<span class="kp">head</span><span class="p">(</span>D<span class="p">[</span><span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>fluoroucilCumulDose<span class="p">),</span>
+       <span class="m">.</span><span class="p">(</span>authorYear<span class="p">,</span> regimen<span class="p">,</span> fluoroucilCumulDose<span class="p">,</span> fluoroucilTotalDose<span class="p">,</span> fluoroucilCourses<span class="p">)])</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
 <div class="output_area"><div class="prompt"></div>
 
 <div class="output_html rendered_html output_subarea ">
@@ -748,65 +756,10 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 <tbody>
 	<tr><th scope=row>1</th><td>Fisher (1990)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
 	<tr><th scope=row>2</th><td>Fisher (1990)</td><td>AC-CMF       </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>3</th><td>Fisher (1990)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>4</th><td>Misset (1996)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>5</th><td>Misset (1996)</td><td>AVCF         </td><td>360          </td><td>30           </td><td>12           </td></tr>
+	<tr><th scope=row>3</th><td>Misset (1996)</td><td>AVCF         </td><td>360          </td><td>30           </td><td>12           </td></tr>
+	<tr><th scope=row>4</th><td>Fisher (1999)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
+	<tr><th scope=row>5</th><td>Fisher (1999)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
 	<tr><th scope=row>6</th><td>Fisher (1999)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>7</th><td>Fisher (1999)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>8</th><td>Fisher (1999)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>9</th><td>Bergh (2000)</td><td>FEC Tailored</td><td>NA          </td><td>NA          </td><td>9           </td></tr>
-	<tr><th scope=row>10</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>180         </td><td>60          </td><td>3           </td></tr>
-	<tr><th scope=row>11</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>180         </td><td>60          </td><td>3           </td></tr>
-	<tr><th scope=row>12</th><td>Bernard-Marty (2003)</td><td>CMF                 </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>13</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>480                 </td><td>60                  </td><td>8                   </td></tr>
-	<tr><th scope=row>14</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>800                 </td><td>100                 </td><td>8                   </td></tr>
-	<tr><th scope=row>15</th><td>Citron (2003)</td><td>A-T-C        </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>16</th><td>Citron (2003)</td><td>A-T-C        </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>17</th><td>Citron (2003)</td><td>AC-T         </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>18</th><td>Citron (2003)</td><td>AC-T         </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>19</th><td>Venturini (2005)</td><td>FEC             </td><td>360             </td><td>60              </td><td>6               </td></tr>
-	<tr><th scope=row>20</th><td>Venturini (2005)</td><td>FEC             </td><td>360             </td><td>60              </td><td>6               </td></tr>
-	<tr><th scope=row>21</th><td>Francis (2008)</td><td>A-CMF         </td><td>300           </td><td>75            </td><td>4             </td></tr>
-	<tr><th scope=row>22</th><td>Francis (2008)</td><td>AC-CMF        </td><td>240           </td><td>60            </td><td>4             </td></tr>
-	<tr><th scope=row>23</th><td>Francis (2008)</td><td>A-T-CMF       </td><td>225           </td><td>75            </td><td>3             </td></tr>
-	<tr><th scope=row>24</th><td>Francis (2008)</td><td>AT-CMF        </td><td>200           </td><td>50            </td><td>4             </td></tr>
-	<tr><th scope=row>25</th><td>Goldstein (2008)</td><td>AT              </td><td>240             </td><td>60              </td><td>4               </td></tr>
-	<tr><th scope=row>26</th><td>Goldstein (2008)</td><td>AC              </td><td>240             </td><td>60              </td><td>4               </td></tr>
-	<tr><th scope=row>27</th><td>Martin (2010)</td><td>TAC          </td><td>300          </td><td>50           </td><td>6            </td></tr>
-	<tr><th scope=row>28</th><td>Martin (2010)</td><td>FAC          </td><td>300          </td><td>50           </td><td>6            </td></tr>
-	<tr><th scope=row>29</th><td>Vici (2012)</td><td>EC         </td><td>480        </td><td>120        </td><td>4          </td></tr>
-	<tr><th scope=row>30</th><td>Vici (2012)</td><td>T-EC       </td><td>480        </td><td>120        </td><td>4          </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>68</th><td>Fisher (2001)</td><td>CMF-Tam      </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>69</th><td>Fisher (2001)</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>70</th><td>Fisher (2001)</td><td>AC-Tam       </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>71</th><td>Martin (2013)</td><td>FAC-T        </td><td>200          </td><td>50           </td><td>4            </td></tr>
-	<tr><th scope=row>72</th><td>Martin (2013)</td><td>FAC          </td><td>300          </td><td>50           </td><td>6            </td></tr>
-	<tr><th scope=row>73</th><td>Moore (2007)</td><td>ACT         </td><td>240         </td><td>80          </td><td>3           </td></tr>
-	<tr><th scope=row>74</th><td>Moore (2007)</td><td>AC          </td><td>320         </td><td>80          </td><td>4           </td></tr>
-	<tr><th scope=row>75</th><td>Roche (2006)</td><td>Tamoxifen   </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>76</th><td>Roche (2006)</td><td>FEC         </td><td>300         </td><td>50          </td><td>6           </td></tr>
-	<tr><th scope=row>77</th><td>Perez (2011)</td><td>AC-T        </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>78</th><td>Perez (2011)</td><td>AC-T+Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>79</th><td>Perez (2011)</td><td>AC-T-Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>80</th><td>Romond (2005)</td><td>AC-T         </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>81</th><td>Romond (2005)</td><td>ACT-T-Trast  </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>82</th><td>Shulman (2014)</td><td>AC            </td><td>240           </td><td>60            </td><td>4             </td></tr>
-	<tr><th scope=row>83</th><td>Shulman (2014)</td><td>AC            </td><td>360           </td><td>60            </td><td>6             </td></tr>
-	<tr><th scope=row>84</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>85</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>86</th><td>Swain (2013)</td><td>ACT         </td><td>300         </td><td>50          </td><td>6           </td></tr>
-	<tr><th scope=row>87</th><td>Swain (2013)</td><td>AC-T        </td><td>240         </td><td>60          </td><td>4           </td></tr>
-	<tr><th scope=row>88</th><td>Swain (2013)</td><td>AC-TG       </td><td>240         </td><td>60          </td><td>4           </td></tr>
-	<tr><th scope=row>89</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>360              </td><td>90               </td><td>4                </td></tr>
-	<tr><th scope=row>90</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>360              </td><td>90               </td><td>4                </td></tr>
-	<tr><th scope=row>91</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>360              </td><td>90               </td><td>4                </td></tr>
-	<tr><th scope=row>92</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>360              </td><td>90               </td><td>4                </td></tr>
-	<tr><th scope=row>93</th><td>Nitz (2014</td><td>EC-T      </td><td>360       </td><td>90        </td><td>4         </td></tr>
-	<tr><th scope=row>94</th><td>Nitz (2014</td><td>FEC       </td><td>600       </td><td>100       </td><td>6         </td></tr>
-	<tr><th scope=row>95</th><td>Nitz (2014</td><td>CMF       </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>96</th><td>Wolmark, 2001</td><td>AC           </td><td>240          </td><td>60           </td><td>4            </td></tr>
-	<tr><th scope=row>97</th><td>Wolmark, 2001</td><td>Neo-AC       </td><td>240          </td><td>60           </td><td>4            </td></tr>
 </tbody>
 </table>
 
@@ -822,65 +775,10 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 <tbody>
 	<tr><th scope=row>1</th><td>Fisher (1990)</td><td>AC           </td><td>2400         </td><td>600          </td><td>4            </td></tr>
 	<tr><th scope=row>2</th><td>Fisher (1990)</td><td>AC-CMF       </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>3</th><td>Fisher (1990)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>4</th><td>Misset (1996)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>5</th><td>Misset (1996)</td><td>AVCF         </td><td>14400        </td><td>1200         </td><td>12           </td></tr>
-	<tr><th scope=row>6</th><td>Fisher (1999)</td><td>AC           </td><td>4800         </td><td>1200         </td><td>4            </td></tr>
-	<tr><th scope=row>7</th><td>Fisher (1999)</td><td>AC           </td><td>4800         </td><td>2400         </td><td>2            </td></tr>
-	<tr><th scope=row>8</th><td>Fisher (1999)</td><td>AC           </td><td>9600         </td><td>2400         </td><td>4            </td></tr>
-	<tr><th scope=row>9</th><td>Bergh (2000)</td><td>FEC Tailored</td><td>NA          </td><td>NA          </td><td>9           </td></tr>
-	<tr><th scope=row>10</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>1200        </td><td>600         </td><td>2           </td></tr>
-	<tr><th scope=row>11</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>1200        </td><td>1200        </td><td>1           </td></tr>
-	<tr><th scope=row>12</th><td>Bernard-Marty (2003)</td><td>CMF                 </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>13</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>4000                </td><td>500                 </td><td>8                   </td></tr>
-	<tr><th scope=row>14</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>6640                </td><td>830                 </td><td>8                   </td></tr>
-	<tr><th scope=row>15</th><td>Citron (2003)</td><td>A-T-C        </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>16</th><td>Citron (2003)</td><td>A-T-C        </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>17</th><td>Citron (2003)</td><td>AC-T         </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>18</th><td>Citron (2003)</td><td>AC-T         </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>19</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
-	<tr><th scope=row>20</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
-	<tr><th scope=row>21</th><td>Francis (2008)</td><td>A-CMF         </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>22</th><td>Francis (2008)</td><td>AC-CMF        </td><td>2400          </td><td>600           </td><td>4             </td></tr>
-	<tr><th scope=row>23</th><td>Francis (2008)</td><td>A-T-CMF       </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>24</th><td>Francis (2008)</td><td>AT-CMF        </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>25</th><td>Goldstein (2008)</td><td>AT              </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>26</th><td>Goldstein (2008)</td><td>AC              </td><td>2400            </td><td>600             </td><td>4               </td></tr>
-	<tr><th scope=row>27</th><td>Martin (2010)</td><td>TAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
-	<tr><th scope=row>28</th><td>Martin (2010)</td><td>FAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
-	<tr><th scope=row>29</th><td>Vici (2012)</td><td>EC         </td><td>2400       </td><td>600        </td><td>4          </td></tr>
-	<tr><th scope=row>30</th><td>Vici (2012)</td><td>T-EC       </td><td>2400       </td><td>600        </td><td>4          </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>68</th><td>Fisher (2001)</td><td>CMF-Tam      </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>69</th><td>Fisher (2001)</td><td>AC           </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>70</th><td>Fisher (2001)</td><td>AC-Tam       </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>71</th><td>Martin (2013)</td><td>FAC-T        </td><td>2000         </td><td>500          </td><td>4            </td></tr>
-	<tr><th scope=row>72</th><td>Martin (2013)</td><td>FAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
-	<tr><th scope=row>73</th><td>Moore (2007)</td><td>ACT         </td><td>900         </td><td>300         </td><td>3           </td></tr>
-	<tr><th scope=row>74</th><td>Moore (2007)</td><td>AC          </td><td>2400        </td><td>600         </td><td>4           </td></tr>
-	<tr><th scope=row>75</th><td>Roche (2006)</td><td>Tamoxifen   </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>76</th><td>Roche (2006)</td><td>FEC         </td><td>3000        </td><td>500         </td><td>6           </td></tr>
-	<tr><th scope=row>77</th><td>Perez (2011)</td><td>AC-T        </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>78</th><td>Perez (2011)</td><td>AC-T+Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>79</th><td>Perez (2011)</td><td>AC-T-Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>80</th><td>Romond (2005)</td><td>AC-T         </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>81</th><td>Romond (2005)</td><td>ACT-T-Trast  </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>82</th><td>Shulman (2014)</td><td>AC            </td><td>2400          </td><td>600           </td><td>4             </td></tr>
-	<tr><th scope=row>83</th><td>Shulman (2014)</td><td>AC            </td><td>3600          </td><td>600           </td><td>6             </td></tr>
-	<tr><th scope=row>84</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>85</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>86</th><td>Swain (2013)</td><td>ACT         </td><td>3000        </td><td>500         </td><td>6           </td></tr>
-	<tr><th scope=row>87</th><td>Swain (2013)</td><td>AC-T        </td><td>2400        </td><td>600         </td><td>4           </td></tr>
-	<tr><th scope=row>88</th><td>Swain (2013)</td><td>AC-TG       </td><td>2400        </td><td>600         </td><td>4           </td></tr>
-	<tr><th scope=row>89</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>90</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>91</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>92</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>93</th><td>Nitz (2014</td><td>EC-T      </td><td>2400      </td><td>600       </td><td>4         </td></tr>
-	<tr><th scope=row>94</th><td>Nitz (2014</td><td>FEC       </td><td>3000      </td><td>500       </td><td>6         </td></tr>
-	<tr><th scope=row>95</th><td>Nitz (2014</td><td>CMF       </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>96</th><td>Wolmark, 2001</td><td>AC           </td><td>2400         </td><td>600          </td><td>4            </td></tr>
-	<tr><th scope=row>97</th><td>Wolmark, 2001</td><td>Neo-AC       </td><td>2400         </td><td>600          </td><td>4            </td></tr>
+	<tr><th scope=row>3</th><td>Misset (1996)</td><td>AVCF         </td><td>14400        </td><td>1200         </td><td>12           </td></tr>
+	<tr><th scope=row>4</th><td>Fisher (1999)</td><td>AC           </td><td>4800         </td><td>1200         </td><td>4            </td></tr>
+	<tr><th scope=row>5</th><td>Fisher (1999)</td><td>AC           </td><td>4800         </td><td>2400         </td><td>2            </td></tr>
+	<tr><th scope=row>6</th><td>Fisher (1999)</td><td>AC           </td><td>9600         </td><td>2400         </td><td>4            </td></tr>
 </tbody>
 </table>
 
@@ -894,67 +792,12 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 <table>
 <thead><tr><th></th><th scope=col>authorYear</th><th scope=col>regimen</th><th scope=col>taxaneCumulDose</th><th scope=col>taxaneTotalDose</th><th scope=col>taxaneCourses</th></tr></thead>
 <tbody>
-	<tr><th scope=row>1</th><td>Fisher (1990)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>2</th><td>Fisher (1990)</td><td>AC-CMF       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>3</th><td>Fisher (1990)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>4</th><td>Misset (1996)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>5</th><td>Misset (1996)</td><td>AVCF         </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>6</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>7</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>8</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>9</th><td>Bergh (2000)</td><td>FEC Tailored</td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>10</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>11</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>12</th><td>Bernard-Marty (2003)</td><td>CMF                 </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>13</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>14</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>15</th><td>Citron (2003)</td><td>A-T-C        </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>16</th><td>Citron (2003)</td><td>A-T-C        </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>17</th><td>Citron (2003)</td><td>AC-T         </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>18</th><td>Citron (2003)</td><td>AC-T         </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>19</th><td>Venturini (2005)</td><td>FEC             </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>20</th><td>Venturini (2005)</td><td>FEC             </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>21</th><td>Francis (2008)</td><td>A-CMF         </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>22</th><td>Francis (2008)</td><td>AC-CMF        </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>23</th><td>Francis (2008)</td><td>A-T-CMF       </td><td>300           </td><td>100           </td><td>3             </td></tr>
-	<tr><th scope=row>24</th><td>Francis (2008)</td><td>AT-CMF        </td><td>300           </td><td>75            </td><td>4             </td></tr>
-	<tr><th scope=row>25</th><td>Goldstein (2008)</td><td>AT              </td><td>240             </td><td>60              </td><td>4               </td></tr>
-	<tr><th scope=row>26</th><td>Goldstein (2008)</td><td>AC              </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>27</th><td>Martin (2010)</td><td>TAC          </td><td>450          </td><td>75           </td><td>6            </td></tr>
-	<tr><th scope=row>28</th><td>Martin (2010)</td><td>FAC          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>29</th><td>Vici (2012)</td><td>EC         </td><td>NA         </td><td>NA         </td><td>NA         </td></tr>
-	<tr><th scope=row>30</th><td>Vici (2012)</td><td>T-EC       </td><td>400        </td><td>100        </td><td>4          </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>68</th><td>Fisher (2001)</td><td>CMF-Tam      </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>69</th><td>Fisher (2001)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>70</th><td>Fisher (2001)</td><td>AC-Tam       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>71</th><td>Martin (2013)</td><td>FAC-T        </td><td>800          </td><td>100          </td><td>8            </td></tr>
-	<tr><th scope=row>72</th><td>Martin (2013)</td><td>FAC          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>73</th><td>Moore (2007)</td><td>ACT         </td><td>600         </td><td>200         </td><td>3           </td></tr>
-	<tr><th scope=row>74</th><td>Moore (2007)</td><td>AC          </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>75</th><td>Roche (2006)</td><td>Tamoxifen   </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>76</th><td>Roche (2006)</td><td>FEC         </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>77</th><td>Perez (2011)</td><td>AC-T        </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>78</th><td>Perez (2011)</td><td>AC-T+Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>79</th><td>Perez (2011)</td><td>AC-T-Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>80</th><td>Romond (2005)</td><td>AC-T         </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>81</th><td>Romond (2005)</td><td>ACT-T-Trast  </td><td>700          </td><td>175          </td><td>4            </td></tr>
-	<tr><th scope=row>82</th><td>Shulman (2014)</td><td>AC            </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>83</th><td>Shulman (2014)</td><td>AC            </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>84</th><td>Shulman (2014)</td><td>T             </td><td>320           </td><td>80            </td><td>4             </td></tr>
-	<tr><th scope=row>85</th><td>Shulman (2014)</td><td>T             </td><td>480           </td><td>80            </td><td>6             </td></tr>
-	<tr><th scope=row>86</th><td>Swain (2013)</td><td>ACT         </td><td>450         </td><td>75          </td><td>6           </td></tr>
-	<tr><th scope=row>87</th><td>Swain (2013)</td><td>AC-T        </td><td>700         </td><td>175         </td><td>4           </td></tr>
-	<tr><th scope=row>88</th><td>Swain (2013)</td><td>AC-TG       </td><td>700         </td><td>175         </td><td>4           </td></tr>
-	<tr><th scope=row>89</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>700              </td><td>175              </td><td>4                </td></tr>
-	<tr><th scope=row>90</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>700              </td><td>175              </td><td>4                </td></tr>
-	<tr><th scope=row>91</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>700              </td><td>175              </td><td>4                </td></tr>
-	<tr><th scope=row>92</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>700              </td><td>175              </td><td>4                </td></tr>
-	<tr><th scope=row>93</th><td>Nitz (2014</td><td>EC-T      </td><td>400       </td><td>100       </td><td>4         </td></tr>
-	<tr><th scope=row>94</th><td>Nitz (2014</td><td>FEC       </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>95</th><td>Nitz (2014</td><td>CMF       </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>96</th><td>Wolmark, 2001</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>97</th><td>Wolmark, 2001</td><td>Neo-AC       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
+	<tr><th scope=row>1</th><td>Citron (2003)</td><td>A-T-C        </td><td>700          </td><td>175          </td><td>4            </td></tr>
+	<tr><th scope=row>2</th><td>Citron (2003)</td><td>A-T-C        </td><td>700          </td><td>175          </td><td>4            </td></tr>
+	<tr><th scope=row>3</th><td>Citron (2003)</td><td>AC-T         </td><td>700          </td><td>175          </td><td>4            </td></tr>
+	<tr><th scope=row>4</th><td>Citron (2003)</td><td>AC-T         </td><td>700          </td><td>175          </td><td>4            </td></tr>
+	<tr><th scope=row>5</th><td>Francis (2008)</td><td>A-T-CMF       </td><td>300           </td><td>100           </td><td>3             </td></tr>
+	<tr><th scope=row>6</th><td>Francis (2008)</td><td>AT-CMF        </td><td>300           </td><td>75            </td><td>4             </td></tr>
 </tbody>
 </table>
 
@@ -968,67 +811,12 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 <table>
 <thead><tr><th></th><th scope=col>authorYear</th><th scope=col>regimen</th><th scope=col>fluoroucilCumulDose</th><th scope=col>fluoroucilTotalDose</th><th scope=col>fluoroucilCourses</th></tr></thead>
 <tbody>
-	<tr><th scope=row>1</th><td>Fisher (1990)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>2</th><td>Fisher (1990)</td><td>AC-CMF       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>3</th><td>Fisher (1990)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>4</th><td>Misset (1996)</td><td>CMF          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>5</th><td>Misset (1996)</td><td>AVCF         </td><td>19200        </td><td>1600         </td><td>12           </td></tr>
-	<tr><th scope=row>6</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>7</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>8</th><td>Fisher (1999)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>9</th><td>Bergh (2000)</td><td>FEC Tailored</td><td>NA          </td><td>NA          </td><td>9           </td></tr>
-	<tr><th scope=row>10</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>11</th><td>Bergh (2000)</td><td>FEC CTCb    </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>12</th><td>Bernard-Marty (2003)</td><td>CMF                 </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>13</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>14</th><td>Bernard-Marty (2003)</td><td>EC                  </td><td>NA                  </td><td>NA                  </td><td>NA                  </td></tr>
-	<tr><th scope=row>15</th><td>Citron (2003)</td><td>A-T-C        </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>16</th><td>Citron (2003)</td><td>A-T-C        </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>17</th><td>Citron (2003)</td><td>AC-T         </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>18</th><td>Citron (2003)</td><td>AC-T         </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>19</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
-	<tr><th scope=row>20</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
-	<tr><th scope=row>21</th><td>Francis (2008)</td><td>A-CMF         </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>22</th><td>Francis (2008)</td><td>AC-CMF        </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>23</th><td>Francis (2008)</td><td>A-T-CMF       </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>24</th><td>Francis (2008)</td><td>AT-CMF        </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>25</th><td>Goldstein (2008)</td><td>AT              </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>26</th><td>Goldstein (2008)</td><td>AC              </td><td>NA              </td><td>NA              </td><td>NA              </td></tr>
-	<tr><th scope=row>27</th><td>Martin (2010)</td><td>TAC          </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>28</th><td>Martin (2010)</td><td>FAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
-	<tr><th scope=row>29</th><td>Vici (2012)</td><td>EC         </td><td>NA         </td><td>NA         </td><td>NA         </td></tr>
-	<tr><th scope=row>30</th><td>Vici (2012)</td><td>T-EC       </td><td>NA         </td><td>NA         </td><td>NA         </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>68</th><td>Fisher (2001)</td><td>CMF-Tam      </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>69</th><td>Fisher (2001)</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>70</th><td>Fisher (2001)</td><td>AC-Tam       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>71</th><td>Martin (2013)</td><td>FAC-T        </td><td>2000         </td><td>500          </td><td>4            </td></tr>
-	<tr><th scope=row>72</th><td>Martin (2013)</td><td>FAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
-	<tr><th scope=row>73</th><td>Moore (2007)</td><td>ACT         </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>74</th><td>Moore (2007)</td><td>AC          </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>75</th><td>Roche (2006)</td><td>Tamoxifen   </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>76</th><td>Roche (2006)</td><td>FEC         </td><td>3000        </td><td>500         </td><td>6           </td></tr>
-	<tr><th scope=row>77</th><td>Perez (2011)</td><td>AC-T        </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>78</th><td>Perez (2011)</td><td>AC-T+Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>79</th><td>Perez (2011)</td><td>AC-T-Trast  </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>80</th><td>Romond (2005)</td><td>AC-T         </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>81</th><td>Romond (2005)</td><td>ACT-T-Trast  </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>82</th><td>Shulman (2014)</td><td>AC            </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>83</th><td>Shulman (2014)</td><td>AC            </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>84</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>85</th><td>Shulman (2014)</td><td>T             </td><td>NA            </td><td>NA            </td><td>NA            </td></tr>
-	<tr><th scope=row>86</th><td>Swain (2013)</td><td>ACT         </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>87</th><td>Swain (2013)</td><td>AC-T        </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>88</th><td>Swain (2013)</td><td>AC-TG       </td><td>NA          </td><td>NA          </td><td>NA          </td></tr>
-	<tr><th scope=row>89</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>NA               </td><td>NA               </td><td>NA               </td></tr>
-	<tr><th scope=row>90</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>91</th><td>Del Mastro (2015)</td><td>EC-T             </td><td>NA               </td><td>NA               </td><td>NA               </td></tr>
-	<tr><th scope=row>92</th><td>Del Mastro (2015)</td><td>FEC-T            </td><td>2400             </td><td>600              </td><td>4                </td></tr>
-	<tr><th scope=row>93</th><td>Nitz (2014</td><td>EC-T      </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>94</th><td>Nitz (2014</td><td>FEC       </td><td>3000      </td><td>500       </td><td>6         </td></tr>
-	<tr><th scope=row>95</th><td>Nitz (2014</td><td>CMF       </td><td>NA        </td><td>NA        </td><td>NA        </td></tr>
-	<tr><th scope=row>96</th><td>Wolmark, 2001</td><td>AC           </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
-	<tr><th scope=row>97</th><td>Wolmark, 2001</td><td>Neo-AC       </td><td>NA           </td><td>NA           </td><td>NA           </td></tr>
+	<tr><th scope=row>1</th><td>Misset (1996)</td><td>AVCF         </td><td>19200        </td><td>1600         </td><td>12           </td></tr>
+	<tr><th scope=row>2</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
+	<tr><th scope=row>3</th><td>Venturini (2005)</td><td>FEC             </td><td>3600            </td><td>600             </td><td>6               </td></tr>
+	<tr><th scope=row>4</th><td>Martin (2010)</td><td>FAC          </td><td>3000         </td><td>500          </td><td>6            </td></tr>
+	<tr><th scope=row>5</th><td>Roche (2006)</td><td>FEC         </td><td>3000        </td><td>500         </td><td>6           </td></tr>
+	<tr><th scope=row>6</th><td>Roche (2006)</td><td>FEC-T       </td><td>1500        </td><td>500         </td><td>3           </td></tr>
 </tbody>
 </table>
 
@@ -1052,7 +840,7 @@ In eval(expr, envir, enclos): NAs introduced by coercion</pre>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>calcPct <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>x<span class="p">,</span> n<span class="p">)</span> <span class="p">{</span>
@@ -1079,21 +867,22 @@ calcRate <span class="o">&lt;-</span> <span class="kr">function</span> <span cla
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Summarize the regimens.</p>
+<p>Summarize the regimens.
+Output to <a href="summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[14]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-r"><pre><span></span>D<span class="p">[,</span>
-  <span class="sb">`:=`</span><span class="p">(</span>isAnthra <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>anthracyclineTotalDose<span class="p">),</span>
-        isCyclo <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>cyclophosphamideDose<span class="p">),</span>
-        isTaxane <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>taxaneTotalDose<span class="p">),</span>
-        isFluoro <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>fluoroucilTotalDose<span class="p">))]</span>
+<div class=" highlight hl-r"><pre><span></span>D <span class="o">&lt;-</span> D<span class="p">[,</span>
+       <span class="sb">`:=`</span> <span class="p">(</span>isAnthra <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>anthracyclineTotalDose<span class="p">),</span>
+             isCyclo <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>cyclophosphamideDose<span class="p">),</span>
+             isTaxane <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>taxaneTotalDose<span class="p">),</span>
+             isFluoro <span class="o">=</span> <span class="o">!</span><span class="kp">is.na</span><span class="p">(</span>fluoroucilTotalDose<span class="p">))]</span>
 D1 <span class="o">&lt;-</span> melt<span class="p">(</span>D<span class="p">,</span>
            id.vars<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;id&quot;</span><span class="p">,</span> <span class="s">&quot;authorYear&quot;</span><span class="p">,</span> <span class="s">&quot;arm&quot;</span><span class="p">,</span>
                      <span class="s">&quot;isAnthra&quot;</span><span class="p">,</span> <span class="s">&quot;anthracyclineCumulDose&quot;</span><span class="p">,</span>
@@ -1104,6 +893,7 @@ D1 <span class="o">&lt;-</span> melt<span class="p">(</span>D<span class="p">,</
            measure.vars<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;malAML&quot;</span><span class="p">,</span> <span class="s">&quot;malMDS&quot;</span><span class="p">,</span> <span class="s">&quot;malAMLOrMDSTotal&quot;</span><span class="p">,</span> <span class="s">&quot;malNonBreastSolid&quot;</span><span class="p">),</span>
            value.name<span class="o">=</span><span class="s">&quot;malN&quot;</span><span class="p">,</span>
            variable.name<span class="o">=</span><span class="s">&quot;malType&quot;</span><span class="p">)</span>
+
 D1 <span class="o">&lt;-</span> D1<span class="p">[,</span> malType <span class="o">:=</span> <span class="kp">gsub</span><span class="p">(</span><span class="s">&quot;^mal&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span><span class="p">,</span> malType<span class="p">)]</span>
 D1 <span class="o">&lt;-</span> D1<span class="p">[,</span> malType <span class="o">:=</span> <span class="kp">factor</span><span class="p">(</span>malType<span class="p">,</span>
                              levels<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;AML&quot;</span><span class="p">,</span> <span class="s">&quot;MDS&quot;</span><span class="p">,</span> <span class="s">&quot;AMLOrMDSTotal&quot;</span><span class="p">,</span> <span class="s">&quot;NonBreastSolid&quot;</span><span class="p">),</span>
@@ -1126,6 +916,7 @@ write.table<span class="p">(</span>summaryRegimens<span class="p">,</span>
             file <span class="o">=</span> <span class="s">&quot;summaryRegimens.md&quot;</span><span class="p">,</span>
             sep <span class="o">=</span> <span class="s">&quot; | &quot;</span><span class="p">,</span> quote <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span>
             row.names <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+<span class="kp">file.info</span><span class="p">(</span><span class="s">&quot;summaryRegimens.md&quot;</span><span class="p">)</span>
 </pre></div>
 
 </div>
@@ -1138,74 +929,12 @@ write.table<span class="p">(</span>summaryRegimens<span class="p">,</span>
 
 <div class="output_area"><div class="prompt"></div>
 
-<div class="output_html rendered_html output_subarea ">
-<table>
-<thead><tr><th></th><th scope=col>id</th><th scope=col>authorYear</th><th scope=col>trial</th><th scope=col>quality</th><th scope=col>arm</th><th scope=col>nRandomized</th><th scope=col>nITT</th><th scope=col>medianFU</th><th scope=col>regimen</th><th scope=col>anthracyclineType</th><th scope=col>⋯</th><th scope=col>rowid</th><th scope=col>malAMLOrMDSTotal</th><th scope=col>anthracyclineCumulDose</th><th scope=col>cyclophosphamideCumulDose</th><th scope=col>taxaneCumulDose</th><th scope=col>fluoroucilCumulDose</th><th scope=col>isAnthra</th><th scope=col>isCyclo</th><th scope=col>isTaxane</th><th scope=col>isFluoro</th></tr></thead>
-<tbody>
-	<tr><th scope=row>1</th><td>890          </td><td>Fisher (1990)</td><td>NSABP B-15   </td><td>Fair +       </td><td>1            </td><td>781          </td><td>734          </td><td>26.2         </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>1            </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>2</th><td>890          </td><td>Fisher (1990)</td><td>NSABP B-15   </td><td>Fair +       </td><td>2            </td><td>781          </td><td>728          </td><td>26.2         </td><td>AC-CMF       </td><td>Doxorubicin  </td><td>⋯            </td><td>2            </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>3</th><td>890          </td><td>Fisher (1990)</td><td>NSABP B-15   </td><td>Fair +       </td><td>3            </td><td>776          </td><td>732          </td><td>26.2         </td><td>CMF          </td><td>NA           </td><td>⋯            </td><td>3            </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>4</th><td>926          </td><td>Misset (1996)</td><td>NA           </td><td>Fair         </td><td>1            </td><td>113          </td><td>112          </td><td>190.8        </td><td>CMF          </td><td>NA           </td><td>⋯            </td><td>4            </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>5</th><td>926          </td><td>Misset (1996)</td><td>NA           </td><td>Fair         </td><td>2            </td><td>138          </td><td>137          </td><td>190.8        </td><td>AVCF         </td><td>Doxorubicin  </td><td>⋯            </td><td>5            </td><td>NA           </td><td>360          </td><td>14400        </td><td>NA           </td><td>19200        </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>TRUE         </td></tr>
-	<tr><th scope=row>6</th><td>961          </td><td>Fisher (1999)</td><td>NSABP B-25   </td><td>Good         </td><td>1            </td><td>850          </td><td>849          </td><td>55.2         </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>6            </td><td>4            </td><td>240          </td><td>4800         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>7</th><td>961          </td><td>Fisher (1999)</td><td>NSABP B-25   </td><td>Good         </td><td>2            </td><td>848          </td><td>847          </td><td>55.2         </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>7            </td><td>10           </td><td>240          </td><td>4800         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>8</th><td>961          </td><td>Fisher (1999)</td><td>NSABP B-25   </td><td>Good         </td><td>3            </td><td>850          </td><td>849          </td><td>55.2         </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>8            </td><td>8            </td><td>240          </td><td>9600         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>9</th><td>970         </td><td>Bergh (2000)</td><td>SBG 9401    </td><td>Fair        </td><td>1           </td><td>251         </td><td>251         </td><td>38.3        </td><td>FEC Tailored</td><td>Epirubicin  </td><td>⋯           </td><td>9           </td><td>9           </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>10</th><td>970         </td><td>Bergh (2000)</td><td>SBG 9401    </td><td>Fair        </td><td>2           </td><td>274         </td><td>274         </td><td>38.3        </td><td>FEC CTCb    </td><td>Epirubicin  </td><td>⋯           </td><td>10          </td><td>0           </td><td>180         </td><td>1200        </td><td>NA          </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>11</th><td>970         </td><td>Bergh (2000)</td><td>SBG 9401    </td><td>Fair        </td><td>2           </td><td>274         </td><td>274         </td><td>38.3        </td><td>FEC CTCb    </td><td>Epirubicin  </td><td>⋯           </td><td>10          </td><td>0           </td><td>180         </td><td>1200        </td><td>NA          </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>12</th><td>1035                </td><td>Bernard-Marty (2003)</td><td>NA                  </td><td>Good                </td><td>1                   </td><td>255                 </td><td>255                 </td><td>73                  </td><td>CMF                 </td><td>NA                  </td><td>⋯                   </td><td>12                  </td><td>0                   </td><td>NA                  </td><td>NA                  </td><td>NA                  </td><td>NA                  </td><td>FALSE               </td><td>FALSE               </td><td>FALSE               </td><td>FALSE               </td></tr>
-	<tr><th scope=row>13</th><td>1035                </td><td>Bernard-Marty (2003)</td><td>NA                  </td><td>Good                </td><td>2                   </td><td>267                 </td><td>267                 </td><td>73                  </td><td>EC                  </td><td>Epirubicin          </td><td>⋯                   </td><td>13                  </td><td>0                   </td><td>480                 </td><td>4000                </td><td>NA                  </td><td>NA                  </td><td>TRUE                </td><td>TRUE                </td><td>FALSE               </td><td>FALSE               </td></tr>
-	<tr><th scope=row>14</th><td>1035                </td><td>Bernard-Marty (2003)</td><td>NA                  </td><td>Good                </td><td>3                   </td><td>255                 </td><td>255                 </td><td>73                  </td><td>EC                  </td><td>Epirubicin          </td><td>⋯                   </td><td>14                  </td><td>3                   </td><td>800                 </td><td>6640                </td><td>NA                  </td><td>NA                  </td><td>TRUE                </td><td>TRUE                </td><td>FALSE               </td><td>FALSE               </td></tr>
-	<tr><th scope=row>15</th><td>1040            </td><td>Citron (2003)   </td><td>Intergroup C9741</td><td>Fair            </td><td>1               </td><td>NA              </td><td>484             </td><td>36              </td><td>A-T-C           </td><td>Doxorubicin     </td><td>⋯               </td><td>15              </td><td>2               </td><td>240             </td><td>2400            </td><td>700             </td><td>NA              </td><td>TRUE            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td></tr>
-	<tr><th scope=row>16</th><td>1040            </td><td>Citron (2003)   </td><td>Intergroup C9741</td><td>Fair            </td><td>2               </td><td>NA              </td><td>493             </td><td>36              </td><td>A-T-C           </td><td>Doxorubicin     </td><td>⋯               </td><td>16              </td><td>3               </td><td>240             </td><td>2400            </td><td>700             </td><td>NA              </td><td>TRUE            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td></tr>
-	<tr><th scope=row>17</th><td>1040            </td><td>Citron (2003)   </td><td>Intergroup C9741</td><td>Fair            </td><td>3               </td><td>NA              </td><td>501             </td><td>36              </td><td>AC-T            </td><td>Doxorubicin     </td><td>⋯               </td><td>17              </td><td>4               </td><td>240             </td><td>2400            </td><td>700             </td><td>NA              </td><td>TRUE            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td></tr>
-	<tr><th scope=row>18</th><td>1040            </td><td>Citron (2003)   </td><td>Intergroup C9741</td><td>Fair            </td><td>4               </td><td>NA              </td><td>495             </td><td>36              </td><td>AC-T            </td><td>Doxorubicin     </td><td>⋯               </td><td>18              </td><td>2               </td><td>240             </td><td>2400            </td><td>700             </td><td>NA              </td><td>TRUE            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td></tr>
-	<tr><th scope=row>19</th><td>1141            </td><td>Venturini (2005)</td><td>NA              </td><td>Good            </td><td>1               </td><td>604             </td><td>604             </td><td>124.8           </td><td>FEC             </td><td>Epirubicin      </td><td>⋯               </td><td>19              </td><td>0               </td><td>360             </td><td>3600            </td><td>NA              </td><td>3600            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td><td>TRUE            </td></tr>
-	<tr><th scope=row>20</th><td>1141            </td><td>Venturini (2005)</td><td>NA              </td><td>Good            </td><td>2               </td><td>610             </td><td>610             </td><td>124.8           </td><td>FEC             </td><td>Epirubicin      </td><td>⋯               </td><td>20              </td><td>0               </td><td>360             </td><td>3600            </td><td>NA              </td><td>3600            </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td><td>TRUE            </td></tr>
-	<tr><th scope=row>21</th><td>1263          </td><td>Francis (2008)</td><td>BIG 02-98     </td><td>Good          </td><td>1             </td><td>481           </td><td>481           </td><td>62.5          </td><td>A-CMF         </td><td>Doxorubicin   </td><td>⋯             </td><td>21            </td><td>NA            </td><td>300           </td><td>NA            </td><td>NA            </td><td>NA            </td><td>TRUE          </td><td>FALSE         </td><td>FALSE         </td><td>FALSE         </td></tr>
-	<tr><th scope=row>22</th><td>1263          </td><td>Francis (2008)</td><td>BIG 02-98     </td><td>Good          </td><td>2             </td><td>847           </td><td>847           </td><td>62.5          </td><td>AC-CMF        </td><td>Doxorubicin   </td><td>⋯             </td><td>22            </td><td>NA            </td><td>240           </td><td>2400          </td><td>NA            </td><td>NA            </td><td>TRUE          </td><td>TRUE          </td><td>FALSE         </td><td>FALSE         </td></tr>
-	<tr><th scope=row>23</th><td>1263          </td><td>Francis (2008)</td><td>BIG 02-98     </td><td>Good          </td><td>3             </td><td>960           </td><td>960           </td><td>62.5          </td><td>A-T-CMF       </td><td>Doxorubicin   </td><td>⋯             </td><td>23            </td><td>NA            </td><td>225           </td><td>NA            </td><td>300           </td><td>NA            </td><td>TRUE          </td><td>FALSE         </td><td>TRUE          </td><td>FALSE         </td></tr>
-	<tr><th scope=row>24</th><td>1263          </td><td>Francis (2008)</td><td>BIG 02-98     </td><td>Good          </td><td>4             </td><td>959           </td><td>959           </td><td>62.5          </td><td>AT-CMF        </td><td>Doxorubicin   </td><td>⋯             </td><td>24            </td><td>NA            </td><td>200           </td><td>NA            </td><td>300           </td><td>NA            </td><td>TRUE          </td><td>FALSE         </td><td>TRUE          </td><td>FALSE         </td></tr>
-	<tr><th scope=row>25</th><td>1265            </td><td>Goldstein (2008)</td><td>Intergroup E2197</td><td>Good            </td><td>1               </td><td>1476            </td><td>1441            </td><td>79.5            </td><td>AT              </td><td>Doxorubicin     </td><td>⋯               </td><td>25              </td><td>7               </td><td>240             </td><td>NA              </td><td>240             </td><td>NA              </td><td>TRUE            </td><td>FALSE           </td><td>TRUE            </td><td>FALSE           </td></tr>
-	<tr><th scope=row>26</th><td>1265            </td><td>Goldstein (2008)</td><td>Intergroup E2197</td><td>Good            </td><td>2               </td><td>1476            </td><td>1441            </td><td>79.5            </td><td>AC              </td><td>Doxorubicin     </td><td>⋯               </td><td>26              </td><td>7               </td><td>240             </td><td>2400            </td><td>NA              </td><td>NA              </td><td>TRUE            </td><td>TRUE            </td><td>FALSE           </td><td>FALSE           </td></tr>
-	<tr><th scope=row>27</th><td>1399         </td><td>Martin (2010)</td><td>GEICAM 9805  </td><td>Good         </td><td>1            </td><td>539          </td><td>539          </td><td>77           </td><td>TAC          </td><td>Doxorubicin  </td><td>⋯            </td><td>27           </td><td>NA           </td><td>300          </td><td>3000         </td><td>450          </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td></tr>
-	<tr><th scope=row>28</th><td>1399         </td><td>Martin (2010)</td><td>GEICAM 9805  </td><td>Good         </td><td>2            </td><td>521          </td><td>521          </td><td>77           </td><td>FAC          </td><td>Doxorubicin  </td><td>⋯            </td><td>28           </td><td>NA           </td><td>300          </td><td>3000         </td><td>NA           </td><td>3000         </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>TRUE         </td></tr>
-	<tr><th scope=row>29</th><td>1598       </td><td>Vici (2012)</td><td>GIOM 9902  </td><td>Fair       </td><td>1          </td><td>374        </td><td>360        </td><td>64         </td><td>EC         </td><td>Epirubicin </td><td>⋯          </td><td>29         </td><td>0          </td><td>480        </td><td>2400       </td><td>NA         </td><td>NA         </td><td>TRUE       </td><td>TRUE       </td><td>FALSE      </td><td>FALSE      </td></tr>
-	<tr><th scope=row>30</th><td>1598       </td><td>Vici (2012)</td><td>GIOM 9902  </td><td>Fair       </td><td>2          </td><td>376        </td><td>368        </td><td>64         </td><td>T-EC       </td><td>Epirubicin </td><td>⋯          </td><td>30         </td><td>0          </td><td>480        </td><td>2400       </td><td>400        </td><td>NA         </td><td>TRUE       </td><td>TRUE       </td><td>TRUE       </td><td>FALSE      </td></tr>
-	<tr><th scope=row>⋮</th><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋱</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td><td>⋮</td></tr>
-	<tr><th scope=row>68</th><td>2001         </td><td>Fisher (2001)</td><td>NSABP B-23   </td><td>Good         </td><td>2            </td><td>502          </td><td>496          </td><td>60           </td><td>CMF-Tam      </td><td>NA           </td><td>⋯            </td><td>68           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>NA           </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>69</th><td>2001         </td><td>Fisher (2001)</td><td>NSABP B-23   </td><td>Good         </td><td>3            </td><td>501          </td><td>494          </td><td>60           </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>69           </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>70</th><td>2001         </td><td>Fisher (2001)</td><td>NSABP B-23   </td><td>Good         </td><td>4            </td><td>502          </td><td>494          </td><td>60           </td><td>AC-Tam       </td><td>Doxorubicin  </td><td>⋯            </td><td>70           </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>71</th><td>2002          </td><td>Martin (2013) </td><td>GEICAM 2003-02</td><td>Fair          </td><td>1             </td><td>951           </td><td>951           </td><td>63.3          </td><td>FAC-T         </td><td>Doxorubicin   </td><td>⋯             </td><td>71            </td><td>1             </td><td>200           </td><td>2000          </td><td>800           </td><td>2000          </td><td>TRUE          </td><td>TRUE          </td><td>TRUE          </td><td>TRUE          </td></tr>
-	<tr><th scope=row>72</th><td>2002          </td><td>Martin (2013) </td><td>GEICAM 2003-02</td><td>Fair          </td><td>2             </td><td>974           </td><td>974           </td><td>63.3          </td><td>FAC           </td><td>Doxorubicin   </td><td>⋯             </td><td>72            </td><td>2             </td><td>300           </td><td>3000          </td><td>NA            </td><td>3000          </td><td>TRUE          </td><td>TRUE          </td><td>FALSE         </td><td>TRUE          </td></tr>
-	<tr><th scope=row>73</th><td>2003        </td><td>Moore (2007)</td><td>SWOG 9623   </td><td>Fair        </td><td>1           </td><td>271         </td><td>271         </td><td>70          </td><td>ACT         </td><td>Doxorubicin </td><td>⋯           </td><td>73          </td><td>2           </td><td>240         </td><td>900         </td><td>600         </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td></tr>
-	<tr><th scope=row>74</th><td>2003        </td><td>Moore (2007)</td><td>SWOG 9623   </td><td>Fair        </td><td>2           </td><td>265         </td><td>265         </td><td>70          </td><td>AC          </td><td>Doxorubicin </td><td>⋯           </td><td>74          </td><td>3           </td><td>320         </td><td>2400        </td><td>NA          </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>75</th><td>2008        </td><td>Roche (2006)</td><td>FASG 06     </td><td>Good        </td><td>1           </td><td>164         </td><td>163         </td><td>83          </td><td>Tamoxifen   </td><td>NA          </td><td>⋯           </td><td>75          </td><td>0           </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>76</th><td>2008        </td><td>Roche (2006)</td><td>FASG 06     </td><td>Good        </td><td>2           </td><td>169         </td><td>168         </td><td>83          </td><td>FEC         </td><td>Epirubicin  </td><td>⋯           </td><td>76          </td><td>1           </td><td>300         </td><td>3000        </td><td>NA          </td><td>3000        </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td><td>TRUE        </td></tr>
-	<tr><th scope=row>77</th><td>2006        </td><td>Perez (2011)</td><td>NCCTG N9831 </td><td>Fair        </td><td>1           </td><td>NA          </td><td>NA          </td><td>NA          </td><td>AC-T        </td><td>NA          </td><td>⋯           </td><td>77          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>78</th><td>2006        </td><td>Perez (2011)</td><td>NCCTG N9831 </td><td>Fair        </td><td>2           </td><td>NA          </td><td>NA          </td><td>NA          </td><td>AC-T+Trast  </td><td>NA          </td><td>⋯           </td><td>78          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>79</th><td>2006        </td><td>Perez (2011)</td><td>NCCTG N9831 </td><td>Fair        </td><td>3           </td><td>NA          </td><td>NA          </td><td>NA          </td><td>AC-T-Trast  </td><td>NA          </td><td>⋯           </td><td>79          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>NA          </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td><td>FALSE       </td></tr>
-	<tr><th scope=row>80</th><td>2009                  </td><td>Romond (2005)         </td><td>NSABP B-31 &amp; N9831</td><td>Good                  </td><td>1                     </td><td>1024                  </td><td>872                   </td><td>28.8                  </td><td>AC-T                  </td><td>Doxorubicin           </td><td>⋯                     </td><td>80                    </td><td>NA                    </td><td>240                   </td><td>2400                  </td><td>700                   </td><td>NA                    </td><td>TRUE                  </td><td>TRUE                  </td><td>TRUE                  </td><td>FALSE                 </td></tr>
-	<tr><th scope=row>81</th><td>2009                  </td><td>Romond (2005)         </td><td>NSABP B-31 &amp; N9831</td><td>Good                  </td><td>2                     </td><td>1019                  </td><td>864                   </td><td>28.8                  </td><td>ACT-T-Trast           </td><td>Doxorubicin           </td><td>⋯                     </td><td>81                    </td><td>NA                    </td><td>240                   </td><td>2400                  </td><td>700                   </td><td>NA                    </td><td>TRUE                  </td><td>TRUE                  </td><td>TRUE                  </td><td>FALSE                 </td></tr>
-	<tr><th scope=row>82</th><td>2010          </td><td>Shulman (2014)</td><td>CALGB 40101   </td><td>Fair+         </td><td>1             </td><td>1142          </td><td>1107          </td><td>73.2          </td><td>AC            </td><td>Doxorubicin   </td><td>⋯             </td><td>82            </td><td>1             </td><td>240           </td><td>2400          </td><td>NA            </td><td>NA            </td><td>TRUE          </td><td>TRUE          </td><td>FALSE         </td><td>FALSE         </td></tr>
-	<tr><th scope=row>83</th><td>2010          </td><td>Shulman (2014)</td><td>CALGB 40101   </td><td>Fair+         </td><td>2             </td><td>789           </td><td>766           </td><td>73.2          </td><td>AC            </td><td>Doxorubicin   </td><td>⋯             </td><td>83            </td><td>5             </td><td>360           </td><td>3600          </td><td>NA            </td><td>NA            </td><td>TRUE          </td><td>TRUE          </td><td>FALSE         </td><td>FALSE         </td></tr>
-	<tr><th scope=row>84</th><td>2010          </td><td>Shulman (2014)</td><td>CALGB 40101   </td><td>Fair+         </td><td>3             </td><td>1151          </td><td>1119          </td><td>73.2          </td><td>T             </td><td>NA            </td><td>⋯             </td><td>84            </td><td>0             </td><td>NA            </td><td>NA            </td><td>320           </td><td>NA            </td><td>FALSE         </td><td>FALSE         </td><td>TRUE          </td><td>FALSE         </td></tr>
-	<tr><th scope=row>85</th><td>2010          </td><td>Shulman (2014)</td><td>CALGB 40101   </td><td>Fair+         </td><td>4             </td><td>789           </td><td>782           </td><td>73.2          </td><td>T             </td><td>NA            </td><td>⋯             </td><td>85            </td><td>0             </td><td>NA            </td><td>NA            </td><td>480           </td><td>NA            </td><td>FALSE         </td><td>FALSE         </td><td>TRUE          </td><td>FALSE         </td></tr>
-	<tr><th scope=row>86</th><td>2011        </td><td>Swain (2013)</td><td>NSABP B-38  </td><td>Good        </td><td>1           </td><td>1630        </td><td>1617        </td><td>64          </td><td>ACT         </td><td>Doxorubicin </td><td>⋯           </td><td>86          </td><td>5           </td><td>300         </td><td>3000        </td><td>450         </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td></tr>
-	<tr><th scope=row>87</th><td>2011        </td><td>Swain (2013)</td><td>NSABP B-38  </td><td>Good        </td><td>2           </td><td>1634        </td><td>1624        </td><td>64          </td><td>AC-T        </td><td>Doxorubicin </td><td>⋯           </td><td>87          </td><td>8           </td><td>240         </td><td>2400        </td><td>700         </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td></tr>
-	<tr><th scope=row>88</th><td>2011        </td><td>Swain (2013)</td><td>NSABP B-38  </td><td>Good        </td><td>3           </td><td>1630        </td><td>1618        </td><td>64          </td><td>AC-TG       </td><td>Doxorubicin </td><td>⋯           </td><td>88          </td><td>11          </td><td>240         </td><td>2400        </td><td>700         </td><td>NA          </td><td>TRUE        </td><td>TRUE        </td><td>TRUE        </td><td>FALSE       </td></tr>
-	<tr><th scope=row>89</th><td>2016             </td><td>Del Mastro (2015)</td><td>NA               </td><td>Fair             </td><td>1                </td><td>545              </td><td>545              </td><td>84               </td><td>EC-T             </td><td>Epirubicin       </td><td>⋯                </td><td>89               </td><td>NA               </td><td>360              </td><td>2400             </td><td>700              </td><td>NA               </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td><td>FALSE            </td></tr>
-	<tr><th scope=row>90</th><td>2016             </td><td>Del Mastro (2015)</td><td>NA               </td><td>Fair             </td><td>2                </td><td>544              </td><td>544              </td><td>84               </td><td>FEC-T            </td><td>Epirubicin       </td><td>⋯                </td><td>90               </td><td>NA               </td><td>360              </td><td>2400             </td><td>700              </td><td>2400             </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td></tr>
-	<tr><th scope=row>91</th><td>2016             </td><td>Del Mastro (2015)</td><td>NA               </td><td>Fair             </td><td>3                </td><td>502              </td><td>502              </td><td>84               </td><td>EC-T             </td><td>Epirubicin       </td><td>⋯                </td><td>91               </td><td>NA               </td><td>360              </td><td>2400             </td><td>700              </td><td>NA               </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td><td>FALSE            </td></tr>
-	<tr><th scope=row>92</th><td>2016             </td><td>Del Mastro (2015)</td><td>NA               </td><td>Fair             </td><td>4                </td><td>500              </td><td>500              </td><td>84               </td><td>FEC-T            </td><td>Epirubicin       </td><td>⋯                </td><td>92               </td><td>NA               </td><td>360              </td><td>2400             </td><td>700              </td><td>2400             </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td><td>TRUE             </td></tr>
-	<tr><th scope=row>93</th><td>2049      </td><td>Nitz (2014</td><td>NA        </td><td>Good      </td><td>1         </td><td>978       </td><td>978       </td><td>59        </td><td>EC-T      </td><td>Epirubicin</td><td>⋯         </td><td>93        </td><td>2         </td><td>360       </td><td>2400      </td><td>400       </td><td>NA        </td><td>TRUE      </td><td>TRUE      </td><td>TRUE      </td><td>FALSE     </td></tr>
-	<tr><th scope=row>94</th><td>2049      </td><td>Nitz (2014</td><td>NA        </td><td>Good      </td><td>2         </td><td>795       </td><td>795       </td><td>59        </td><td>FEC       </td><td>Epirubicin</td><td>⋯         </td><td>94        </td><td>0         </td><td>600       </td><td>3000      </td><td>NA        </td><td>3000      </td><td>TRUE      </td><td>TRUE      </td><td>FALSE     </td><td>TRUE      </td></tr>
-	<tr><th scope=row>95</th><td>2049      </td><td>Nitz (2014</td><td>NA        </td><td>Good      </td><td>3         </td><td>177       </td><td>177       </td><td>59        </td><td>CMF       </td><td>NA        </td><td>⋯         </td><td>95        </td><td>0         </td><td>NA        </td><td>NA        </td><td>NA        </td><td>NA        </td><td>FALSE     </td><td>FALSE     </td><td>FALSE     </td><td>FALSE     </td></tr>
-	<tr><th scope=row>96</th><td>2053         </td><td>Wolmark, 2001</td><td>NSABP B-18   </td><td>Fair         </td><td>1            </td><td>763          </td><td>751          </td><td>108          </td><td>AC           </td><td>Doxorubicin  </td><td>⋯            </td><td>96           </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-	<tr><th scope=row>97</th><td>2053         </td><td>Wolmark, 2001</td><td>NSABP B-18   </td><td>Fair         </td><td>2            </td><td>760          </td><td>742          </td><td>108          </td><td>Neo-AC       </td><td>Doxorubicin  </td><td>⋯            </td><td>97           </td><td>NA           </td><td>240          </td><td>2400         </td><td>NA           </td><td>NA           </td><td>TRUE         </td><td>TRUE         </td><td>FALSE        </td><td>FALSE        </td></tr>
-</tbody>
-</table>
 
+<div class="output_text output_subarea ">
+<pre>                   size isdir mode               mtime               ctime
+summaryRegimens.md 2881 FALSE  664 2016-06-17 14:34:43 2016-06-17 14:34:43
+                                 atime  uid  gid  uname grname
+summaryRegimens.md 2016-06-17 07:16:23 1000 1000 ubuntu ubuntu</pre>
 </div>
 
 </div>
@@ -1227,7 +956,7 @@ write.table<span class="p">(</span>summaryRegimens<span class="p">,</span>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span>pvalToChar <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>p<span class="p">)</span> <span class="p">{</span>
@@ -1252,6 +981,7 @@ metareg <span class="o">&lt;-</span> <span class="kr">function</span> <span clas
 <span class="p">}</span>
 plotreg <span class="o">&lt;-</span> <span class="kr">function</span> <span class="p">(</span>D<span class="p">,</span> xlab<span class="p">,</span> xbreaks<span class="p">,</span> text<span class="p">,</span> yhat<span class="p">)</span> <span class="p">{</span>
   <span class="kn">require</span><span class="p">(</span>ggplot2<span class="p">)</span>
+  <span class="kn">require</span><span class="p">(</span>RColorBrewer<span class="p">)</span>
   <span class="kn">require</span><span class="p">(</span>tools<span class="p">)</span>
   D <span class="o">&lt;-</span> D<span class="p">[</span><span class="o">!</span><span class="p">(</span><span class="kp">is.na</span><span class="p">(</span>x<span class="p">)</span> <span class="o">|</span> <span class="kp">is.na</span><span class="p">(</span>rate<span class="p">)</span> <span class="o">|</span> <span class="kp">is.na</span><span class="p">(</span>nITT<span class="p">)</span> <span class="o">|</span> <span class="kp">is.na</span><span class="p">(</span>malType<span class="p">))]</span>
   D <span class="o">&lt;-</span> D<span class="p">[</span>malType <span class="o">%in%</span> <span class="kt">c</span><span class="p">(</span><span class="s">&quot;AML or MDS&quot;</span><span class="p">,</span> <span class="s">&quot;Non-Breast Solid&quot;</span><span class="p">)]</span>
@@ -1262,14 +992,15 @@ plotreg <span class="o">&lt;-</span> <span class="kr">function</span> <span clas
   steps <span class="o">&lt;-</span> melt<span class="p">(</span>steps<span class="p">,</span> id.vars<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;malType&quot;</span><span class="p">,</span> <span class="s">&quot;xHighDose&quot;</span><span class="p">,</span> <span class="s">&quot;yhat&quot;</span><span class="p">),</span> measure.vars<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">,</span> <span class="s">&quot;max&quot;</span><span class="p">),</span> value.name<span class="o">=</span><span class="s">&quot;x&quot;</span><span class="p">)</span>
   annoLin <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>x<span class="o">=</span><span class="kc">Inf</span><span class="p">,</span> y<span class="o">=</span><span class="m">1.0</span><span class="p">,</span> label<span class="o">=</span>text<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">3</span><span class="p">)],</span> malType<span class="o">=</span><span class="kp">levels</span><span class="p">(</span>D<span class="p">[,</span> malType<span class="p">]))</span>
   annoBin <span class="o">&lt;-</span> <span class="kt">data.frame</span><span class="p">(</span>x<span class="o">=</span><span class="kc">Inf</span><span class="p">,</span> y<span class="o">=</span><span class="m">1.5</span><span class="p">,</span> label<span class="o">=</span>text<span class="p">[</span><span class="kt">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="m">4</span><span class="p">)],</span> malType<span class="o">=</span><span class="kp">levels</span><span class="p">(</span>D<span class="p">[,</span> malType<span class="p">]))</span>
+  pal <span class="o">&lt;-</span> brewer.pal<span class="p">(</span><span class="m">4</span><span class="p">,</span> name<span class="o">=</span><span class="s">&quot;RdBu&quot;</span><span class="p">)</span>
   G <span class="o">&lt;-</span> ggplot<span class="p">(</span>D<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>rate <span class="o">+</span> <span class="m">1</span><span class="o">/</span><span class="m">2</span><span class="p">,</span> size<span class="o">=</span>nITT <span class="o">/</span> <span class="kp">min</span><span class="p">(</span>nITT<span class="p">,</span> na.rm<span class="o">=</span><span class="kc">TRUE</span><span class="p">),</span> group<span class="o">=</span>malType<span class="p">))</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> geom_point<span class="p">(</span>alpha<span class="o">=</span><span class="m">1</span><span class="o">/</span><span class="m">2</span><span class="p">)</span>
-  G <span class="o">&lt;-</span> G <span class="o">+</span> geom_smooth<span class="p">(</span>method<span class="o">=</span><span class="s">&quot;lm&quot;</span><span class="p">,</span> se<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> linetype<span class="o">=</span><span class="s">&quot;dotted&quot;</span><span class="p">)</span>
-  G <span class="o">&lt;-</span> G <span class="o">+</span> geom_step<span class="p">(</span>data<span class="o">=</span>steps<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>yhat<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> color<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+  G <span class="o">&lt;-</span> G <span class="o">+</span> geom_smooth<span class="p">(</span>method<span class="o">=</span><span class="s">&quot;lm&quot;</span><span class="p">,</span> se<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> color<span class="o">=</span>pal<span class="p">[</span><span class="m">4</span><span class="p">])</span>
+  G <span class="o">&lt;-</span> G <span class="o">+</span> geom_step<span class="p">(</span>data<span class="o">=</span>steps<span class="p">,</span> aes<span class="p">(</span>x<span class="o">=</span>x<span class="p">,</span> y<span class="o">=</span>yhat<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> color<span class="o">=</span>pal<span class="p">[</span><span class="m">1</span><span class="p">])</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> geom_text<span class="p">(</span>data<span class="o">=</span>annoLin<span class="p">,</span>
-                     aes<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> label<span class="o">=</span>label<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> hjust<span class="o">=</span><span class="m">1</span><span class="p">,</span> color<span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">)</span>
+                     aes<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> label<span class="o">=</span>label<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> hjust<span class="o">=</span><span class="m">1</span><span class="p">,</span> color<span class="o">=</span>pal<span class="p">[</span><span class="m">4</span><span class="p">])</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> geom_text<span class="p">(</span>data<span class="o">=</span>annoBin<span class="p">,</span>
-                     aes<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> label<span class="o">=</span>label<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> hjust<span class="o">=</span><span class="m">1</span><span class="p">,</span> color<span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+                     aes<span class="p">(</span>x<span class="p">,</span> y<span class="p">,</span> label<span class="o">=</span>label<span class="p">,</span> group<span class="o">=</span>malType<span class="p">),</span> inherit.aes<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span> hjust<span class="o">=</span><span class="m">1</span><span class="p">,</span> color<span class="o">=</span>pal<span class="p">[</span><span class="m">1</span><span class="p">])</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> scale_x_log10<span class="p">(</span>xlab<span class="p">,</span> breaks<span class="o">=</span>xbreaks<span class="p">)</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> scale_y_log10<span class="p">(</span><span class="s">&quot;Rate per 10,000 person-years&quot;</span><span class="p">)</span>
   G <span class="o">&lt;-</span> G <span class="o">+</span> facet_wrap<span class="p">(</span><span class="o">~</span> malType<span class="p">,</span> nrow<span class="o">=</span><span class="m">2</span><span class="p">,</span> ncol<span class="o">=</span><span class="m">1</span><span class="p">)</span>
@@ -1307,7 +1038,7 @@ invLogit <span class="o">&lt;-</span> <span class="kr">function</span> <span cla
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[16]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>metafor<span class="p">)</span>
@@ -1354,6 +1085,7 @@ plotreg<span class="p">(</span>D2<span class="p">,</span>
 Loading &apos;metafor&apos; package (version 1.9-8). For an overview 
 and introduction to the package please type: help(metafor).
 Loading required package: ggplot2
+Loading required package: RColorBrewer
 Loading required package: tools
 Saving 6.67 x 6.67 in image
 </pre>
@@ -1363,8 +1095,8 @@ Saving 6.67 x 6.67 in image
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>                                     size               mtime
-CyclophosphamideCumulativeDose.png 185185 2016-06-01 16:07:52
-CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
+CyclophosphamideCumulativeDose.png 189553 2016-06-17 14:34:45
+CyclophosphamideCumulativeDose.csv   6967 2016-06-17 14:34:45
 </pre>
 </div>
 </div>
@@ -1696,7 +1428,7 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
   <path d="M 44.53125 237.710938 L 499 237.710938 L 499 258 L 44.53125 258 Z M 44.53125 237.710938 "/>
 </clipPath>
 </defs>
-<g id="surface284">
+<g id="surface288">
 <rect x="0" y="0" width="504" height="504" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
 <rect x="0" y="0" width="504" height="504" style="fill:rgb(100%,100%,100%);fill-opacity:1;stroke:none;"/>
 <path style="fill:none;stroke-width:1.066978;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(100%,100%,100%);stroke-opacity:1;stroke-miterlimit:10;" d="M 0 504 L 504 504 L 504 0 L 0 0 Z M 0 504 "/>
@@ -1791,9 +1523,9 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 217.6875 97.625 C 217.6875 101.324219 214.6875 104.324219 210.988281 104.324219 C 207.285156 104.324219 204.285156 101.324219 204.285156 97.625 C 204.285156 93.921875 207.285156 90.921875 210.988281 90.921875 C 214.6875 90.921875 217.6875 93.921875 217.6875 97.625 "/>
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 216.386719 137.40625 C 216.386719 140.386719 213.96875 142.804688 210.988281 142.804688 C 208.003906 142.804688 205.585938 140.386719 205.585938 137.40625 C 205.585938 134.421875 208.003906 132.003906 210.988281 132.003906 C 213.96875 132.003906 216.386719 134.421875 216.386719 137.40625 "/>
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 249.105469 222.378906 C 249.105469 228.96875 239.226562 228.96875 239.226562 222.378906 C 239.226562 215.792969 249.105469 215.792969 249.105469 222.378906 "/>
-<path style="fill:none;stroke-width:2.133957;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(20%,40%,100%);stroke-opacity:1;stroke-dasharray:2.133957,6.40187;stroke-miterlimit:1;" d="M 65.144531 167.121094 L 69.597656 166.328125 L 78.511719 164.742188 L 82.964844 163.949219 L 87.421875 163.15625 L 91.875 162.363281 L 96.332031 161.570312 L 100.785156 160.777344 L 109.699219 159.191406 L 114.152344 158.398438 L 118.609375 157.605469 L 123.0625 156.8125 L 127.519531 156.019531 L 131.972656 155.222656 L 140.886719 153.636719 L 145.339844 152.84375 L 149.796875 152.050781 L 154.25 151.257812 L 163.164062 149.671875 L 167.617188 148.878906 L 172.074219 148.085938 L 176.527344 147.292969 L 180.984375 146.5 L 185.4375 145.707031 L 194.351562 144.121094 L 198.804688 143.328125 L 203.261719 142.535156 L 207.714844 141.738281 L 212.171875 140.945312 L 216.625 140.152344 L 225.539062 138.566406 L 229.992188 137.773438 L 234.449219 136.980469 L 238.902344 136.1875 L 247.816406 134.601562 L 252.269531 133.808594 L 256.726562 133.015625 L 261.179688 132.222656 L 265.636719 131.429688 L 270.089844 130.636719 L 279.003906 129.050781 L 283.457031 128.253906 L 287.914062 127.460938 L 292.367188 126.667969 L 296.824219 125.875 L 301.277344 125.082031 L 310.191406 123.496094 L 314.644531 122.703125 L 319.101562 121.910156 L 323.554688 121.117188 L 332.46875 119.53125 L 336.921875 118.738281 L 341.378906 117.945312 L 345.832031 117.152344 L 350.289062 116.359375 L 354.742188 115.566406 L 359.199219 114.769531 L 363.65625 113.976562 L 368.109375 113.183594 L 372.566406 112.390625 L 377.019531 111.597656 L 381.476562 110.804688 L 385.929688 110.011719 L 394.84375 108.425781 L 399.296875 107.632812 L 403.753906 106.839844 L 408.207031 106.046875 L 417.121094 104.460938 "/>
-<path style="fill:none;stroke-width:1.066978;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(100%,0%,0%);stroke-opacity:1;stroke-miterlimit:1;" d="M 65.144531 146.453125 L 210.988281 146.453125 L 210.988281 125.6875 L 417.121094 125.6875 "/>
-<g style="fill:rgb(0%,0%,100%);fill-opacity:1;">
+<path style="fill:none;stroke-width:2.133957;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(1.960784%,44.313725%,69.019608%);stroke-opacity:1;stroke-miterlimit:1;" d="M 65.144531 167.121094 L 69.597656 166.328125 L 78.511719 164.742188 L 82.964844 163.949219 L 87.421875 163.15625 L 91.875 162.363281 L 96.332031 161.570312 L 100.785156 160.777344 L 109.699219 159.191406 L 114.152344 158.398438 L 118.609375 157.605469 L 123.0625 156.8125 L 127.519531 156.019531 L 131.972656 155.222656 L 140.886719 153.636719 L 145.339844 152.84375 L 149.796875 152.050781 L 154.25 151.257812 L 163.164062 149.671875 L 167.617188 148.878906 L 172.074219 148.085938 L 176.527344 147.292969 L 180.984375 146.5 L 185.4375 145.707031 L 194.351562 144.121094 L 198.804688 143.328125 L 203.261719 142.535156 L 207.714844 141.738281 L 212.171875 140.945312 L 216.625 140.152344 L 225.539062 138.566406 L 229.992188 137.773438 L 234.449219 136.980469 L 238.902344 136.1875 L 247.816406 134.601562 L 252.269531 133.808594 L 256.726562 133.015625 L 261.179688 132.222656 L 265.636719 131.429688 L 270.089844 130.636719 L 279.003906 129.050781 L 283.457031 128.253906 L 287.914062 127.460938 L 292.367188 126.667969 L 296.824219 125.875 L 301.277344 125.082031 L 310.191406 123.496094 L 314.644531 122.703125 L 319.101562 121.910156 L 323.554688 121.117188 L 332.46875 119.53125 L 336.921875 118.738281 L 341.378906 117.945312 L 345.832031 117.152344 L 350.289062 116.359375 L 354.742188 115.566406 L 359.199219 114.769531 L 363.65625 113.976562 L 368.109375 113.183594 L 372.566406 112.390625 L 377.019531 111.597656 L 381.476562 110.804688 L 385.929688 110.011719 L 394.84375 108.425781 L 399.296875 107.632812 L 403.753906 106.839844 L 408.207031 106.046875 L 417.121094 104.460938 "/>
+<path style="fill:none;stroke-width:1.066978;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(79.215686%,0%,12.54902%);stroke-opacity:1;stroke-miterlimit:1;" d="M 65.144531 146.453125 L 210.988281 146.453125 L 210.988281 125.6875 L 417.121094 125.6875 "/>
+<g style="fill:rgb(1.960784%,44.313725%,69.019608%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="443.023438" y="199.739258"/>
   <use xlink:href="#glyph0-2" x="450.035156" y="199.739258"/>
   <use xlink:href="#glyph0-3" x="453.546875" y="199.739258"/>
@@ -1804,7 +1536,7 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
   <use xlink:href="#glyph0-4" x="483.882812" y="199.739258"/>
   <use xlink:href="#glyph0-6" x="490.911133" y="199.739258"/>
 </g>
-<g style="fill:rgb(100%,0%,0%);fill-opacity:1;">
+<g style="fill:rgb(79.215686%,0%,12.54902%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="443.023438" y="184.301758"/>
   <use xlink:href="#glyph0-2" x="450.035156" y="184.301758"/>
   <use xlink:href="#glyph0-3" x="453.546875" y="184.301758"/>
@@ -1888,9 +1620,9 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 246.351562 303.226562 C 246.351562 306.140625 241.980469 306.140625 241.980469 303.226562 C 241.980469 300.3125 246.351562 300.3125 246.351562 303.226562 "/>
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 216.386719 315.195312 C 216.386719 318.179688 213.96875 320.597656 210.988281 320.597656 C 208.003906 320.597656 205.585938 318.179688 205.585938 315.195312 C 205.585938 312.214844 208.003906 309.796875 210.988281 309.796875 C 213.96875 309.796875 216.386719 312.214844 216.386719 315.195312 "/>
 <path style="fill-rule:nonzero;fill:rgb(0%,0%,0%);fill-opacity:0.501961;stroke-width:0.708661;stroke-linecap:round;stroke-linejoin:round;stroke:rgb(0%,0%,0%);stroke-opacity:0.501961;stroke-miterlimit:10;" d="M 249.105469 337.371094 C 249.105469 343.957031 239.226562 343.957031 239.226562 337.371094 C 239.226562 330.78125 249.105469 330.78125 249.105469 337.371094 "/>
-<path style="fill:none;stroke-width:2.133957;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(20%,40%,100%);stroke-opacity:1;stroke-dasharray:2.133957,6.40187;stroke-miterlimit:1;" d="M 107.921875 316.890625 L 117.273438 316.148438 L 121.953125 315.777344 L 131.304688 315.035156 L 135.984375 314.667969 L 145.335938 313.925781 L 150.015625 313.554688 L 159.367188 312.8125 L 164.046875 312.441406 L 173.398438 311.699219 L 178.078125 311.332031 L 187.429688 310.589844 L 192.109375 310.21875 L 201.460938 309.476562 L 206.140625 309.105469 L 215.492188 308.363281 L 220.171875 307.996094 L 229.523438 307.253906 L 234.203125 306.882812 L 243.554688 306.140625 L 248.234375 305.769531 L 257.585938 305.027344 L 262.261719 304.660156 L 266.941406 304.289062 L 276.292969 303.546875 L 280.972656 303.175781 L 290.324219 302.433594 L 295.003906 302.0625 L 304.355469 301.320312 L 309.035156 300.953125 L 318.386719 300.210938 L 323.066406 299.839844 L 332.417969 299.097656 L 337.097656 298.726562 L 346.449219 297.984375 L 351.128906 297.617188 L 360.480469 296.875 L 365.160156 296.503906 L 374.511719 295.761719 L 379.191406 295.390625 L 388.542969 294.648438 L 393.222656 294.28125 L 402.574219 293.539062 L 407.253906 293.167969 L 416.605469 292.425781 L 421.285156 292.054688 L 430.636719 291.3125 L 435.316406 290.945312 L 444.667969 290.203125 L 449.347656 289.832031 L 458.699219 289.089844 L 463.378906 288.71875 L 472.730469 287.976562 L 477.410156 287.609375 "/>
-<path style="fill:none;stroke-width:1.066978;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(100%,0%,0%);stroke-opacity:1;stroke-miterlimit:1;" d="M 107.921875 326.222656 L 210.988281 326.222656 L 210.988281 299.5 L 477.410156 299.5 "/>
-<g style="fill:rgb(0%,0%,100%);fill-opacity:1;">
+<path style="fill:none;stroke-width:2.133957;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(1.960784%,44.313725%,69.019608%);stroke-opacity:1;stroke-miterlimit:1;" d="M 107.921875 316.890625 L 117.273438 316.148438 L 121.953125 315.777344 L 131.304688 315.035156 L 135.984375 314.667969 L 145.335938 313.925781 L 150.015625 313.554688 L 159.367188 312.8125 L 164.046875 312.441406 L 173.398438 311.699219 L 178.078125 311.332031 L 187.429688 310.589844 L 192.109375 310.21875 L 201.460938 309.476562 L 206.140625 309.105469 L 215.492188 308.363281 L 220.171875 307.996094 L 229.523438 307.253906 L 234.203125 306.882812 L 243.554688 306.140625 L 248.234375 305.769531 L 257.585938 305.027344 L 262.261719 304.660156 L 266.941406 304.289062 L 276.292969 303.546875 L 280.972656 303.175781 L 290.324219 302.433594 L 295.003906 302.0625 L 304.355469 301.320312 L 309.035156 300.953125 L 318.386719 300.210938 L 323.066406 299.839844 L 332.417969 299.097656 L 337.097656 298.726562 L 346.449219 297.984375 L 351.128906 297.617188 L 360.480469 296.875 L 365.160156 296.503906 L 374.511719 295.761719 L 379.191406 295.390625 L 388.542969 294.648438 L 393.222656 294.28125 L 402.574219 293.539062 L 407.253906 293.167969 L 416.605469 292.425781 L 421.285156 292.054688 L 430.636719 291.3125 L 435.316406 290.945312 L 444.667969 290.203125 L 449.347656 289.832031 L 458.699219 289.089844 L 463.378906 288.71875 L 472.730469 287.976562 L 477.410156 287.609375 "/>
+<path style="fill:none;stroke-width:1.066978;stroke-linecap:butt;stroke-linejoin:round;stroke:rgb(79.215686%,0%,12.54902%);stroke-opacity:1;stroke-miterlimit:1;" d="M 107.921875 326.222656 L 210.988281 326.222656 L 210.988281 299.5 L 477.410156 299.5 "/>
+<g style="fill:rgb(1.960784%,44.313725%,69.019608%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="443.023438" y="431.473633"/>
   <use xlink:href="#glyph0-2" x="450.035156" y="431.473633"/>
   <use xlink:href="#glyph0-3" x="453.546875" y="431.473633"/>
@@ -1901,7 +1633,7 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
   <use xlink:href="#glyph0-4" x="483.882812" y="431.473633"/>
   <use xlink:href="#glyph0-9" x="490.911133" y="431.473633"/>
 </g>
-<g style="fill:rgb(100%,0%,0%);fill-opacity:1;">
+<g style="fill:rgb(79.215686%,0%,12.54902%);fill-opacity:1;">
   <use xlink:href="#glyph0-1" x="443.023438" y="416.036133"/>
   <use xlink:href="#glyph0-2" x="450.035156" y="416.036133"/>
   <use xlink:href="#glyph0-3" x="453.546875" y="416.036133"/>
@@ -2075,6 +1807,188 @@ CyclophosphamideCumulativeDose.csv   6967 2016-06-01 16:07:52
 </g>
 </svg>
 
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Study-Characteristics-and-Outcomes">Study Characteristics and Outcomes<a class="anchor-link" href="#Study-Characteristics-and-Outcomes">&#182;</a></h2><p>Populate Appendix Table 1.
+Need columns for</p>
+<ul>
+<li>Study</li>
+<li>Country</li>
+<li>Median follow-up (months)</li>
+<li>Regimen name</li>
+<li>Cumulative dose<ul>
+<li>Anthracyclines</li>
+<li>Cyclophosphamide</li>
+<li>Taxanes</li>
+</ul>
+</li>
+<li>N</li>
+<li>AML/MDS count</li>
+<li>AML/MDS incidence, per 100,000 person-years</li>
+</ul>
+<p>Output to an Excel workbook, <a href="appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a>.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span><span class="kn">library</span><span class="p">(</span>xlsx<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>IRdisplay<span class="p">)</span>
+<span class="kn">library</span><span class="p">(</span>xtable<span class="p">)</span>
+<span class="bp">T</span> <span class="o">&lt;-</span> D<span class="p">[,</span>
+       <span class="m">.</span><span class="p">(</span>study <span class="o">=</span> <span class="kp">paste</span><span class="p">(</span>authorYear<span class="p">,</span> trial<span class="p">),</span>
+         country <span class="o">=</span> <span class="kc">NA</span><span class="p">,</span>
+         medianFU <span class="o">=</span> <span class="kp">round</span><span class="p">(</span>medianFU<span class="p">),</span>
+         regimen<span class="p">,</span>
+         anthrCumulDose <span class="o">=</span> <span class="kp">round</span><span class="p">(</span>anthracyclineCumulDose<span class="p">),</span>
+         cycloCumulaDose <span class="o">=</span> <span class="kp">round</span><span class="p">(</span>cyclophosphamideCumulDose<span class="p">),</span>
+         taxaneCumulDose <span class="o">=</span> <span class="kp">round</span><span class="p">(</span>taxaneCumulDose<span class="p">),</span>
+         nITT<span class="p">,</span>
+         nAMLOrMDS <span class="o">=</span> malAMLOrMDSTotal<span class="p">,</span>
+         incidenceAMLOrMDS <span class="o">=</span> <span class="kp">signif</span><span class="p">(</span>malAMLOrMDSTotal <span class="o">/</span> <span class="p">(</span>nITT <span class="o">*</span> medianFU<span class="p">)</span> <span class="o">*</span> <span class="m">1e5</span><span class="p">,</span> digits<span class="o">=</span><span class="m">3</span><span class="p">))]</span>
+write.xlsx<span class="p">(</span><span class="bp">T</span><span class="p">,</span>
+           <span class="s">&quot;appendixTableStudyCharacteristicsAndOutcomes.xlsx&quot;</span><span class="p">,</span>
+           row.names<span class="o">=</span><span class="kc">FALSE</span><span class="p">,</span>
+           showNA<span class="o">=</span><span class="kc">FALSE</span><span class="p">)</span>
+<span class="kp">file.info</span><span class="p">(</span><span class="s">&quot;appendixTableStudyCharacteristicsAndOutcomes.xlsx&quot;</span><span class="p">)</span>
+<span class="bp">T</span> <span class="o">&lt;-</span> xtable<span class="p">(</span><span class="bp">T</span><span class="p">,</span> digits<span class="o">=</span><span class="kt">c</span><span class="p">(</span><span class="kp">rep</span><span class="p">(</span><span class="m">0</span><span class="p">,</span> <span class="kp">ncol</span><span class="p">(</span><span class="bp">T</span><span class="p">)),</span> <span class="m">2</span><span class="p">))</span>
+display_html<span class="p">(</span><span class="kp">paste</span><span class="p">(</span>capture.output<span class="p">(</span><span class="kp">print</span><span class="p">(</span><span class="bp">T</span><span class="p">,</span> type <span class="o">=</span> <span class="s">&#39;html&#39;</span><span class="p">)),</span> collapse<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">,</span> sep<span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">))</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>Loading required package: rJava
+Loading required package: xlsxjars
+
+Attaching package: ‘xlsx’
+
+The following objects are masked from ‘package:openxlsx’:
+
+    createWorkbook, loadWorkbook, read.xlsx, saveWorkbook, write.xlsx
+
+
+Attaching package: ‘xtable’
+
+The following object is masked from ‘package:IRdisplay’:
+
+    display
+
+</pre>
+</div>
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_text output_subarea ">
+<pre>                                                  size isdir mode
+appendixTableStudyCharacteristicsAndOutcomes.xlsx 7998 FALSE  664
+                                                                mtime
+appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-06-17 14:34:48
+                                                                ctime
+appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-06-17 14:34:48
+                                                                atime  uid  gid
+appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-06-17 07:16:22 1000 1000
+                                                   uname grname
+appendixTableStudyCharacteristicsAndOutcomes.xlsx ubuntu ubuntu</pre>
+</div>
+
+</div>
+
+<div class="output_area"><div class="prompt"></div>
+
+<div class="output_html rendered_html output_subarea ">
+<!-- html table generated in R 3.3.0 by xtable 1.8-2 package --><!-- Fri Jun 17 14:34:48 2016 --><table border=1><tr> <th>  </th> <th> study </th> <th> country </th> <th> medianFU </th> <th> regimen </th> <th> anthrCumulDose </th> <th> cycloCumulaDose </th> <th> taxaneCumulDose </th> <th> nITT </th> <th> nAMLOrMDS </th> <th> incidenceAMLOrMDS </th>  </tr>  <tr> <td align="right"> 1 </td> <td> Fisher (1990) NSABP B-15 </td> <td>  </td> <td align="right"> 26 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 734 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 2 </td> <td> Fisher (1990) NSABP B-15 </td> <td>  </td> <td align="right"> 26 </td> <td> AC-CMF </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 728 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 3 </td> <td> Fisher (1990) NSABP B-15 </td> <td>  </td> <td align="right"> 26 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 732 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 4 </td> <td> Misset (1996) NA </td> <td>  </td> <td align="right"> 191 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 112 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 5 </td> <td> Misset (1996) NA </td> <td>  </td> <td align="right"> 191 </td> <td> AVCF </td> <td align="right"> 360 </td> <td align="right"> 14400 </td> <td align="right">  </td> <td align="right"> 137 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 6 </td> <td> Fisher (1999) NSABP B-25 </td> <td>  </td> <td align="right"> 55 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 4800 </td> <td align="right">  </td> <td align="right"> 849 </td> <td align="right"> 4 </td> <td align="right"> 8.54 </td> </tr>  <tr> <td align="right"> 7 </td> <td> Fisher (1999) NSABP B-25 </td> <td>  </td> <td align="right"> 55 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 4800 </td> <td align="right">  </td> <td align="right"> 847 </td> <td align="right"> 10 </td> <td align="right"> 21.40 </td> </tr>  <tr> <td align="right"> 8 </td> <td> Fisher (1999) NSABP B-25 </td> <td>  </td> <td align="right"> 55 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 9600 </td> <td align="right">  </td> <td align="right"> 849 </td> <td align="right"> 8 </td> <td align="right"> 17.10 </td> </tr>  <tr> <td align="right"> 9 </td> <td> Bergh (2000) SBG 9401 </td> <td>  </td> <td align="right"> 38 </td> <td> FEC Tailored </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 251 </td> <td align="right"> 9 </td> <td align="right"> 93.60 </td> </tr>  <tr> <td align="right"> 10 </td> <td> Bergh (2000) SBG 9401 </td> <td>  </td> <td align="right"> 38 </td> <td> FEC CTCb </td> <td align="right"> 180 </td> <td align="right"> 1200 </td> <td align="right">  </td> <td align="right"> 274 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 11 </td> <td> Bergh (2000) SBG 9401 </td> <td>  </td> <td align="right"> 38 </td> <td> FEC CTCb </td> <td align="right"> 180 </td> <td align="right"> 1200 </td> <td align="right">  </td> <td align="right"> 274 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 12 </td> <td> Bernard-Marty (2003) NA </td> <td>  </td> <td align="right"> 73 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 255 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 13 </td> <td> Bernard-Marty (2003) NA </td> <td>  </td> <td align="right"> 73 </td> <td> EC </td> <td align="right"> 480 </td> <td align="right"> 4000 </td> <td align="right">  </td> <td align="right"> 267 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 14 </td> <td> Bernard-Marty (2003) NA </td> <td>  </td> <td align="right"> 73 </td> <td> EC </td> <td align="right"> 800 </td> <td align="right"> 6640 </td> <td align="right">  </td> <td align="right"> 255 </td> <td align="right"> 3 </td> <td align="right"> 16.10 </td> </tr>  <tr> <td align="right"> 15 </td> <td> Citron (2003) Intergroup C9741 </td> <td>  </td> <td align="right"> 36 </td> <td> A-T-C </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 484 </td> <td align="right"> 2 </td> <td align="right"> 11.50 </td> </tr>  <tr> <td align="right"> 16 </td> <td> Citron (2003) Intergroup C9741 </td> <td>  </td> <td align="right"> 36 </td> <td> A-T-C </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 493 </td> <td align="right"> 3 </td> <td align="right"> 16.90 </td> </tr>  <tr> <td align="right"> 17 </td> <td> Citron (2003) Intergroup C9741 </td> <td>  </td> <td align="right"> 36 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 501 </td> <td align="right"> 4 </td> <td align="right"> 22.20 </td> </tr>  <tr> <td align="right"> 18 </td> <td> Citron (2003) Intergroup C9741 </td> <td>  </td> <td align="right"> 36 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 495 </td> <td align="right"> 2 </td> <td align="right"> 11.20 </td> </tr>  <tr> <td align="right"> 19 </td> <td> Venturini (2005) NA </td> <td>  </td> <td align="right"> 125 </td> <td> FEC </td> <td align="right"> 360 </td> <td align="right"> 3600 </td> <td align="right">  </td> <td align="right"> 604 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 20 </td> <td> Venturini (2005) NA </td> <td>  </td> <td align="right"> 125 </td> <td> FEC </td> <td align="right"> 360 </td> <td align="right"> 3600 </td> <td align="right">  </td> <td align="right"> 610 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 21 </td> <td> Francis (2008) BIG 02-98 </td> <td>  </td> <td align="right"> 62 </td> <td> A-CMF </td> <td align="right"> 300 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 481 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 22 </td> <td> Francis (2008) BIG 02-98 </td> <td>  </td> <td align="right"> 62 </td> <td> AC-CMF </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 847 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 23 </td> <td> Francis (2008) BIG 02-98 </td> <td>  </td> <td align="right"> 62 </td> <td> A-T-CMF </td> <td align="right"> 225 </td> <td align="right">  </td> <td align="right"> 300 </td> <td align="right"> 960 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 24 </td> <td> Francis (2008) BIG 02-98 </td> <td>  </td> <td align="right"> 62 </td> <td> AT-CMF </td> <td align="right"> 200 </td> <td align="right">  </td> <td align="right"> 300 </td> <td align="right"> 959 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 25 </td> <td> Goldstein (2008) Intergroup E2197 </td> <td>  </td> <td align="right"> 80 </td> <td> AT </td> <td align="right"> 240 </td> <td align="right">  </td> <td align="right"> 240 </td> <td align="right"> 1441 </td> <td align="right"> 7 </td> <td align="right"> 6.11 </td> </tr>  <tr> <td align="right"> 26 </td> <td> Goldstein (2008) Intergroup E2197 </td> <td>  </td> <td align="right"> 80 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 1441 </td> <td align="right"> 7 </td> <td align="right"> 6.11 </td> </tr>  <tr> <td align="right"> 27 </td> <td> Martin (2010) GEICAM 9805 </td> <td>  </td> <td align="right"> 77 </td> <td> TAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right"> 450 </td> <td align="right"> 539 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 28 </td> <td> Martin (2010) GEICAM 9805 </td> <td>  </td> <td align="right"> 77 </td> <td> FAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 521 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 29 </td> <td> Vici (2012) GIOM 9902 </td> <td>  </td> <td align="right"> 64 </td> <td> EC </td> <td align="right"> 480 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 360 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 30 </td> <td> Vici (2012) GIOM 9902 </td> <td>  </td> <td align="right"> 64 </td> <td> T-EC </td> <td align="right"> 480 </td> <td align="right"> 2400 </td> <td align="right"> 400 </td> <td align="right"> 368 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 31 </td> <td> Henderson (2003) NA </td> <td>  </td> <td align="right"> 69 </td> <td> AC </td> <td align="right"> 300 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 1551 </td> <td align="right"> 8 </td> <td align="right"> 7.48 </td> </tr>  <tr> <td align="right"> 32 </td> <td> Henderson (2003) NA </td> <td>  </td> <td align="right"> 69 </td> <td> AC-T </td> <td align="right"> 300 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 1570 </td> <td align="right"> 8 </td> <td align="right"> 7.38 </td> </tr>  <tr> <td align="right"> 33 </td> <td> Fountzilas (2005) NA </td> <td>  </td> <td align="right"> 62 </td> <td> E-T-CMF </td> <td align="right"> 330 </td> <td align="right">  </td> <td align="right"> 750 </td> <td align="right"> 297 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 34 </td> <td> Fountzilas (2005) NA </td> <td>  </td> <td align="right"> 62 </td> <td> E-CMF </td> <td align="right"> 440 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 290 </td> <td align="right"> 1 </td> <td align="right"> 5.56 </td> </tr>  <tr> <td align="right"> 35 </td> <td> Mamounas (2005) NSABP B-28 </td> <td>  </td> <td align="right"> 65 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 1528 </td> <td align="right"> 2 </td> <td align="right"> 2.01 </td> </tr>  <tr> <td align="right"> 36 </td> <td> Mamounas (2005) NSABP B-28 </td> <td>  </td> <td align="right"> 65 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 900 </td> <td align="right"> 1531 </td> <td align="right"> 6 </td> <td align="right"> 6.03 </td> </tr>  <tr> <td align="right"> 37 </td> <td> Roche (2006) PACS 01 </td> <td>  </td> <td align="right"> 60 </td> <td> FEC </td> <td align="right"> 600 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 996 </td> <td align="right"> 3 </td> <td align="right"> 5.02 </td> </tr>  <tr> <td align="right"> 38 </td> <td> Roche (2006) PACS 01 </td> <td>  </td> <td align="right"> 60 </td> <td> FEC-T </td> <td align="right"> 300 </td> <td align="right"> 1500 </td> <td align="right"> 300 </td> <td align="right"> 1003 </td> <td align="right"> 1 </td> <td align="right"> 1.66 </td> </tr>  <tr> <td align="right"> 39 </td> <td> Fumoleu (2003) FASG 01 </td> <td>  </td> <td align="right"> 131 </td> <td> FEC 50 </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 210 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 40 </td> <td> Fumoleu (2003) FASG 01 </td> <td>  </td> <td align="right"> 131 </td> <td> 3 FEC 50 </td> <td align="right"> 150 </td> <td align="right"> 1500 </td> <td align="right">  </td> <td align="right"> 197 </td> <td align="right"> 2 </td> <td align="right"> 7.75 </td> </tr>  <tr> <td align="right"> 41 </td> <td> Fumoleu (2003) FASG 01 </td> <td>  </td> <td align="right"> 131 </td> <td> FEC 75 </td> <td align="right"> 225 </td> <td align="right"> 1500 </td> <td align="right">  </td> <td align="right"> 195 </td> <td align="right"> 1 </td> <td align="right"> 3.91 </td> </tr>  <tr> <td align="right"> 42 </td> <td> Fargeot (2004) FASG 08 </td> <td>  </td> <td align="right"> 72 </td> <td> Tamoxifen </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 155 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 43 </td> <td> Fargeot (2004) FASG 08 </td> <td>  </td> <td align="right"> 72 </td> <td> EPI-Tam </td> <td align="right"> 540 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 163 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 44 </td> <td> Kerbrat (2007) FASG 09 </td> <td>  </td> <td align="right"> 78 </td> <td> FEC </td> <td align="right"> 600 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 235 </td> <td align="right"> 1 </td> <td align="right"> 5.46 </td> </tr>  <tr> <td align="right"> 45 </td> <td> Kerbrat (2007) FASG 09 </td> <td>  </td> <td align="right"> 78 </td> <td> E+Vnr </td> <td align="right"> 300 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 236 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 46 </td> <td> Wils (1999) ICCG 4-87 </td> <td>  </td> <td align="right"> 58 </td> <td> EPI-Tam </td> <td align="right"> 600 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 303 </td> <td align="right"> 2 </td> <td align="right"> 11.50 </td> </tr>  <tr> <td align="right"> 47 </td> <td> Wils (1999) ICCG 4-87 </td> <td>  </td> <td align="right"> 58 </td> <td> Tamoxifen </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 301 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 48 </td> <td> Coombes (1996) ICCG 6-89/2-84 </td> <td>  </td> <td align="right"> 58 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 180 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 49 </td> <td> Coombes (1996) ICCG 6-89/2-84 </td> <td>  </td> <td align="right"> 58 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 199 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 50 </td> <td> Coombes (1996) ICCG 6-89/2-84 </td> <td>  </td> <td align="right"> 58 </td> <td> FEC </td> <td align="right"> 400 </td> <td align="right"> 4800 </td> <td align="right">  </td> <td align="right"> 180 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 51 </td> <td> Coombes (1996) ICCG 6-89/2-84 </td> <td>  </td> <td align="right"> 58 </td> <td> FEC </td> <td align="right"> 300 </td> <td align="right"> 7200 </td> <td align="right">  </td> <td align="right"> 200 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 52 </td> <td> Fisher (1997) NSABP B-22 </td> <td>  </td> <td align="right"> 69 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 767 </td> <td align="right"> 2 </td> <td align="right"> 3.76 </td> </tr>  <tr> <td align="right"> 53 </td> <td> Fisher (1997) NSABP B-22 </td> <td>  </td> <td align="right"> 69 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 763 </td> <td align="right"> 1 </td> <td align="right"> 1.89 </td> </tr>  <tr> <td align="right"> 54 </td> <td> Fisher (1997) NSABP B-22 </td> <td>  </td> <td align="right"> 69 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 4800 </td> <td align="right">  </td> <td align="right"> 771 </td> <td align="right"> 3 </td> <td align="right"> 5.61 </td> </tr>  <tr> <td align="right"> 55 </td> <td> Mackey (2013) BCIRG 001 </td> <td>  </td> <td align="right"> 124 </td> <td> TAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right"> 450 </td> <td align="right"> 745 </td> <td align="right"> 6 </td> <td align="right"> 6.49 </td> </tr>  <tr> <td align="right"> 56 </td> <td> Mackey (2013) BCIRG 001 </td> <td>  </td> <td align="right"> 124 </td> <td> FAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 746 </td> <td align="right"> 2 </td> <td align="right"> 2.16 </td> </tr>  <tr> <td align="right"> 57 </td> <td> Joensuu (2012) FinXX </td> <td>  </td> <td align="right"> 59 </td> <td> TX-CEX </td> <td align="right"> 225 </td> <td align="right"> 1800 </td> <td align="right"> 180 </td> <td align="right"> 751 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 58 </td> <td> Joensuu (2012) FinXX </td> <td>  </td> <td align="right"> 59 </td> <td> T-FEC </td> <td align="right"> 225 </td> <td align="right"> 1800 </td> <td align="right"> 240 </td> <td align="right"> 745 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 59 </td> <td> Linden (2007) INT-0137 </td> <td>  </td> <td align="right"> 86 </td> <td> AC </td> <td align="right"> 324 </td> <td align="right"> 7200 </td> <td align="right">  </td> <td align="right"> 1590 </td> <td align="right"> 13 </td> <td align="right"> 9.46 </td> </tr>  <tr> <td align="right"> 60 </td> <td> Linden (2007) INT-0137 </td> <td>  </td> <td align="right"> 86 </td> <td> A-C </td> <td align="right"> 324 </td> <td align="right"> 7200 </td> <td align="right">  </td> <td align="right"> 1524 </td> <td align="right"> 15 </td> <td align="right"> 11.40 </td> </tr>  <tr> <td align="right"> 61 </td> <td> Bonneterre (2005) FASG 05 </td> <td>  </td> <td align="right"> 110 </td> <td> FEC 50 </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 271 </td> <td align="right"> 1 </td> <td align="right"> 3.35 </td> </tr>  <tr> <td align="right"> 62 </td> <td> Bonneterre (2005) FASG 05 </td> <td>  </td> <td align="right"> 110 </td> <td> FEC 100 </td> <td align="right"> 600 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 266 </td> <td align="right"> 1 </td> <td align="right"> 3.42 </td> </tr>  <tr> <td align="right"> 63 </td> <td> Colleoni (2009) IBCSG 15-95 </td> <td>  </td> <td align="right"> 100 </td> <td> AC-CMF </td> <td align="right"> 300 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 171 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 64 </td> <td> Colleoni (2009) IBCSG 15-95 </td> <td>  </td> <td align="right"> 100 </td> <td> EC </td> <td align="right"> 600 </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 173 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 65 </td> <td> Eiermann (2011) BCIRG 005 </td> <td>  </td> <td align="right"> 65 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 400 </td> <td align="right"> 1649 </td> <td align="right"> 2 </td> <td align="right"> 1.87 </td> </tr>  <tr> <td align="right"> 66 </td> <td> Eiermann (2011) BCIRG 005 </td> <td>  </td> <td align="right"> 65 </td> <td> TAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right"> 450 </td> <td align="right"> 1649 </td> <td align="right"> 4 </td> <td align="right"> 3.73 </td> </tr>  <tr> <td align="right"> 67 </td> <td> Fisher (2001) NSABP B-23 </td> <td>  </td> <td align="right"> 60 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 498 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 68 </td> <td> Fisher (2001) NSABP B-23 </td> <td>  </td> <td align="right"> 60 </td> <td> CMF-Tam </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 496 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 69 </td> <td> Fisher (2001) NSABP B-23 </td> <td>  </td> <td align="right"> 60 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 494 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 70 </td> <td> Fisher (2001) NSABP B-23 </td> <td>  </td> <td align="right"> 60 </td> <td> AC-Tam </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 494 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 71 </td> <td> Martin (2013) GEICAM 2003-02 </td> <td>  </td> <td align="right"> 63 </td> <td> FAC-T </td> <td align="right"> 200 </td> <td align="right"> 2000 </td> <td align="right"> 800 </td> <td align="right"> 951 </td> <td align="right"> 1 </td> <td align="right"> 1.66 </td> </tr>  <tr> <td align="right"> 72 </td> <td> Martin (2013) GEICAM 2003-02 </td> <td>  </td> <td align="right"> 63 </td> <td> FAC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 974 </td> <td align="right"> 2 </td> <td align="right"> 3.24 </td> </tr>  <tr> <td align="right"> 73 </td> <td> Moore (2007) SWOG 9623 </td> <td>  </td> <td align="right"> 70 </td> <td> ACT </td> <td align="right"> 240 </td> <td align="right"> 900 </td> <td align="right"> 600 </td> <td align="right"> 271 </td> <td align="right"> 2 </td> <td align="right"> 10.50 </td> </tr>  <tr> <td align="right"> 74 </td> <td> Moore (2007) SWOG 9623 </td> <td>  </td> <td align="right"> 70 </td> <td> AC </td> <td align="right"> 320 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 265 </td> <td align="right"> 3 </td> <td align="right"> 16.20 </td> </tr>  <tr> <td align="right"> 75 </td> <td> Roche (2006) FASG 06 </td> <td>  </td> <td align="right"> 83 </td> <td> Tamoxifen </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 163 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 76 </td> <td> Roche (2006) FASG 06 </td> <td>  </td> <td align="right"> 83 </td> <td> FEC </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 168 </td> <td align="right"> 1 </td> <td align="right"> 7.17 </td> </tr>  <tr> <td align="right"> 77 </td> <td> Perez (2011) NCCTG N9831 </td> <td>  </td> <td align="right">  </td> <td> AC-T </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 78 </td> <td> Perez (2011) NCCTG N9831 </td> <td>  </td> <td align="right">  </td> <td> AC-T+Trast </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 79 </td> <td> Perez (2011) NCCTG N9831 </td> <td>  </td> <td align="right">  </td> <td> AC-T-Trast </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 80 </td> <td> Romond (2005) NSABP B-31 &amp; N9831 </td> <td>  </td> <td align="right"> 29 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 872 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 81 </td> <td> Romond (2005) NSABP B-31 &amp; N9831 </td> <td>  </td> <td align="right"> 29 </td> <td> ACT-T-Trast </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 864 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 82 </td> <td> Shulman (2014) CALGB 40101 </td> <td>  </td> <td align="right"> 73 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 1107 </td> <td align="right"> 1 </td> <td align="right"> 1.23 </td> </tr>  <tr> <td align="right"> 83 </td> <td> Shulman (2014) CALGB 40101 </td> <td>  </td> <td align="right"> 73 </td> <td> AC </td> <td align="right"> 360 </td> <td align="right"> 3600 </td> <td align="right">  </td> <td align="right"> 766 </td> <td align="right"> 5 </td> <td align="right"> 8.92 </td> </tr>  <tr> <td align="right"> 84 </td> <td> Shulman (2014) CALGB 40101 </td> <td>  </td> <td align="right"> 73 </td> <td> T </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 320 </td> <td align="right"> 1119 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 85 </td> <td> Shulman (2014) CALGB 40101 </td> <td>  </td> <td align="right"> 73 </td> <td> T </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 480 </td> <td align="right"> 782 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 86 </td> <td> Swain (2013) NSABP B-38 </td> <td>  </td> <td align="right"> 64 </td> <td> ACT </td> <td align="right"> 300 </td> <td align="right"> 3000 </td> <td align="right"> 450 </td> <td align="right"> 1617 </td> <td align="right"> 5 </td> <td align="right"> 4.83 </td> </tr>  <tr> <td align="right"> 87 </td> <td> Swain (2013) NSABP B-38 </td> <td>  </td> <td align="right"> 64 </td> <td> AC-T </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 1624 </td> <td align="right"> 8 </td> <td align="right"> 7.70 </td> </tr>  <tr> <td align="right"> 88 </td> <td> Swain (2013) NSABP B-38 </td> <td>  </td> <td align="right"> 64 </td> <td> AC-TG </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 1618 </td> <td align="right"> 11 </td> <td align="right"> 10.60 </td> </tr>  <tr> <td align="right"> 89 </td> <td> Del Mastro (2015) NA </td> <td>  </td> <td align="right"> 84 </td> <td> EC-T </td> <td align="right"> 360 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 545 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 90 </td> <td> Del Mastro (2015) NA </td> <td>  </td> <td align="right"> 84 </td> <td> FEC-T </td> <td align="right"> 360 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 544 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 91 </td> <td> Del Mastro (2015) NA </td> <td>  </td> <td align="right"> 84 </td> <td> EC-T </td> <td align="right"> 360 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 502 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 92 </td> <td> Del Mastro (2015) NA </td> <td>  </td> <td align="right"> 84 </td> <td> FEC-T </td> <td align="right"> 360 </td> <td align="right"> 2400 </td> <td align="right"> 700 </td> <td align="right"> 500 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 93 </td> <td> Nitz (2014 NA </td> <td>  </td> <td align="right"> 59 </td> <td> EC-T </td> <td align="right"> 360 </td> <td align="right"> 2400 </td> <td align="right"> 400 </td> <td align="right"> 978 </td> <td align="right"> 2 </td> <td align="right"> 3.47 </td> </tr>  <tr> <td align="right"> 94 </td> <td> Nitz (2014 NA </td> <td>  </td> <td align="right"> 59 </td> <td> FEC </td> <td align="right"> 600 </td> <td align="right"> 3000 </td> <td align="right">  </td> <td align="right"> 795 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 95 </td> <td> Nitz (2014 NA </td> <td>  </td> <td align="right"> 59 </td> <td> CMF </td> <td align="right">  </td> <td align="right">  </td> <td align="right">  </td> <td align="right"> 177 </td> <td align="right"> 0 </td> <td align="right"> 0.00 </td> </tr>  <tr> <td align="right"> 96 </td> <td> Wolmark, 2001 NSABP B-18 </td> <td>  </td> <td align="right"> 108 </td> <td> AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 751 </td> <td align="right">  </td> <td align="right">  </td> </tr>  <tr> <td align="right"> 97 </td> <td> Wolmark, 2001 NSABP B-18 </td> <td>  </td> <td align="right"> 108 </td> <td> Neo-AC </td> <td align="right"> 240 </td> <td align="right"> 2400 </td> <td align="right">  </td> <td align="right"> 742 </td> <td align="right">  </td> <td align="right">  </td> </tr>   </table>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Session-information">Session information<a class="anchor-link" href="#Session-information">&#182;</a></h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-r"><pre><span></span>sessionInfo<span class="p">()</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+
+
+<div class="output_text output_subarea ">
+<pre>R version 3.3.0 (2016-05-03)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 14.04.4 LTS
+
+locale:
+ [1] LC_CTYPE=en_US.UTF-8          LC_NUMERIC=C                 
+ [3] LC_TIME=en_US.UTF-8           LC_COLLATE=en_US.UTF-8       
+ [5] LC_MONETARY=en_US.UTF-8       LC_MESSAGES=en_US.UTF-8      
+ [7] LC_PAPER=en_US.UTF-8          LC_NAME=en_US.UTF-8          
+ [9] LC_ADDRESS=en_US.UTF-8        LC_TELEPHONE=en_US.UTF-8     
+[11] LC_MEASUREMENT=en_US.UTF-8    LC_IDENTIFICATION=en_US.UTF-8
+
+attached base packages:
+[1] tools     stats     graphics  grDevices utils     datasets  methods  
+[8] base     
+
+other attached packages:
+ [1] xtable_1.8-2         IRdisplay_0.3.0.9000 xlsx_0.5.7          
+ [4] xlsxjars_0.6.1       rJava_0.9-6          RColorBrewer_1.1-2  
+ [7] ggplot2_2.1.0        metafor_1.9-8        Matrix_1.2-6        
+[10] data.table_1.9.6     openxlsx_3.0.0      
+
+loaded via a namespace (and not attached):
+ [1] Rcpp_0.12.5      nloptr_1.0.4     plyr_1.8.3       base64enc_0.1-3 
+ [5] digest_0.6.9     lme4_1.1-12      uuid_0.1-2       jsonlite_0.9.20 
+ [9] evaluate_0.9     nlme_3.1-128     gtable_0.2.0     lattice_0.20-33 
+[13] IRkernel_0.6     repr_0.7         stringr_1.0.0    grid_3.3.0      
+[17] R6_2.1.2         pbdZMQ_0.2-3     minqa_1.2.4      magrittr_1.5    
+[21] scales_0.4.0     MASS_7.3-44      splines_3.3.0    colorspace_1.2-6
+[25] stringi_1.1.1    munsell_0.4.3    chron_2.3-47    </pre>
 </div>
 
 </div>
