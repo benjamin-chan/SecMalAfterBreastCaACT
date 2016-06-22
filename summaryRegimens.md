@@ -1,11 +1,11 @@
 isAnthra | isCyclo | isTaxane | isFluoro | malType | totalN | totalPersonYears | totalMalignancies | medianPct | medianRate
 TRUE | TRUE | TRUE | TRUE | AML | 3743 | 21002 | 2 | 0.102% | 1.99 per 10000 p-y
 TRUE | TRUE | TRUE | TRUE | MDS | 3743 | 21002 | 0 | NA% | NA per 10000 p-y
-TRUE | TRUE | TRUE | TRUE | AML or MDS | 3743 | 21002 | 2 | 0.102% | 1.99 per 10000 p-y
+TRUE | TRUE | TRUE | TRUE | AML or MDS | 3743 | 21002 | 2 | 0.0499% | 0.997 per 10000 p-y
 TRUE | TRUE | TRUE | TRUE | Non-Breast Solid | 3743 | 21002 | 9 | 0.946% | 17.9 per 10000 p-y
 TRUE | TRUE | TRUE | FALSE | AML | 19701 | 101902 | 16 | 0.224% | 4.3 per 10000 p-y
 TRUE | TRUE | TRUE | FALSE | MDS | 19701 | 101902 | 6 | 0.255% | 2.6 per 10000 p-y
-TRUE | TRUE | TRUE | FALSE | AML or MDS | 19701 | 101902 | 72 | 0.395% | 7.51 per 10000 p-y
+TRUE | TRUE | TRUE | FALSE | AML or MDS | 19701 | 101902 | 70 | 0.395% | 7.51 per 10000 p-y
 TRUE | TRUE | TRUE | FALSE | Non-Breast Solid | 19701 | 101902 | 48 | 1.09% | 26 per 10000 p-y
 TRUE | TRUE | FALSE | TRUE | AML | 7359 | 56413 | 12 | 0.253% | 3.83 per 10000 p-y
 TRUE | TRUE | FALSE | TRUE | MDS | 7359 | 56413 | 1 | 0% | 0 per 10000 p-y
