@@ -1,0 +1,35 @@
+Age-Adjusted SEER Incidence Rates and 95% Confidence Intervals,,,,
+By Cancer Site,,,,
+All Ages  All Races  Both Sexes,,,,
+1992-2013 ,,,,
+,,,,
+Cancer Site,Year,Rate,Lower 95% CI of AA rate,Upper 95% CI of AA rate
+Acute Myeloid Leukemia,1992,3.3158,3.1174,3.5233
+Acute Myeloid Leukemia,1993,3.4497,3.2488,3.6595
+Acute Myeloid Leukemia,1994,3.4883,3.2874,3.6981
+Acute Myeloid Leukemia,1995,3.6428,3.4395,3.8546
+Acute Myeloid Leukemia,1996,3.4723,3.2751,3.6779
+Acute Myeloid Leukemia,1997,3.6644,3.4638,3.8735
+Acute Myeloid Leukemia,1998,3.8859,3.6806,4.0995
+Acute Myeloid Leukemia,1999,3.7584,3.5585,3.9664
+Acute Myeloid Leukemia,2000,3.9711,3.7667,4.1834
+Acute Myeloid Leukemia,2001,3.9665,3.7634,4.1775
+Acute Myeloid Leukemia,2002,3.6378,3.4449,3.8386
+Acute Myeloid Leukemia,2003,3.5839,3.394,3.7815
+Acute Myeloid Leukemia,2004,3.4022,3.2181,3.594
+Acute Myeloid Leukemia,2005,3.4842,3.2985,3.6775
+Acute Myeloid Leukemia,2006,3.5133,3.3279,3.7062
+Acute Myeloid Leukemia,2007,3.5793,3.3932,3.773
+Acute Myeloid Leukemia,2008,3.8142,3.6233,4.0124
+Acute Myeloid Leukemia,2009,3.7538,3.5669,3.948
+Acute Myeloid Leukemia,2010,4.1329,3.9368,4.3363
+Acute Myeloid Leukemia,2011,4.1259,3.9318,4.327
+Acute Myeloid Leukemia,2012,4.3993,4.2,4.6055
+Acute Myeloid Leukemia,2013,4.2798,4.0864,4.4799
+,,,,
+,,,,
+Cancer sites include invasive cases only unless otherwise noted.,,,,
+,,,,
+"Incidence source: SEER 13 areas (San Francisco, Connecticut, Detroit, Hawaii, Iowa, New Mexico, Seattle, Utah, Atlanta, San Jose-Monterey, Los Angeles, Alaska Native Registry and Rural Georgia).",,,,
+,,,,
+"Rates are per 100,000 and are age-adjusted to the 2000 US Std Population (19 age groups - Census P25-1130).",,,,
