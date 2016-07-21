@@ -1,11 +1,16 @@
-# Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
+---
+title: "Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy"
+author: "[Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)"
+date: "`r Sys.time()`"
+output: 
+  html_document: 
+    keep_md: yes
+    number_sections: yes
+    theme: readable
+    toc: yes
+    toc_depth: 3
+---
 
-[Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)  
-
-
-```{r}
-message(sprintf("Run date: %s", Sys.time()))
-```
 
 Load packages.
 
@@ -17,7 +22,7 @@ if (!require(data.table)) {install.packages("data.table", dependencies=TRUE, rep
 library(data.table)
 ```
 
-## Load data
+# Load data
 
 Load the data from [GitHub](https://github.com/benjamin-chan/SecMalAfterBreastCaACT).
 
@@ -70,7 +75,7 @@ newnames <- c("id",
 setnames(D, oldnames, newnames[1:33])
 ```
 
-## Tidy data
+# Tidy data
 
 Create a `rowid` variable.
 This will be handy later.
@@ -257,7 +262,7 @@ head(D[!is.na(fluoroucilCumulDose),
        .(authorYear, regimen, fluoroucilCumulDose, fluoroucilTotalDose, fluoroucilCourses)])
 ```
 
-### Manual tidying
+## Manual tidying
 
 After an early round of analysis, we realized there were some `nITT` data entry errors in the commit [26115da](https://github.com/benjamin-chan/SecMalAfterBreastCaACT/raw/26115dab1eb2b075d40f545514a03c3b30cde6b4/SecondaryMalignancies_Data_BG_3_4.xlsx) (Jun 1, 2016) spreadsheet.
 
@@ -339,7 +344,7 @@ D <- unique(D)
 message(sprintf("Removed %d duplicate row(s) (%.03g%%)", n0 - nrow(D), (n0 - nrow(D)) / n0 * 100))
 ```
 
-## Summarize
+# Summarize
 
 Define some functions.
 
@@ -406,7 +411,7 @@ write.table(summaryRegimens,
 file.info("summaryRegimens.md")
 ```
 
-## Meta-regression
+# Meta-regression
 
 Estimate meta-regression models for log transformed incidence rate.
 Model is
@@ -540,7 +545,7 @@ D2 <- D1[,
            rate)]
 ```
 
-### AML/MDS
+## AML/MDS
 
 * Fit the models
 * Show model summaries
@@ -578,7 +583,7 @@ plotreg(M,
         1e2)
 ```
 
-#### Cyclophosphamide + Taxanes
+### Cyclophosphamide, with and without Taxanes
 
 The effect of cyclophosphamide could be due to taxanes in the regimen.
 
@@ -651,9 +656,9 @@ M <- list(rmaLin = MLin,
 M
 ```
 
-#### Taxanes + Cyclophosphamide
 
 The effect of taxanes could be due to cyclophosphamide in the regimen.
+### Taxanes, with and without Cyclophosphamide
 
 Fit the meta-regression model
 
@@ -792,7 +797,8 @@ show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("s
 G
 ```
 
-### AML only
+
+## AML only
 
 Run models for AML malignancies alone for compatibility with the SEER incidence statistics.
 
@@ -835,7 +841,8 @@ plotreg(M,
         1e2)
 ```
 
-### Non-Breast Solid
+
+## Non-Breast Solid
 
 * Fit the models
 * Show model summaries
@@ -873,7 +880,7 @@ plotreg(M,
         1e2)
 ```
 
-## Study Characteristics and Outcomes
+# Study Characteristics and Outcomes
 
 Populate Appendix Table 1.
 Need columns for
@@ -930,7 +937,7 @@ T <- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
 # display_html(paste(capture.output(print(T, type = 'html')), collapse="", sep=""))
 ```
 
-## Zip up assets
+# Zip up assets
 
 Zip up assets created by this notebook for transfer off of EC2.
 
@@ -943,7 +950,7 @@ file.info(f)[c("size", "mtime")]
 unzip(f, list=TRUE)
 ```
 
-## Session information
+# Session information
 
 
 ```{r}
