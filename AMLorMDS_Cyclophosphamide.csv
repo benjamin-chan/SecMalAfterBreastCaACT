@@ -1,4 +1,5 @@
 id,authorYear,isCyclo,xCyc,xCycHighDose,xTax,xTaxHighDose,isAnthra,isTaxane,isFluoro,nITT,medianFU,malType,malN,py,rate,drug,x,xHighDose
+970,Bergh (2000),TRUE,8.1,TRUE,NA,NA,TRUE,FALSE,TRUE,251,38.3,AML or MDS,9,801.108333333333,112.344356256436,Cyclophosphamide,8.1,TRUE
 970,Bergh (2000),TRUE,1.2,FALSE,NA,NA,TRUE,FALSE,FALSE,274,38.3,AML or MDS,0,874.516666666667,0,Cyclophosphamide,1.2,FALSE
 1035,Bernard-Marty (2003),TRUE,4,TRUE,NA,NA,TRUE,FALSE,FALSE,267,73,AML or MDS,0,1624.25,0,Cyclophosphamide,4,TRUE
 1035,Bernard-Marty (2003),TRUE,6.64,TRUE,NA,NA,TRUE,FALSE,FALSE,255,73,AML or MDS,3,1551.25,19.3392425463336,Cyclophosphamide,6.64,TRUE
