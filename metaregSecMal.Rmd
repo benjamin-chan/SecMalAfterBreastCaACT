@@ -942,7 +942,7 @@ T <- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
 Zip up assets created by this notebook for transfer off of EC2.
 
 
-```{r}
+```{r, eval=FALSE}
 f <- "assets.zip"
 assets <- grep("(csv)|(png)|(xlsx)|(md)$", list.files(), value=TRUE)
 zip(f, assets)
