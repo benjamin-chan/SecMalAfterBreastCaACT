@@ -1,5 +1,4 @@
 id,authorYear,isCyclo,xCyc,xCycHighDose,xTax,xTaxHighDose,isAnthra,isTaxane,isFluoro,nITT,medianFU,malType,malN,py,rate,drug,x,xHighDose
-970,Bergh (2000),TRUE,8.1,TRUE,NA,NA,TRUE,FALSE,TRUE,251,38.3,Non-Breast Solid,3,801.108333333333,37.4481187521455,Cyclophosphamide,8.1,TRUE
 970,Bergh (2000),TRUE,1.2,FALSE,NA,NA,TRUE,FALSE,FALSE,274,38.3,Non-Breast Solid,1,874.516666666667,11.4348878428084,Cyclophosphamide,1.2,FALSE
 1035,Bernard-Marty (2003),TRUE,4,TRUE,NA,NA,TRUE,FALSE,FALSE,267,73,Non-Breast Solid,4,1624.25,24.6267508080653,Cyclophosphamide,4,TRUE
 1035,Bernard-Marty (2003),TRUE,6.64,TRUE,NA,NA,TRUE,FALSE,FALSE,255,73,Non-Breast Solid,6,1551.25,38.6784850926672,Cyclophosphamide,6.64,TRUE
