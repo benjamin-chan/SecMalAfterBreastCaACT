@@ -1,0 +1,2797 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>body {
+  width: 45em;
+  border: 1px solid #ddd;
+  outline: 1300px solid #fff;
+  margin: 16px auto;
+}
+
+body .markdown-body
+{
+  padding: 30px;
+}
+
+@font-face {
+  font-family: fontawesome-mini;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+@font-face {
+  font-family: octicons-anchor;
+  src: url(data:font/woff;charset=utf-8;base64,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) format('woff');
+}
+
+.markdown-body {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  color: #333333;
+  overflow: hidden;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  word-wrap: break-word;
+}
+
+.markdown-body a {
+  background: transparent;
+}
+
+.markdown-body a:active,
+.markdown-body a:hover {
+  outline: 0;
+}
+
+.markdown-body b,
+.markdown-body strong {
+  font-weight: bold;
+}
+
+.markdown-body mark {
+  background: #ff0;
+  color: #000;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body sub,
+.markdown-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.markdown-body sup {
+  top: -0.5em;
+}
+.markdown-body sub {
+  bottom: -0.25em;
+}
+
+.markdown-body h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+.markdown-body img {
+  border: 0;
+}
+
+.markdown-body hr {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+  height: 0;
+}
+
+.markdown-body pre {
+  overflow: auto;
+}
+
+.markdown-body code,
+.markdown-body kbd,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: monospace, monospace;
+  font-size: 1em;
+}
+
+.markdown-body input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+.markdown-body html input[disabled] {
+  cursor: default;
+}
+
+.markdown-body input {
+  line-height: normal;
+}
+
+.markdown-body input[type="checkbox"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.markdown-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.markdown-body td,
+.markdown-body th {
+  padding: 0;
+}
+
+.markdown-body .codehilitetable {
+  border: 0;
+  border-spacing: 0;
+}
+
+.markdown-body .codehilitetable tr {
+  border: 0;
+}
+
+.markdown-body .codehilitetable pre,
+.markdown-body .codehilitetable div.codehilite {
+  margin: 0;
+}
+
+.markdown-body .linenos,
+.markdown-body .code,
+.markdown-body .codehilitetable td {
+  border: 0;
+  padding: 0;
+}
+
+.markdown-body td:not(.linenos) .linenodiv {
+  padding: 0 !important;
+}
+
+.markdown-body .code {
+  width: 100%;
+}
+
+.markdown-body .linenos div pre,
+.markdown-body .linenodiv pre,
+.markdown-body .linenodiv {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-left-radius: 3px;
+  -webkit-border-bottom-left-radius: 3px;
+  -moz-border-radius-topleft: 3px;
+  -moz-border-radius-bottomleft: 3px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
+.markdown-body .code div pre,
+.markdown-body .code div {
+  border: 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0;
+  -webkit-border-top-right-radius: 3px;
+  -webkit-border-bottom-right-radius: 3px;
+  -moz-border-radius-topright: 3px;
+  -moz-border-radius-bottomright: 3px;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.markdown-body * {
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body input {
+  font: 13px Helvetica, arial, freesans, clean, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  line-height: 1.4;
+}
+
+.markdown-body a {
+  color: #4183c4;
+  text-decoration: none;
+}
+
+.markdown-body a:hover,
+.markdown-body a:focus,
+.markdown-body a:active {
+  text-decoration: underline;
+}
+
+.markdown-body hr {
+  height: 0;
+  margin: 15px 0;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.markdown-body hr:before,
+.markdown-body hr:after {
+  display: table;
+  content: " ";
+}
+
+.markdown-body hr:after {
+  clear: both;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  margin-top: 15px;
+  margin-bottom: 15px;
+  line-height: 1.1;
+}
+
+.markdown-body h1 {
+  font-size: 30px;
+}
+
+.markdown-body h2 {
+  font-size: 21px;
+}
+
+.markdown-body h3 {
+  font-size: 16px;
+}
+
+.markdown-body h4 {
+  font-size: 14px;
+}
+
+.markdown-body h5 {
+  font-size: 12px;
+}
+
+.markdown-body h6 {
+  font-size: 11px;
+}
+
+.markdown-body blockquote {
+  margin: 0;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body ol ol,
+.markdown-body ul ol {
+  list-style-type: lower-roman;
+}
+
+.markdown-body ul ul ol,
+.markdown-body ul ol ol,
+.markdown-body ol ul ol,
+.markdown-body ol ol ol {
+  list-style-type: lower-alpha;
+}
+
+.markdown-body dd {
+  margin-left: 0;
+}
+
+.markdown-body code,
+.markdown-body pre,
+.markdown-body samp {
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-size: 12px;
+}
+
+.markdown-body pre {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body kbd {
+  background-color: #e7e7e7;
+  background-image: -moz-linear-gradient(#fefefe, #e7e7e7);
+  background-image: -webkit-linear-gradient(#fefefe, #e7e7e7);
+  background-image: linear-gradient(#fefefe, #e7e7e7);
+  background-repeat: repeat-x;
+  border-radius: 2px;
+  border: 1px solid #cfcfcf;
+  color: #000;
+  padding: 3px 5px;
+  line-height: 10px;
+  font: 11px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  display: inline-block;
+}
+
+.markdown-body>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+.markdown-body .headeranchor-link {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding-right: 6px;
+  padding-left: 30px;
+  margin-left: -30px;
+}
+
+.markdown-body .headeranchor-link:focus {
+  outline: none;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  position: relative;
+  margin-top: 1em;
+  margin-bottom: 16px;
+  font-weight: bold;
+  line-height: 1.4;
+}
+
+.markdown-body h1 .headeranchor,
+.markdown-body h2 .headeranchor,
+.markdown-body h3 .headeranchor,
+.markdown-body h4 .headeranchor,
+.markdown-body h5 .headeranchor,
+.markdown-body h6 .headeranchor {
+  display: none;
+  color: #000;
+  vertical-align: middle;
+}
+
+.markdown-body h1:hover .headeranchor-link,
+.markdown-body h2:hover .headeranchor-link,
+.markdown-body h3:hover .headeranchor-link,
+.markdown-body h4:hover .headeranchor-link,
+.markdown-body h5:hover .headeranchor-link,
+.markdown-body h6:hover .headeranchor-link {
+  height: 1em;
+  padding-left: 8px;
+  margin-left: -30px;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.markdown-body h1:hover .headeranchor-link .headeranchor,
+.markdown-body h2:hover .headeranchor-link .headeranchor,
+.markdown-body h3:hover .headeranchor-link .headeranchor,
+.markdown-body h4:hover .headeranchor-link .headeranchor,
+.markdown-body h5:hover .headeranchor-link .headeranchor,
+.markdown-body h6:hover .headeranchor-link .headeranchor {
+  display: inline-block;
+}
+
+.markdown-body h1 {
+  padding-bottom: 0.3em;
+  font-size: 2.25em;
+  line-height: 1.2;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h2 {
+  padding-bottom: 0.3em;
+  font-size: 1.75em;
+  line-height: 1.225;
+  border-bottom: 1px solid #eee;
+}
+
+.markdown-body h3 {
+  font-size: 1.5em;
+  line-height: 1.43;
+}
+
+.markdown-body h4 {
+  font-size: 1.25em;
+}
+
+.markdown-body h5 {
+  font-size: 1em;
+}
+
+.markdown-body h6 {
+  font-size: 1em;
+  color: #777;
+}
+
+.markdown-body p,
+.markdown-body blockquote,
+.markdown-body ul,
+.markdown-body ol,
+.markdown-body dl,
+.markdown-body table,
+.markdown-body pre,
+.markdown-body .admonition {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.markdown-body hr {
+  height: 4px;
+  padding: 0;
+  margin: 16px 0;
+  background-color: #e7e7e7;
+  border: 0 none;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  padding-left: 2em;
+}
+
+.markdown-body ul ul,
+.markdown-body ul ol,
+.markdown-body ol ol,
+.markdown-body ol ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.markdown-body li>p {
+  margin-top: 16px;
+}
+
+.markdown-body dl {
+  padding: 0;
+}
+
+.markdown-body dl dt {
+  padding: 0;
+  margin-top: 16px;
+  font-size: 1em;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.markdown-body dl dd {
+  padding: 0 16px;
+  margin-bottom: 16px;
+}
+
+.markdown-body blockquote {
+  padding: 0 15px;
+  color: #777;
+  border-left: 4px solid #ddd;
+}
+
+.markdown-body blockquote>:first-child {
+  margin-top: 0;
+}
+
+.markdown-body blockquote>:last-child {
+  margin-bottom: 0;
+}
+
+.markdown-body table {
+  display: block;
+  width: 100%;
+  overflow: auto;
+  word-break: normal;
+  word-break: keep-all;
+}
+
+.markdown-body table th {
+  font-weight: bold;
+}
+
+.markdown-body table th,
+.markdown-body table td {
+  padding: 6px 13px;
+  border: 1px solid #ddd;
+}
+
+.markdown-body table tr {
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
+
+.markdown-body table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+.markdown-body img {
+  max-width: 100%;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.markdown-body code,
+.markdown-body samp {
+  padding: 0;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(0,0,0,0.04);
+  border-radius: 3px;
+}
+
+.markdown-body code:before,
+.markdown-body code:after {
+  letter-spacing: -0.2em;
+  content: "\00a0";
+}
+
+.markdown-body pre>code {
+  padding: 0;
+  margin: 0;
+  font-size: 100%;
+  word-break: normal;
+  white-space: pre;
+  background: transparent;
+  border: 0;
+}
+
+.markdown-body .codehilite {
+  margin-bottom: 16px;
+}
+
+.markdown-body .codehilite pre,
+.markdown-body pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f7f7f7;
+  border-radius: 3px;
+}
+
+.markdown-body .codehilite pre {
+  margin-bottom: 0;
+  word-break: normal;
+}
+
+.markdown-body pre {
+  word-wrap: normal;
+}
+
+.markdown-body pre code {
+  display: inline;
+  max-width: initial;
+  padding: 0;
+  margin: 0;
+  overflow: initial;
+  line-height: inherit;
+  word-wrap: normal;
+  background-color: transparent;
+  border: 0;
+}
+
+.markdown-body pre code:before,
+.markdown-body pre code:after {
+  content: normal;
+}
+
+/* Admonition */
+.markdown-body .admonition {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  position: relative;
+  border-radius: 3px;
+  border: 1px solid #e0e0e0;
+  border-left: 6px solid #333;
+  padding: 10px 10px 10px 30px;
+}
+
+.markdown-body .admonition table {
+  color: #333;
+}
+
+.markdown-body .admonition p {
+  padding: 0;
+}
+
+.markdown-body .admonition-title {
+  font-weight: bold;
+  margin: 0;
+}
+
+.markdown-body .admonition>.admonition-title {
+  color: #333;
+}
+
+.markdown-body .attention>.admonition-title {
+  color: #a6d796;
+}
+
+.markdown-body .caution>.admonition-title {
+  color: #d7a796;
+}
+
+.markdown-body .hint>.admonition-title {
+  color: #96c6d7;
+}
+
+.markdown-body .danger>.admonition-title {
+  color: #c25f77;
+}
+
+.markdown-body .question>.admonition-title {
+  color: #96a6d7;
+}
+
+.markdown-body .note>.admonition-title {
+  color: #d7c896;
+}
+
+.markdown-body .admonition:before,
+.markdown-body .attention:before,
+.markdown-body .caution:before,
+.markdown-body .hint:before,
+.markdown-body .danger:before,
+.markdown-body .question:before,
+.markdown-body .note:before {
+  font: normal normal 16px fontawesome-mini;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  line-height: 1.5;
+  color: #333;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+
+.markdown-body .admonition:before {
+  content: "\f056\00a0";
+  color: 333;
+}
+
+.markdown-body .attention:before {
+  content: "\f058\00a0";
+  color: #a6d796;
+}
+
+.markdown-body .caution:before {
+  content: "\f06a\00a0";
+  color: #d7a796;
+}
+
+.markdown-body .hint:before {
+  content: "\f05a\00a0";
+  color: #96c6d7;
+}
+
+.markdown-body .danger:before {
+  content: "\f057\00a0";
+  color: #c25f77;
+}
+
+.markdown-body .question:before {
+  content: "\f059\00a0";
+  color: #96a6d7;
+}
+
+.markdown-body .note:before {
+  content: "\f040\00a0";
+  color: #d7c896;
+}
+
+.markdown-body .admonition::after {
+  content: normal;
+}
+
+.markdown-body .attention {
+  border-left: 6px solid #a6d796;
+}
+
+.markdown-body .caution {
+  border-left: 6px solid #d7a796;
+}
+
+.markdown-body .hint {
+  border-left: 6px solid #96c6d7;
+}
+
+.markdown-body .danger {
+  border-left: 6px solid #c25f77;
+}
+
+.markdown-body .question {
+  border-left: 6px solid #96a6d7;
+}
+
+.markdown-body .note {
+  border-left: 6px solid #d7c896;
+}
+
+.markdown-body .admonition>*:first-child {
+  margin-top: 0 !important;
+}
+
+.markdown-body .admonition>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* progress bar*/
+.markdown-body .progress {
+  display: block;
+  width: 300px;
+  margin: 10px 0;
+  height: 24px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ededed;
+  position: relative;
+  box-shadow: inset -1px 1px 3px rgba(0, 0, 0, .1);
+}
+
+.markdown-body .progress-label {
+  position: absolute;
+  text-align: center;
+  font-weight: bold;
+  width: 100%; margin: 0;
+  line-height: 24px;
+  color: #333;
+  text-shadow: 1px 1px 0 #fefefe, -1px -1px 0 #fefefe, -1px 1px 0 #fefefe, 1px -1px 0 #fefefe, 0 1px 0 #fefefe, 0 -1px 0 #fefefe, 1px 0 0 #fefefe, -1px 0 0 #fefefe, 1px 1px 2px #000;
+  -webkit-font-smoothing: antialiased !important;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.markdown-body .progress-bar {
+  height: 24px;
+  float: left;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #96c6d7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .5), inset 0 -1px 0 rgba(0, 0, 0, .1);
+  background-size: 30px 30px;
+  background-image: -webkit-linear-gradient(
+    135deg, rgba(255, 255, 255, .4) 27%,
+    transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%,
+    transparent 77%, transparent
+  );
+  background-image: -moz-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -ms-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: -o-linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+  background-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, .4) 27%, transparent 27%,
+    transparent 52%, rgba(255, 255, 255, .4) 52%,
+    rgba(255, 255, 255, .4) 77%, transparent 77%,
+    transparent
+  );
+}
+
+.markdown-body .progress-100plus .progress-bar {
+  background-color: #a6d796;
+}
+
+.markdown-body .progress-80plus .progress-bar {
+  background-color: #c6d796;
+}
+
+.markdown-body .progress-60plus .progress-bar {
+  background-color: #d7c896;
+}
+
+.markdown-body .progress-40plus .progress-bar {
+  background-color: #d7a796;
+}
+
+.markdown-body .progress-20plus .progress-bar {
+  background-color: #d796a6;
+}
+
+.markdown-body .progress-0plus .progress-bar {
+  background-color: #c25f77;
+}
+
+.markdown-body .candystripe-animate .progress-bar{
+  -webkit-animation: animate-stripes 3s linear infinite;
+  -moz-animation: animate-stripes 3s linear infinite;
+  animation: animate-stripes 3s linear infinite;
+}
+
+@-webkit-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@-moz-keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+@keyframes animate-stripes {
+  0% {
+    background-position: 0 0;
+  }
+
+  100% {
+    background-position: 60px 0;
+  }
+}
+
+.markdown-body .gloss .progress-bar {
+  box-shadow:
+    inset 0 4px 12px rgba(255, 255, 255, .7),
+    inset 0 -12px 0 rgba(0, 0, 0, .05);
+}
+
+/* Multimarkdown Critic Blocks */
+.markdown-body .critic_mark {
+  background: #ff0;
+}
+
+.markdown-body .critic_delete {
+  color: #c82829;
+  text-decoration: line-through;
+}
+
+.markdown-body .critic_insert {
+  color: #718c00 ;
+  text-decoration: underline;
+}
+
+.markdown-body .critic_comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.markdown-body .headeranchor {
+  font: normal normal 16px octicons-anchor;
+  line-height: 1;
+  display: inline-block;
+  text-decoration: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.headeranchor:before {
+  content: '\f05c';
+}
+
+.markdown-body .task-list-item {
+  list-style-type: none;
+}
+
+.markdown-body .task-list-item+.task-list-item {
+  margin-top: 3px;
+}
+
+.markdown-body .task-list-item input {
+  margin: 0 4px 0.25em -20px;
+  vertical-align: middle;
+}
+
+/* Media */
+@media only screen and (min-width: 480px) {
+  .markdown-body {
+    font-size:14px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .markdown-body {
+    font-size:16px;
+  }
+}
+
+@media print {
+  .markdown-body * {
+    background: transparent !important;
+    color: black !important;
+    filter:none !important;
+    -ms-filter: none !important;
+  }
+
+  .markdown-body {
+    font-size:12pt;
+    max-width:100%;
+    outline:none;
+    border: 0;
+  }
+
+  .markdown-body a,
+  .markdown-body a:visited {
+    text-decoration: underline;
+  }
+
+  .markdown-body .headeranchor-link {
+    display: none;
+  }
+
+  .markdown-body a[href]:after {
+    content: " (" attr(href) ")";
+  }
+
+  .markdown-body abbr[title]:after {
+    content: " (" attr(title) ")";
+  }
+
+  .markdown-body .ir a:after,
+  .markdown-body a[href^="javascript:"]:after,
+  .markdown-body a[href^="#"]:after {
+    content: "";
+  }
+
+  .markdown-body pre {
+    white-space: pre;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .markdown-body pre,
+  .markdown-body blockquote {
+    border: 1px solid #999;
+    padding-right: 1em;
+    page-break-inside: avoid;
+  }
+
+  .markdown-body .progress,
+  .markdown-body .progress-bar {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+  }
+
+  .markdown-body .progress {
+    border: 1px solid #ddd;
+  }
+
+  .markdown-body .progress-bar {
+    height: 22px;
+    border-right: 1px solid #ddd;
+  }
+
+  .markdown-body tr,
+  .markdown-body img {
+    page-break-inside: avoid;
+  }
+
+  .markdown-body img {
+    max-width: 100% !important;
+  }
+
+  .markdown-body p,
+  .markdown-body h2,
+  .markdown-body h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  .markdown-body h2,
+  .markdown-body h3 {
+    page-break-after: avoid;
+  }
+}
+</style>
+<link href='http://bootswatch.com/readable/bootstrap.min.css' rel='stylesheet' type='text/css'><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+MathJax.Hub.Config({
+  config: ["MMLorHTML.js"],
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX"],
+  tex2jax: {
+    inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+    displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+    processEscapes: false
+  },
+  TeX: {
+    extensions: ["AMSmath.js", "AMSsymbols.js"],
+    TagSide: "right",
+    TagIndent: ".8em",
+    MultLineWidth: "85%",
+    equationNumbers: {
+      autoNumber: "AMS",
+    },
+    unicode: {
+      fonts: "STIXGeneral,'Arial Unicode MS'"
+    }
+  },
+  showProcessingMessages: false
+});
+</script>
+<title>index</title></head><body><article class="markdown-body"><h1 id="risks-of-long-term-secondary-malignancies-in-breast-cancer-patients-treated-with-adjuvant-chemotherapy"><a name="user-content-risks-of-long-term-secondary-malignancies-in-breast-cancer-patients-treated-with-adjuvant-chemotherapy" href="#risks-of-long-term-secondary-malignancies-in-breast-cancer-patients-treated-with-adjuvant-chemotherapy" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy</h1>
+<ul>
+<li>Author: <a href="http://careers.stackoverflow.com/benjaminchan">Benjamin Chan</a></li>
+<li>Date: 2016-08-01 15:38:56</li>
+</ul>
+<h1 id="load-packages"><a name="user-content-load-packages" href="#load-packages" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Load packages</h1>
+<pre><code class="r">library(openxlsx)
+library(data.table)
+</code></pre>
+
+<hr />
+<h1 id="load-data"><a name="user-content-load-data" href="#load-data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Load data</h1>
+<p>Load the data from <a href="https://github.com/benjamin-chan/SecMalAfterBreastCaACT">GitHub</a>.</p>
+<pre><code class="r">repo &lt;- &quot;https://github.com/benjamin-chan/SecMalAfterBreastCaACT&quot;
+url &lt;- paste0(repo, &quot;/raw/26115dab1eb2b075d40f545514a03c3b30cde6b4/SecondaryMalignancies_Data_BG_3_4.xlsx&quot;)
+f &lt;- tempfile()
+download.file(url, f, mode=&quot;wb&quot;)
+file.info(f)[c(&quot;size&quot;, &quot;mtime&quot;)]
+</code></pre>
+
+<pre><code>##                                    size               mtime
+## /tmp/RtmpSjUgrx/file2e9135ad62b41 59619 2016-08-01 15:38:57
+</code></pre>
+
+<pre><code class="r">sheets &lt;- getSheetNames(f)
+# sheets
+D &lt;- read.xlsx(f, sheet = sheets[1], startRow = 3, colNames = FALSE)
+D &lt;- data.table(D)
+oldnames &lt;- names(D)
+newnames &lt;- c(&quot;id&quot;,
+              &quot;authorYear&quot;,
+              &quot;trial&quot;,
+              &quot;quality&quot;,
+              &quot;arm&quot;,
+              &quot;nRandomized&quot;,
+              &quot;nITT&quot;,
+              # &quot;pctCompletingTx&quot;,
+              &quot;medianFU&quot;,
+              &quot;regimen&quot;,
+              &quot;anthracyclineType&quot;,
+              &quot;anthracyclineTotalDose&quot;,
+              &quot;anthracyclineDuration&quot;,
+              &quot;anthracyclineCourses&quot;,
+              &quot;cyclophosphamideDose&quot;,
+              &quot;cyclophosphamideDuration&quot;,
+              &quot;cyclophosphamideCourses&quot;,
+              &quot;taxaneType&quot;,
+              &quot;taxaneTotalDose&quot;,
+              &quot;taxaneDuration&quot;,
+              &quot;taxaneCourses&quot;,
+              &quot;fluoroucilTotalDose&quot;,
+              &quot;fluoroucilDuration&quot;,
+              &quot;fluoroucilCourses&quot;,
+              &quot;otherTxDetails&quot;,
+              &quot;malAML&quot;,
+              &quot;malMDS&quot;,
+              &quot;malAMLOrMDS&quot;,
+              &quot;malNonBreastSolid&quot;,
+              &quot;malNonBreastSolidType&quot;,
+              &quot;malOtherBloodCancers&quot;,
+              &quot;malSMRelatedDeaths&quot;,
+              &quot;malSecondPrimary&quot;,
+              &quot;NOTES&quot;)
+setnames(D, oldnames, newnames[1:33])
+</code></pre>
+
+<h1 id="tidy-data"><a name="user-content-tidy-data" href="#tidy-data" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Tidy data</h1>
+<p>Create a <code>rowid</code> variable.<br />
+This will be handy later.</p>
+<pre><code class="r">D &lt;- D[, rowid := .I]
+</code></pre>
+
+<p>Fix some minor data entry inconsistencies.</p>
+<pre><code class="r">D &lt;- D[grep(&quot;Nitz&quot;, authorYear), authorYear := gsub(&quot;2014$&quot;, &quot;2014)&quot;, authorYear)]
+D &lt;- D[grep(&quot;Wolmark&quot;, authorYear), authorYear := gsub(&quot;, 2001$&quot;, &quot; (2001)&quot;, authorYear)]
+</code></pre>
+
+<p>Input missing data for Bergh (2000); row was split.</p>
+<pre><code class="r">col &lt;- grep(&quot;^cyclophosphamide&quot;, names(D), invert = TRUE)
+D[11, col] &lt;- D[10, col, with = FALSE]
+# D[11, ]
+# D[10, ]
+</code></pre>
+
+<p>Fix trial column for Romond (2005).</p>
+<pre><code class="r">D &lt;- D[grep(&quot;Romond&quot;, authorYear), trial := gsub(&quot;&amp;N&quot;, &quot;&amp; N&quot;, trial)]
+</code></pre>
+
+<p>Make <code>medianFU</code> numeric.</p>
+<pre><code class="r">D &lt;- D[grep(&quot;-&quot;, medianFU, invert = TRUE), medianFUNum := round(as.numeric(medianFU), digits = 2)]
+x &lt;- D[grep(&quot;-&quot;, medianFU), medianFU]
+x &lt;- as.numeric(unlist(strsplit(x, &quot;-&quot;)))
+x1 &lt;- x[seq(1, length(x), 2)]
+x2 &lt;- x[seq(2, length(x), 2)]
+xbar &lt;- rowMeans(cbind(x1, x2))
+D &lt;- D[grep(&quot;-&quot;, medianFU), medianFUNum := xbar]
+D &lt;- D[,
+       `:=` (medianFUChar = medianFU,
+             medianFU = medianFUNum,
+             medianFUNum = NULL)]
+unique(D[as.character(medianFU) != medianFUChar, .(medianFU, medianFUChar)])
+</code></pre>
+
+<pre><code>##    medianFU       medianFUChar
+## 1:     38.3 38.299999999999997
+## 2:     73.0              71-75
+## 3:     99.6 99.600000000000009
+## 4:     28.8 28.799999999999997
+</code></pre>
+
+<pre><code class="r">D &lt;- D[, medianFUChar := NULL]
+</code></pre>
+
+<p>Recode mal* values of <code>NR</code> and <code>-</code> to <code>NA</code>.</p>
+<pre><code class="r">recode &lt;- function(x) {
+    missval &lt;- c(&quot;-&quot;, &quot;NR&quot;, &quot; &quot;)
+    vec &lt;- D[, get(x)]
+    vec[vec %in% missval] &lt;- NA
+    vec
+}
+col &lt;- grep(&quot;^mal&quot;, names(D), value = TRUE)
+for (i in 1:length(col)) {
+    D[, col[i]] &lt;- recode(col[i])
+}
+</code></pre>
+
+<p>Substitute non-numeric text in mal* values.</p>
+<pre><code class="r">substitute &lt;- function(x) {
+    vec &lt;- D[, get(x)]
+    vec &lt;- gsub(&quot;[[:alpha:]]&quot;, &quot;&quot;, vec)
+    vec
+}
+col &lt;- grep(&quot;^mal&quot;, names(D), value = TRUE)
+for (i in 1:4) {
+    # Only substitute a subset of mal* columns
+    D[, col[i]] &lt;- substitute(col[i])
+}
+</code></pre>
+
+<p>Convert mal* values to numeric.</p>
+<pre><code class="r">for (i in 1:4) {
+    # Only convert a subset of mal* columns
+    D &lt;- D[, col[i] := as.numeric(get(col[i]))]
+}
+</code></pre>
+
+<p>The <code>malAMLOrMDS</code> column, as entered, captures number of AML or MDS malignancies if the study reported them grouped as opposed to separately.<br />
+If the study reported them as separately, then these counts are captures in the <code>malAML</code> and <code>malMDS</code> columns.<br />
+I.e., the <code>malAML</code>, <code>malMDS</code>, and <code>malAMLOrMDS</code> columns are mutually exclusive counts.<br />
+We want to create another column, <code>malAMLOrMDSTotal</code>, to be non-mutually exclusive from <code>malAML</code>, <code>malMDS</code>, and <code>malAMLOrMDS</code>.<br />
+If none of the <code>malAML</code>, <code>malMDS</code>, and <code>malAMLOrMDS</code> values are populated, then set <code>malAMLOrMDSTotal</code> to <code>NA</code>, also.<br />
+NOTE: Couldn&rsquo;t get this to work: <a href="http://stackoverflow.com/a/16513949/1427069"><a href="http://stackoverflow.com/a/16513949/1427069"><a href="http://stackoverflow.com/a/16513949/1427069">http://stackoverflow.com/a/16513949/1427069</a></a></a>.</p>
+<pre><code class="r">s &lt;- sample(D[, rowid], 12)
+malAMLOrMDSTotal &lt;- rowSums(D[, .(malAML, malMDS, malAMLOrMDS)], na.rm=TRUE)
+D &lt;- D[, malAMLOrMDSTotal := malAMLOrMDSTotal]
+D &lt;- D[is.na(malAML) &amp; is.na(malMDS) &amp; is.na(malAMLOrMDS), malAMLOrMDSTotal := NA]
+D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
+</code></pre>
+
+<pre><code>##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
+##  1:    49     NA     NA          NA               NA
+##  2:    14      3      0          NA                3
+##  3:    13      0      0          NA                0
+##  4:    33      0      0          NA                0
+##  5:    80     NA     NA          NA               NA
+##  6:    41      1     NA          NA                1
+##  7:    72      2     NA          NA                2
+##  8:    78     NA     NA          NA               NA
+##  9:    70     NA     NA          NA               NA
+## 10:    28     NA     NA          NA               NA
+## 11:    96     NA     NA          NA               NA
+## 12:    71      1     NA          NA                1
+</code></pre>
+
+<p>Remove text from <code>nITT</code> column.</p>
+<pre><code class="r">D &lt;- D[authorYear == &quot;Misset (1996)&quot; &amp; arm == 2, nITT := &quot;137&quot;]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; arm == 1, nITT := &quot;210&quot;]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; arm == 2, nITT := &quot;197&quot;]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; arm == 3, nITT := &quot;195&quot;]
+D &lt;- D[, nITT := as.integer(nITT)]
+</code></pre>
+
+<p>Clean up the <code>regimen</code> and <code>dose</code> columns.<br />
+Output to <a href="///H://Other/SecMalAfterBreastCaACT/regimens.md">regimens.md</a> for checking.</p>
+<pre><code class="r">D &lt;- D[, regimen := gsub(&quot;\\s$&quot;, &quot;&quot;, regimen)]
+D &lt;- D[, regimen := gsub(&quot;\\r*\\n&quot;, &quot; &quot;, regimen)]
+doseVar &lt;- grep(&quot;dose&quot;, names(D), ignore.case = TRUE, value = TRUE)
+for (i in 1:length(doseVar)) {
+    D &lt;- D[, doseVar[i] := gsub(&quot;\\r*\\n&quot;, &quot; &quot;, get(doseVar[i]))]
+}
+cat(kable(D[, .N, c(&quot;regimen&quot;, doseVar), with = TRUE][order(regimen)]),
+    file = &quot;regimens.md&quot;,
+    sep = &quot;\n&quot;)
+file.info(&quot;regimens.md&quot;)
+</code></pre>
+
+<pre><code>##             size isdir mode               mtime               ctime
+## regimens.md 7215 FALSE  644 2016-08-01 15:38:58 2016-08-01 15:38:58
+##                           atime  uid  gid uname   grname
+## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+</code></pre>
+
+<p>Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.</p>
+<pre><code class="r">D &lt;- D[, anthracyclineTotalDose := as.numeric(anthracyclineTotalDose)]
+</code></pre>
+
+<pre><code>## Warning: NAs introduced by coercion
+</code></pre>
+
+<pre><code class="r">D &lt;- D[authorYear == &quot;Bergh (2000)&quot; &amp; regimen == &quot;FEC\nTailored&quot;, anthracyclineTotalDose := 75]
+D &lt;- D[authorYear == &quot;Henderson (2003)&quot;, anthracyclineTotalDose := 75]
+D &lt;- D[authorYear == &quot;Colleoni (2009)&quot; &amp; regimen == &quot;AC-CMF&quot;, anthracyclineTotalDose := 75]
+D &lt;- D[, cyclophosphamideDose := as.numeric(cyclophosphamideDose)]
+</code></pre>
+
+<pre><code>## Warning: NAs introduced by coercion
+</code></pre>
+
+<pre><code class="r">D &lt;- D[authorYear == &quot;Colleoni (2009)&quot; &amp; regimen == &quot;EC&quot;, cyclophosphamideDose := 600]
+D &lt;- D[authorYear == &quot;Bergh (2000)&quot; &amp; regimen == &quot;FEC\nTailored&quot;, cyclophosphamideDose := 900]
+D &lt;- D[authorYear == &quot;Henderson (2003)&quot;, anthracyclineTotalDose := 75]
+D &lt;- D[, taxaneCourses := as.numeric(taxaneCourses)]
+</code></pre>
+
+<pre><code>## Warning: NAs introduced by coercion
+</code></pre>
+
+<pre><code class="r">D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; regimen == &quot;T&quot; &amp; arm == 3, taxaneCourses := 4]
+D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; regimen == &quot;T&quot; &amp; arm == 4, taxaneCourses := 6]
+D &lt;- D[, fluoroucilTotalDose := as.numeric(fluoroucilTotalDose)]
+</code></pre>
+
+<pre><code>## Warning: NAs introduced by coercion
+</code></pre>
+
+<pre><code class="r">D &lt;- D[authorYear == &quot;Bergh (2000)&quot; &amp; regimen == &quot;FEC\nTailored&quot;, fluoroucilTotalDose := 600]
+D &lt;- D[authorYear == &quot;Joensuu (2012)&quot; &amp; regimen == &quot;TX-CEX&quot;, fluoroucilTotalDose := NA]
+D &lt;- D[!is.na(anthracyclineTotalDose) &amp; !is.na(anthracyclineTotalDose),
+       anthracyclineCumulDose := anthracyclineTotalDose * anthracyclineCourses]
+D &lt;- D[!is.na(cyclophosphamideDose) &amp; !is.na(cyclophosphamideCourses),
+       cyclophosphamideCumulDose := cyclophosphamideDose * cyclophosphamideCourses]
+D &lt;- D[!is.na(as.numeric(taxaneTotalDose)) &amp; !is.na(taxaneCourses),
+       taxaneCumulDose := as.numeric(taxaneTotalDose) * taxaneCourses]
+D &lt;- D[!is.na(fluoroucilTotalDose) &amp; !is.na(fluoroucilCourses),
+       fluoroucilCumulDose := fluoroucilTotalDose * fluoroucilCourses]
+# D &lt;- D[is.na(anthracyclineCumulDose), anthracyclineCumulDose := 0]
+# D &lt;- D[is.na(cyclophosphamideCumulDose), cyclophosphamideCumulDose := 0]
+# D &lt;- D[is.na(taxaneCumulDose), taxaneCumulDose := 0]
+# D &lt;- D[is.na(fluoroucilCumulDose), fluoroucilCumulDose := 0]
+</code></pre>
+
+<p>Check.</p>
+<pre><code class="r">head(D[!is.na(anthracyclineCumulDose),
+       .(authorYear, regimen, anthracyclineCumulDose, anthracyclineTotalDose, anthracyclineCourses)])
+</code></pre>
+
+<pre><code>##       authorYear regimen anthracyclineCumulDose anthracyclineTotalDose
+## 1: Fisher (1990)      AC                    240                     60
+## 2: Fisher (1990)  AC-CMF                    240                     60
+## 3: Misset (1996)    AVCF                    360                     30
+## 4: Fisher (1999)      AC                    240                     60
+## 5: Fisher (1999)      AC                    240                     60
+## 6: Fisher (1999)      AC                    240                     60
+##    anthracyclineCourses
+## 1:                    4
+## 2:                    4
+## 3:                   12
+## 4:                    4
+## 5:                    4
+## 6:                    4
+</code></pre>
+
+<pre><code class="r">head(D[!is.na(cyclophosphamideCumulDose),
+       .(authorYear, regimen, cyclophosphamideCumulDose, cyclophosphamideDose, cyclophosphamideCourses)])
+</code></pre>
+
+<pre><code>##       authorYear regimen cyclophosphamideCumulDose cyclophosphamideDose
+## 1: Fisher (1990)      AC                      2400                  600
+## 2: Fisher (1990)  AC-CMF                      2400                  600
+## 3: Misset (1996)    AVCF                     14400                 1200
+## 4: Fisher (1999)      AC                      4800                 1200
+## 5: Fisher (1999)      AC                      4800                 2400
+## 6: Fisher (1999)      AC                      9600                 2400
+##    cyclophosphamideCourses
+## 1:                       4
+## 2:                       4
+## 3:                      12
+## 4:                       4
+## 5:                       2
+## 6:                       4
+</code></pre>
+
+<pre><code class="r">head(D[!is.na(taxaneCumulDose),
+       .(authorYear, regimen, taxaneCumulDose, taxaneTotalDose, taxaneCourses)])
+</code></pre>
+
+<pre><code>##        authorYear regimen taxaneCumulDose taxaneTotalDose taxaneCourses
+## 1:  Citron (2003)   A-T-C             700             175             4
+## 2:  Citron (2003)   A-T-C             700             175             4
+## 3:  Citron (2003)    AC-T             700             175             4
+## 4:  Citron (2003)    AC-T             700             175             4
+## 5: Francis (2008) A-T-CMF             300             100             3
+## 6: Francis (2008)  AT-CMF             300              75             4
+</code></pre>
+
+<pre><code class="r">head(D[!is.na(fluoroucilCumulDose),
+       .(authorYear, regimen, fluoroucilCumulDose, fluoroucilTotalDose, fluoroucilCourses)])
+</code></pre>
+
+<pre><code>##          authorYear regimen fluoroucilCumulDose fluoroucilTotalDose
+## 1:    Misset (1996)    AVCF               19200                1600
+## 2: Venturini (2005)     FEC                3600                 600
+## 3: Venturini (2005)     FEC                3600                 600
+## 4:    Martin (2010)     FAC                3000                 500
+## 5:     Roche (2006)     FEC                3000                 500
+## 6:     Roche (2006)   FEC-T                1500                 500
+##    fluoroucilCourses
+## 1:                12
+## 2:                 6
+## 3:                 6
+## 4:                 6
+## 5:                 6
+## 6:                 3
+</code></pre>
+
+<h2 id="manual-tidying"><a name="user-content-manual-tidying" href="#manual-tidying" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Manual tidying</h2>
+<p>After an early round of analysis, we realized there were some <code>nITT</code> data entry errors in the commit <a href="https://github.com/benjamin-chan/SecMalAfterBreastCaACT/raw/26115dab1eb2b075d40f545514a03c3b30cde6b4/SecondaryMalignancies_Data_BG_3_4.xlsx">26115da</a> (Jun 1, 2016) spreadsheet.</p>
+<pre><code class="r">D &lt;- D[authorYear == &quot;Mamounas (2005)&quot; &amp; nITT == 1528, `:=` (nITTOld = nITT, nITT = 1529, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; nITT == 210, `:=` (nITTOld = nITT, nITT = 212, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; nITT == 197, `:=` (nITTOld = nITT, nITT = 209, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fumoleu (2003)&quot; &amp; nITT == 195, `:=` (nITTOld = nITT, nITT = 200, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fargeot (2004)&quot; &amp; nITT == 155, `:=` (nITTOld = nITT, nITT = 164, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fargeot (2004)&quot; &amp; nITT == 163, `:=` (nITTOld = nITT, nITT = 174, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Kerbrat (2007)&quot; &amp; nITT == 235, `:=` (nITTOld = nITT, nITT = 241, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Kerbrat (2007)&quot; &amp; nITT == 236, `:=` (nITTOld = nITT, nITT = 241, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fisher (1997)&quot; &amp; nITT == 763, `:=` (nITTOld = nITT, nITT = 767, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Fisher (1997)&quot; &amp; nITT == 771, `:=` (nITTOld = nITT, nITT = 772, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Bonneterre (2005)&quot; &amp; nITT == 271, `:=` (nITTOld = nITT, nITT = 289, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Bonneterre (2005)&quot; &amp; nITT == 266, `:=` (nITTOld = nITT, nITT = 276, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Roche (2006)&quot; &amp; nITT == 163, `:=` (nITTOld = nITT, nITT = 164, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Roche (2006)&quot; &amp; nITT == 168, `:=` (nITTOld = nITT, nITT = 169, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; nITT == 1107, `:=` (nITTOld = nITT, nITT = 1142, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; nITT ==  766, `:=` (nITTOld = nITT, nITT =  789, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; nITT == 1119, `:=` (nITTOld = nITT, nITT = 1151, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Shulman (2014)&quot; &amp; nITT ==  782, `:=` (nITTOld = nITT, nITT =  789, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Swain (2013)&quot; &amp; nITT == 1617, `:=` (nITTOld = nITT, nITT = 1630, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Swain (2013)&quot; &amp; nITT == 1624, `:=` (nITTOld = nITT, nITT = 1634, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Swain (2013)&quot; &amp; nITT == 1618, `:=` (nITTOld = nITT, nITT = 1630, isFixed = TRUE)]
+D[isFixed == TRUE, .(authorYear, regimen, nITTOld, nITT)]
+</code></pre>
+
+<pre><code>##            authorYear   regimen nITTOld nITT
+##  1:   Mamounas (2005)        AC    1528 1529
+##  2:    Fumoleu (2003)    FEC 50     210  212
+##  3:    Fumoleu (2003)  3 FEC 50     197  209
+##  4:    Fumoleu (2003)    FEC 75     195  200
+##  5:    Fargeot (2004) Tamoxifen     155  164
+##  6:    Fargeot (2004)   EPI-Tam     163  174
+##  7:    Kerbrat (2007)       FEC     235  241
+##  8:    Kerbrat (2007)     E+Vnr     236  241
+##  9:     Fisher (1997)        AC     763  767
+## 10:     Fisher (1997)        AC     771  772
+## 11: Bonneterre (2005)    FEC 50     271  289
+## 12: Bonneterre (2005)   FEC 100     266  276
+## 13:      Roche (2006) Tamoxifen     163  164
+## 14:      Roche (2006)       FEC     168  169
+## 15:    Shulman (2014)        AC    1107 1142
+## 16:    Shulman (2014)        AC     766  789
+## 17:    Shulman (2014)         T    1119 1151
+## 18:    Shulman (2014)         T     782  789
+## 19:      Swain (2013)       ACT    1617 1630
+## 20:      Swain (2013)      AC-T    1624 1634
+## 21:      Swain (2013)     AC-TG    1618 1630
+##            authorYear   regimen nITTOld nITT
+</code></pre>
+
+<pre><code class="r">D &lt;- D[, `:=` (nITTOld = NULL, isFixed = NULL)]
+</code></pre>
+
+<p>We also made the decision to use the AML/MDS outcomes reported in Perez (2011) as the outcomes for Romond (2005) since they study the same cohort. Other edits to <em>AML or MDS</em> and <em>non-breast solid</em> malignancy outcome were needed, as well.</p>
+<pre><code class="r">D &lt;- D[authorYear == &quot;Martin (2010)&quot; &amp; regimen == &quot;TAC&quot;,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Martin (2010)&quot; &amp; regimen == &quot;FAC&quot;,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Romond (2005)&quot; &amp; regimen == &quot;AC-T&quot;,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 2, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Romond (2005)&quot; &amp; regimen == &quot;ACT-T-Trast&quot;,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 1, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Del Mastro (2015)&quot;,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Del Mastro (2015)&quot; &amp; regimen == &quot;EC-T&quot; &amp; nITT == 502,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 2, isFixed = TRUE)]
+
+D &lt;- D[authorYear == &quot;Bernard-Marty (2003)&quot; &amp; regimen == &quot;EC&quot; &amp; nITT == 267,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 4, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Bonneterre (2005)&quot; &amp; regimen == &quot;FEC 50&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Bonneterre (2005)&quot; &amp; regimen == &quot;FEC 100&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 15, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Citron (2003)&quot; &amp; regimen == &quot;A-T-C&quot; &amp; nITT == 493,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Citron (2003)&quot; &amp; regimen == &quot;AC-T&quot; &amp; nITT == 495,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Eiermann (2011)&quot; &amp; regimen == &quot;AC-T&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 34, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Eiermann (2011)&quot; &amp; regimen == &quot;TAC&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 31, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Romond (2005)&quot; &amp; regimen == &quot;AC-T&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 13, isFixed = TRUE)]
+D &lt;- D[authorYear == &quot;Romond (2005)&quot; &amp; regimen == &quot;ACT-T-Trast&quot;,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 4, isFixed = TRUE)]
+
+D[isFixed == TRUE,
+  .(authorYear, regimen, nITT, malAMLOrMDSTotalOld, malAMLOrMDSTotal, malNonBreastSolidOld, malNonBreastSolid)]
+</code></pre>
+
+<pre><code>##               authorYear     regimen nITT malAMLOrMDSTotalOld
+##  1: Bernard-Marty (2003)          EC  267                  NA
+##  2:        Citron (2003)       A-T-C  493                  NA
+##  3:        Citron (2003)        AC-T  495                  NA
+##  4:        Martin (2010)         TAC  539                  NA
+##  5:        Martin (2010)         FAC  521                  NA
+##  6:    Bonneterre (2005)      FEC 50  289                  NA
+##  7:    Bonneterre (2005)     FEC 100  276                  NA
+##  8:      Eiermann (2011)        AC-T 1649                  NA
+##  9:      Eiermann (2011)         TAC 1649                  NA
+## 10:        Romond (2005)        AC-T  872                  NA
+## 11:        Romond (2005) ACT-T-Trast  864                  NA
+## 12:    Del Mastro (2015)        EC-T  545                  NA
+## 13:    Del Mastro (2015)       FEC-T  544                  NA
+## 14:    Del Mastro (2015)        EC-T  502                   0
+## 15:    Del Mastro (2015)       FEC-T  500                  NA
+##     malAMLOrMDSTotal malNonBreastSolidOld malNonBreastSolid
+##  1:                0                    3                 4
+##  2:                3                   10                11
+##  3:                2                   10                11
+##  4:                0                   NA                 9
+##  5:                0                   NA                16
+##  6:                1                    9                11
+##  7:                1                   12                15
+##  8:                2                   NA                34
+##  9:                4                   NA                31
+## 10:                2                   NA                13
+## 11:                1                   NA                 4
+## 12:                0                   NA                NA
+## 13:                0                   NA                NA
+## 14:                2                   NA                NA
+## 15:                0                   NA                NA
+</code></pre>
+
+<pre><code class="r">D &lt;- D[, `:=` (malAMLOrMDSTotalOld = NULL, malNonBreastSolidOld = NULL, isFixed = NULL)]
+</code></pre>
+
+<p>Deduplicate.</p>
+<pre><code class="r">n0 &lt;- nrow(D)
+setkey(D, authorYear, trial, arm)
+D &lt;- unique(D)
+message(sprintf(&quot;Removed %d duplicate row(s) (%.03g%%)&quot;, n0 - nrow(D), (n0 - nrow(D)) / n0 * 100))
+</code></pre>
+
+<pre><code>## Removed 1 duplicate row(s) (1.03%)
+</code></pre>
+
+<hr />
+<h1 id="summarize"><a name="user-content-summarize" href="#summarize" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Summarize</h1>
+<p>Define some functions.</p>
+<pre><code class="r">scale &lt;- 1e4
+calcPct &lt;- function (x, n) {
+  prec &lt;- &quot;%.3g&quot;
+  sprintf(paste0(prec, &quot;%%&quot;),
+          median(x / n, na.rm = TRUE) * 100)
+}
+calcRate &lt;- function (x, n, y) {
+  prec &lt;- &quot;%.3g&quot;
+  py &lt;- scale
+  sprintf(paste(prec, &quot;per %s p-y&quot;),
+          median(x / (n * (y / 12)), na.rm=TRUE) * py,
+          py)
+}
+</code></pre>
+
+<p>Summarize the regimens.<br />
+Output to <a href="///H://Other/SecMalAfterBreastCaACT/summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
+<pre><code class="r">D &lt;- D[,
+       `:=` (isAnthra = !is.na(anthracyclineTotalDose),
+             isCyclo = !is.na(cyclophosphamideDose),
+             isTaxane = !is.na(taxaneTotalDose),
+             isFluoro = !is.na(fluoroucilTotalDose))]
+D1 &lt;- melt(D,
+           id.vars=c(&quot;id&quot;, &quot;authorYear&quot;, &quot;arm&quot;,
+                     &quot;isAnthra&quot;, &quot;anthracyclineCumulDose&quot;,
+                     &quot;isCyclo&quot;, &quot;cyclophosphamideCumulDose&quot;,
+                     &quot;isTaxane&quot;, &quot;taxaneCumulDose&quot;,
+                     &quot;isFluoro&quot;, &quot;fluoroucilCumulDose&quot;,
+                     &quot;nITT&quot;, &quot;medianFU&quot;),
+           measure.vars=c(&quot;malAML&quot;, &quot;malMDS&quot;, &quot;malAMLOrMDSTotal&quot;, &quot;malNonBreastSolid&quot;),
+           value.name=&quot;malN&quot;,
+           variable.name=&quot;malType&quot;)
+
+D1 &lt;- D1[, malType := gsub(&quot;^mal&quot;, &quot;&quot;, malType)]
+D1 &lt;- D1[, malType := factor(malType,
+                             levels=c(&quot;AML&quot;, &quot;MDS&quot;, &quot;AMLOrMDSTotal&quot;, &quot;NonBreastSolid&quot;),
+                             labels=c(&quot;AML&quot;, &quot;MDS&quot;, &quot;AML or MDS&quot;, &quot;Non-Breast Solid&quot;))]
+D1 &lt;- D1[, py := nITT * (medianFU / 12)]
+D1 &lt;- D1[, rate := malN / py * scale]
+summaryRegimens &lt;- D1[,
+                      .(totalN = sum(nITT, na.rm = TRUE),
+                        totalPersonYears = round(sum(py, na.rm = TRUE)),
+                        totalMalignancies = sum(malN, na.rm = TRUE),
+                        medianPct = calcPct(malN, nITT),
+                        medianRate = calcRate(malN, nITT, medianFU)),
+                      .(isAnthra,
+                        isCyclo,
+                        isTaxane,
+                        isFluoro,
+                        malType)]
+summaryRegimens &lt;- summaryRegimens[order(-isAnthra, -isCyclo, -isTaxane, -isFluoro, malType)]
+cat(kable(summaryRegimens),
+    file = &quot;summaryRegimens.md&quot;,
+    sep = &quot;\n&quot;)
+file.info(&quot;summaryRegimens.md&quot;)
+</code></pre>
+
+<pre><code>##                    size isdir mode               mtime               ctime
+## summaryRegimens.md 4624 FALSE  644 2016-08-01 15:38:58 2016-08-01 15:38:58
+##                                  atime  uid  gid uname   grname
+## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+</code></pre>
+
+<hr />
+<h1 id="study-characteristics-and-outcomes"><a name="user-content-study-characteristics-and-outcomes" href="#study-characteristics-and-outcomes" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Study Characteristics and Outcomes</h1>
+<p>Populate Appendix Table 1.<br />
+Need columns for</p>
+<ul>
+<li>Study</li>
+<li>Country</li>
+<li>Median follow-up (months)</li>
+<li>Regimen name</li>
+<li>Cumulative dose<ul>
+<li>Anthracyclines</li>
+<li>Cyclophosphamide</li>
+<li>Taxanes</li>
+</ul>
+</li>
+<li>N</li>
+<li>Person-years (the denominator for the incidence rate)</li>
+<li>AML/MDS count (the numerator for the incidence rate)</li>
+<li>AML/MDS incidence, per 10,000 person-years</li>
+<li>Non-breast solid count (the numerator for the incidence rate)</li>
+<li>Non-breast solid incidence, per 10,000 person-years</li>
+</ul>
+<p>Output to multiple formats:</p>
+<ul>
+<li>Excel workbook, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a></li>
+<li>CSV file, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.csv">appendixTableStudyCharacteristicsAndOutcomes.csv</a></li>
+<li>Markdown file, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.md">appendixTableStudyCharacteristicsAndOutcomes.md</a></li>
+</ul>
+<pre><code class="r">library(xlsx)
+</code></pre>
+
+<pre><code>## Error in library(xlsx): there is no package called 'xlsx'
+</code></pre>
+
+<pre><code class="r">library(IRdisplay)
+</code></pre>
+
+<pre><code>## Error in library(IRdisplay): there is no package called 'IRdisplay'
+</code></pre>
+
+<pre><code class="r">library(xtable)
+T &lt;- D[,
+       .(study = ifelse(!is.na(trial), paste(authorYear, trial), authorYear),
+         country = NA,
+         medianFU = round(medianFU),
+         regimen,
+         anthrCumulDose = round(anthracyclineCumulDose),
+         cycloCumulaDose = round(cyclophosphamideCumulDose),
+         taxaneCumulDose = round(taxaneCumulDose),
+         nITT,
+         py = nITT * (medianFU / 12),
+         nAMLOrMDS = malAMLOrMDSTotal,
+         incidenceAMLOrMDS = signif(malAMLOrMDSTotal / (nITT * (medianFU / 12)) * scale, digits=3),
+         nNonBreastSolid = malNonBreastSolid,
+         incidenceNonBreastSolid = signif(malNonBreastSolid / (nITT * (medianFU / 12)) * scale, digits=3))]
+write.xlsx(T,
+           &quot;appendixTableStudyCharacteristicsAndOutcomes.xlsx&quot;,
+           row.names=FALSE,
+           showNA=FALSE)
+write.csv(T,
+          &quot;appendixTableStudyCharacteristicsAndOutcomes.csv&quot;,
+          quote=FALSE,
+          row.names=FALSE)
+cat(kable(T),
+    file = &quot;appendixTableStudyCharacteristicsAndOutcomes.md&quot;,
+    sep = &quot;\n&quot;)
+file.info(grep(&quot;appendixTableStudyCharacteristicsAndOutcomes&quot;, list.files(), value=TRUE))[c(&quot;size&quot;, &quot;mtime&quot;)]
+</code></pre>
+
+<pre><code>##                                                    size
+## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
+## appendixTableStudyCharacteristicsAndOutcomes.md   20580
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 15884
+##                                                                 mtime
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-01 15:38:58
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-01 15:38:58
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-01 15:38:58
+</code></pre>
+
+<pre><code class="r">T &lt;- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
+</code></pre>
+
+<hr />
+<h1 id="meta-regression"><a name="user-content-meta-regression" href="#meta-regression" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Meta-regression</h1>
+<p>Estimate meta-regression models for log transformed incidence rate.<br />
+Model is</p>
+<p>$$\frac{y_i}{\text{py}<em>i} = \beta x_i + \sigma</em>\text{study}$$</p>
+<p>Or</p>
+<p>$$\frac{y_i}{\text{py}<em _text_high="\text{high" dose="dose">i} = \beta I</em>, i} + \sigma_\text{study}$$</p>
+<p>Models were estimated using the <code>rma.mv()</code> function from the metafor` package for R.</p>
+<pre><code class="r">library(metafor)
+</code></pre>
+
+<pre><code>## Loading required package: Matrix
+</code></pre>
+
+<pre><code>## Loading 'metafor' package (version 1.9-8). For an overview 
+## and introduction to the package please type: help(metafor).
+</code></pre>
+
+<pre><code class="r">citation(&quot;metafor&quot;)
+</code></pre>
+
+<pre><code>## 
+## To cite the metafor package in publications, please use:
+## 
+##   Viechtbauer, W. (2010). Conducting meta-analyses in R with the
+##   metafor package. Journal of Statistical Software, 36(3), 1-48.
+##   URL: http://www.jstatsoft.org/v36/i03/
+## 
+## A BibTeX entry for LaTeX users is
+## 
+##   @Article{,
+##     title = {Conducting meta-analyses in {R} with the {metafor} package},
+##     author = {Wolfgang Viechtbauer},
+##     journal = {Journal of Statistical Software},
+##     year = {2010},
+##     volume = {36},
+##     number = {3},
+##     pages = {1--48},
+##     url = {http://www.jstatsoft.org/v36/i03/},
+##   }
+</code></pre>
+
+<p>Define meta-regression functions.</p>
+<pre><code class="r">pvalToChar &lt;- function (p) {
+  if (p &lt; 0.001) {
+    pvalue &lt;- &quot;p &lt; 0.001&quot;
+  } else {
+    pvalue &lt;- sprintf(&quot;p = %.03f&quot;, p)
+  }
+  pvalue
+}
+metareg &lt;- function (D) {
+  require(metafor)
+  D &lt;- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  xData &lt;- unique(D[, .(drug, x, xHighDose, malType)])
+  D &lt;- escalc(&quot;IRLN&quot;, xi=malN, ti=py, data=D)
+  randomEffect &lt;- list(~ 1 | id)
+  MLin &lt;- rma.mv(yi ~ x, vi, random=randomEffect, data=D)
+  MBin &lt;- rma.mv(yi ~ xHighDose, vi, random=randomEffect, data=D)
+  pvalueLin &lt;- MLin$pval[which(row.names(MLin$b) == &quot;x&quot;)]
+  pvalueBin &lt;- MBin$pval[which(row.names(MBin$b) == &quot;xHighDoseTRUE&quot;)]
+  predLin &lt;- predict(MLin, xData[, x], transf = exp)[[&quot;pred&quot;]] * scale
+  confLowerLin &lt;- predict(MLin, xData[, x], transf = exp)[[&quot;cr.lb&quot;]] * scale
+  confUpperLin &lt;- predict(MLin, xData[, x], transf = exp)[[&quot;cr.ub&quot;]] * scale
+  predBin &lt;- predict(MBin, xData[, xHighDose], transf = exp)[[&quot;pred&quot;]] * scale
+  confLowerBin &lt;- predict(MBin, xData[, xHighDose], transf = exp)[[&quot;cr.lb&quot;]] * scale
+  confUpperBin &lt;- predict(MBin, xData[, xHighDose], transf = exp)[[&quot;cr.ub&quot;]] * scale
+  pred &lt;- data.table(xData, predLin, confLowerLin, confUpperLin, predBin, confLowerBin, confUpperBin, scale)
+  setorder(pred, x)
+  list(rmaLin = MLin,
+       rmaBin = MBin,
+       pvalueLin = pvalToChar(pvalueLin),
+       pvalueBin = pvalToChar(pvalueBin),
+       pred = pred)
+}
+plotreg &lt;- function (M, D, title, xlab, xbreaks, xscale) {
+  require(ggplot2)
+  require(RColorBrewer)
+  require(tools)
+  pvalues &lt;- c(M$pvalueLin, M$pvalueBin)
+  x &lt;- seq(min(M$rmaLin$X[, &quot;x&quot;]), max(M$rmaLin$X[, &quot;x&quot;]), length.out=100)
+  yhat1 &lt;- unique(data.table(malType = mal,
+                             x,
+                             yhat = predict(M$rmaLin, x, transf = exp)[[&quot;pred&quot;]] * scale))
+  xHighDose &lt;- as.logical(M$rmaBin$X[, &quot;xHighDoseTRUE&quot;])
+  yhat2 &lt;- unique(data.table(malType = mal,
+                             xHighDose,
+                             yhat = predict(M$rmaBin, xHighDose, transf = exp)[[&quot;pred&quot;]] * scale))
+  D &lt;- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  D &lt;- D[, malType := droplevels(malType)]
+  steps &lt;- merge(D[, .(min = min(x), max = max(x)), .(malType, xHighDose)],
+                 yhat2,
+                 by=c(&quot;malType&quot;, &quot;xHighDose&quot;))
+  steps &lt;- melt(steps, id.vars=c(&quot;malType&quot;, &quot;xHighDose&quot;, &quot;yhat&quot;), measure.vars=c(&quot;min&quot;, &quot;max&quot;), value.name=&quot;x&quot;)
+  annoLin &lt;- data.frame(x=Inf, y=1.2, label=pvalues[c(1)], malType=levels(D[, malType]))
+  annoBin &lt;- data.frame(x=Inf, y=1.4, label=pvalues[c(2)], malType=levels(D[, malType]))
+  pal &lt;- brewer.pal(4, name=&quot;RdBu&quot;)
+  G &lt;- ggplot(D, aes(x=x * xscale, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
+  G &lt;- G + geom_point(alpha=1/3, position=&quot;jitter&quot;)
+  G &lt;- G + geom_line(data=yhat1, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[4])
+  G &lt;- G + geom_step(data=steps, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[1])
+  G &lt;- G + geom_text(data=annoLin,
+                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[4])
+  G &lt;- G + geom_text(data=annoBin,
+                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[1])
+  G &lt;- G + scale_x_log10(xlab, breaks=xbreaks)
+  G &lt;- G + scale_y_log10(sprintf(&quot;Rate per %s person-years&quot;, format(scale, big.mark=&quot;,&quot;)))
+  G &lt;- G + labs(title=title)
+  G &lt;- G + theme_bw()
+  G &lt;- G + theme(legend.position=&quot;none&quot;)
+  filename &lt;- gsub(&quot;\\s+&quot;,
+                   &quot;&quot;,
+                   toTitleCase(paste(gsub(&quot;[[:punct:]]&quot;, &quot;&quot;, title),
+                                     gsub(&quot;cumulative dose&quot;, &quot;&quot;, xlab),
+                                     sep=&quot;_&quot;)))
+  ggsave(filename=sprintf(&quot;%s.png&quot;, filename))
+  write.csv(D, file=sprintf(&quot;%s.csv&quot;, filename), row.names=FALSE, quote=FALSE)
+  M$pred[, x := x * xscale]
+  write.csv(M$pred, file=sprintf(&quot;%s_Pred.csv&quot;, filename), row.names=FALSE, quote=FALSE)
+  show(file.info(c(sprintf(&quot;%s.png&quot;, filename), sprintf(&quot;%s.csv&quot;, filename)))[c(&quot;size&quot;, &quot;mtime&quot;)])
+  G
+}
+</code></pre>
+
+<p>Dichotomize cumulative doses</p>
+<ul>
+<li>Cyclophosphamide<ul>
+<li>$\lt 2400$</li>
+<li>$\ge 2400$</li>
+</ul>
+</li>
+<li>Taxane<ul>
+<li>$\lt 500$</li>
+<li>$\ge 500$</li>
+</ul>
+</li>
+</ul>
+<pre><code class="r">D2 &lt;- D1[,
+         .(id = factor(id),
+           authorYear,
+           isCyclo,
+           xCyc = cyclophosphamideCumulDose / 1e3,
+           xCycHighDose = cyclophosphamideCumulDose &gt;= 2400,
+           xTax = taxaneCumulDose / 1e2,
+           xTaxHighDose = taxaneCumulDose &gt;= 500,
+           isAnthra,
+           isTaxane,
+           isFluoro,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+</code></pre>
+
+<h2 id="amlmds"><a name="user-content-amlmds" href="#amlmds" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>AML/MDS</h2>
+<ul>
+<li>Fit the models</li>
+<li>Show model summaries</li>
+<li>Plot the predicted values</li>
+</ul>
+<pre><code class="r">mal &lt;- &quot;AML or MDS&quot;
+D3 &lt;- D2[malType == mal]
+</code></pre>
+
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Cyclophosphamide&quot;, x = xCyc, xHighDose = xCycHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1693  0.4115     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 54) = 67.8113, p-val = 0.0980
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 4.4383, p-val = 0.0351
+## 
+## Model Results:
+## 
+##          estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt   -7.6135  0.2258  -33.7187  &lt;.0001  -8.0560  -7.1709  ***
+## x          0.1182  0.0561    2.1067  0.0351   0.0082   0.2281    *
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2447  0.4946     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 54) = 81.5431, p-val = 0.0091
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.4988, p-val = 0.4800
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -7.5326  0.4261  -17.6799  &lt;.0001  -8.3676  -6.6975  ***
+## xHighDoseTRUE    0.3084  0.4367    0.7062  0.4800  -0.5475   1.1642     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p = 0.035&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.480&quot;
+## 
+## $pred
+##                 drug    x xHighDose    malType   predLin confLowerLin
+##  1: Cyclophosphamide 0.90     FALSE AML or MDS  5.491553     2.267006
+##  2: Cyclophosphamide 1.20     FALSE AML or MDS  5.689755     2.371329
+##  3: Cyclophosphamide 1.50     FALSE AML or MDS  5.895109     2.477600
+##  4: Cyclophosphamide 2.00     FALSE AML or MDS  6.253970     2.658358
+##  5: Cyclophosphamide 2.40      TRUE AML or MDS  6.556724     2.805509
+##  6: Cyclophosphamide 3.00      TRUE AML or MDS  7.038556     3.028854
+##  7: Cyclophosphamide 3.60      TRUE AML or MDS  7.555796     3.253208
+##  8: Cyclophosphamide 4.00      TRUE AML or MDS  7.921572     3.402173
+##  9: Cyclophosphamide 4.80      TRUE AML or MDS  8.707101     3.695747
+## 10: Cyclophosphamide 6.64      TRUE AML or MDS 10.822230     4.329759
+## 11: Cyclophosphamide 7.20      TRUE AML or MDS 11.562728     4.507659
+## 12: Cyclophosphamide 9.60      TRUE AML or MDS 15.354901     5.182626
+##     confUpperLin  predBin confLowerBin confUpperBin scale
+##  1:     13.30264 5.353449     1.489197     19.24488 10000
+##  2:     13.65197 5.353449     1.489197     19.24488 10000
+##  3:     14.02661 5.353449     1.489197     19.24488 10000
+##  4:     14.71289 5.353449     1.489197     19.24488 10000
+##  5:     15.32365 7.287257     2.658349     19.97636 10000
+##  6:     16.35644 7.287257     2.658349     19.97636 10000
+##  7:     17.54885 7.287257     2.658349     19.97636 10000
+##  8:     18.44448 7.287257     2.658349     19.97636 10000
+##  9:     20.51374 7.287257     2.658349     19.97636 10000
+## 10:     27.05016 7.287257     2.658349     19.97636 10000
+## 11:     29.65989 7.287257     2.658349     19.97636 10000
+## 12:     45.49296 7.287257     2.658349     19.97636 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Cyclophosphamide cumulative dose&quot;,
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+</code></pre>
+
+<pre><code>## Loading required package: ggplot2
+</code></pre>
+
+<pre><code>## Loading required package: RColorBrewer
+</code></pre>
+
+<pre><code>## Loading required package: tools
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                                 size               mtime
+## AMLorMDS_Cyclophosphamide.png 159601 2016-08-01 15:39:00
+## AMLorMDS_Cyclophosphamide.csv   7240 2016-08-01 15:39:00
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-26" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-26-1.png" /></p>
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Taxane&quot;, x = xTax, xHighDose = xTaxHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2494  0.4994     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 25) = 30.4549, p-val = 0.2077
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 2.5512, p-val = 0.1102
+## 
+## Model Results:
+## 
+##          estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt   -8.2329  0.5566  -14.7925  &lt;.0001  -9.3238  -7.1421  ***
+## x          0.1455  0.0911    1.5972  0.1102  -0.0331   0.3241     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1712  0.4137     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 25) = 26.2243, p-val = 0.3957
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 4.7966, p-val = 0.0285
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -7.7251  0.2433  -31.7527  &lt;.0001  -8.2019  -7.2482  ***
+## xHighDoseTRUE    0.6598  0.3013    2.1901  0.0285   0.0693   1.2503    *
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p = 0.110&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.029&quot;
+## 
+## $pred
+##       drug   x xHighDose    malType  predLin confLowerLin confUpperLin
+##  1: Taxane 2.4     FALSE AML or MDS 3.768667     1.127516     12.59658
+##  2: Taxane 3.0     FALSE AML or MDS 4.112574     1.292010     13.09066
+##  3: Taxane 3.2     FALSE AML or MDS 4.234047     1.349621     13.28311
+##  4: Taxane 4.0     FALSE AML or MDS 4.756896     1.591300     14.21986
+##  5: Taxane 4.5     FALSE AML or MDS 5.115978     1.748778     14.96658
+##  6: Taxane 4.8     FALSE AML or MDS 5.344310     1.844382     15.48576
+##  7: Taxane 6.0      TRUE AML or MDS 6.364197     2.221764     18.23011
+##  8: Taxane 7.0      TRUE AML or MDS 7.361284     2.510308     21.58639
+##  9: Taxane 7.5      TRUE AML or MDS 7.916961     2.639796     23.74361
+## 10: Taxane 8.0      TRUE AML or MDS 8.514585     2.757579     26.29051
+## 11: Taxane 9.0      TRUE AML or MDS 9.848576     2.955772     32.81526
+##      predBin confLowerBin confUpperBin scale
+##  1: 4.416177     1.723889     11.31316 10000
+##  2: 4.416177     1.723889     11.31316 10000
+##  3: 4.416177     1.723889     11.31316 10000
+##  4: 4.416177     1.723889     11.31316 10000
+##  5: 4.416177     1.723889     11.31316 10000
+##  6: 4.416177     1.723889     11.31316 10000
+##  7: 8.542865     3.399838     21.46588 10000
+##  8: 8.542865     3.399838     21.46588 10000
+##  9: 8.542865     3.399838     21.46588 10000
+## 10: 8.542865     3.399838     21.46588 10000
+## 11: 8.542865     3.399838     21.46588 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Taxane cumulative dose&quot;,
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                       size               mtime
+## AMLorMDS_Taxane.png 119578 2016-08-01 15:39:01
+## AMLorMDS_Taxane.csv   3262 2016-08-01 15:39:01
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-27" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" /></p>
+<h3 id="cyclophosphamide-with-and-without-taxanes"><a name="user-content-cyclophosphamide-with-and-without-taxanes" href="#cyclophosphamide-with-and-without-taxanes" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Cyclophosphamide, with and without Taxanes</h3>
+<p>The effect of cyclophosphamide could be due to taxanes in the regimen.</p>
+<p>Fit the meta-regression model</p>
+<p>$$\frac{y_i}{\text{py}<em _text_cyclophosphamide="\text{cyclophosphamide" dose="dose">i} = \beta_0 + \beta_1 x</em>, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$</p>
+<p>where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.<br />
+The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.</p>
+<pre><code class="r">mal &lt;- &quot;AML or MDS&quot;
+D3 &lt;- D2[malType == mal]
+D3 &lt;- D3[, drug := &quot;Cyclophosphamide&quot;]
+D3 &lt;- D3[isCyclo == FALSE, xCycHighDose := FALSE]
+D3 &lt;- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
+xData &lt;- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxane, malType)])
+D3 &lt;- escalc(&quot;IRLN&quot;, xi=malN, ti=py, data=D3)
+randomEffect &lt;- list(~ 1 | id)
+MLin &lt;- rma.mv(yi ~ xCyc + isTaxane + xCyc * isTaxane,
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin &lt;- rma.mv(yi ~ xCycHighDose + isTaxane + xCycHighDose * isTaxane,
+               vi,
+               random=randomEffect,
+               data=D3)
+M &lt;- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1591  0.3988     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 64.6531, p-val = 0.1119
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 5.4087, p-val = 0.1442
+## 
+## Model Results:
+## 
+##                    estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt             -7.7389  0.2767  -27.9695  &lt;.0001  -8.2812  -7.1966
+## xCyc                 0.1374  0.0594    2.3141  0.0207   0.0210   0.2537
+## isTaxaneTRUE         0.6291  0.8762    0.7180  0.4728  -1.0883   2.3465
+## xCyc:isTaxaneTRUE   -0.1950  0.3478   -0.5607  0.5750  -0.8767   0.4867
+##                       
+## intrcpt            ***
+## xCyc                 *
+## isTaxaneTRUE          
+## xCyc:isTaxaneTRUE     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2853  0.5341     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 80.2650, p-val = 0.0072
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.1729, p-val = 0.7595
+## 
+## Model Results:
+## 
+##                                estimate      se      zval    pval    ci.lb
+## intrcpt                         -7.1843  0.6818  -10.5377  &lt;.0001  -8.5205
+## xCycHighDoseTRUE                -0.1052  0.7003   -0.1501  0.8806  -1.4777
+## isTaxaneTRUE                    -0.6230  0.8812   -0.7070  0.4796  -2.3501
+## xCycHighDoseTRUE:isTaxaneTRUE    0.7382  0.9238    0.7992  0.4242  -1.0723
+##                                  ci.ub     
+## intrcpt                        -5.8481  ***
+## xCycHighDoseTRUE                1.2674     
+## isTaxaneTRUE                    1.1041     
+## xCycHighDoseTRUE:isTaxaneTRUE   2.5488     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<p>Next, the model is reparameterized as</p>
+<p>$$\frac{y_i}{\text{py}<em _text_cyclophosphamide="\text{cyclophosphamide" dose="dose">i} = \beta_0 + \beta_1^\prime x</em>, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$</p>
+<p>so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.</p>
+<pre><code class="r">MLin &lt;- rma.mv(yi ~ xCyc + (isTaxane == FALSE) + xCyc * (isTaxane == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin &lt;- rma.mv(yi ~ xCycHighDose + (isTaxane == FALSE) + xCycHighDose * (isTaxane == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+M &lt;- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1591  0.3988     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 64.6531, p-val = 0.1119
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 5.4087, p-val = 0.1442
+## 
+## Model Results:
+## 
+##                             estimate      se     zval    pval    ci.lb
+## intrcpt                      -7.1098  0.8508  -8.3569  &lt;.0001  -8.7772
+## xCyc                         -0.0577  0.3441  -0.1675  0.8670  -0.7321
+## isTaxane == FALSETRUE        -0.6291  0.8762  -0.7180  0.4728  -2.3465
+## xCyc:isTaxane == FALSETRUE    0.1950  0.3478   0.5607  0.5750  -0.4867
+##                               ci.ub     
+## intrcpt                     -5.4423  ***
+## xCyc                         0.6168     
+## isTaxane == FALSETRUE        1.0883     
+## xCyc:isTaxane == FALSETRUE   0.8767     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2853  0.5341     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 80.2650, p-val = 0.0072
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.1729, p-val = 0.7595
+## 
+## Model Results:
+## 
+##                                         estimate      se      zval    pval
+## intrcpt                                  -7.8073  0.5608  -13.9227  &lt;.0001
+## xCycHighDoseTRUE                          0.6331  0.5928    1.0681  0.2855
+## isTaxane == FALSETRUE                     0.6230  0.8812    0.7070  0.4796
+## xCycHighDoseTRUE:isTaxane == FALSETRUE   -0.7382  0.9238   -0.7992  0.4242
+##                                           ci.lb    ci.ub     
+## intrcpt                                 -8.9063  -6.7082  ***
+## xCycHighDoseTRUE                        -0.5287   1.7949     
+## isTaxane == FALSETRUE                   -1.1041   2.3501     
+## xCycHighDoseTRUE:isTaxane == FALSETRUE  -2.5488   1.0723     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<h3 id="taxanes-with-and-without-cyclophosphamide"><a name="user-content-taxanes-with-and-without-cyclophosphamide" href="#taxanes-with-and-without-cyclophosphamide" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Taxanes, with and without Cyclophosphamide</h3>
+<p>The effect of taxane could be due to cyclophosphamide in the regimen.</p>
+<p>Fit the meta-regression model</p>
+<p>$$\frac{y_i}{\text{py}<em _text_taxane="\text{taxane" dose="dose">i} = \beta_0 + \beta_1 x</em>, i} + \beta_2 I_{\text{cyclophosphamide}, i} + \beta_3 x_{\text{taxane dose}, i} I_{\text{cyclophosphamide}, i} + \sigma_\text{study}$$</p>
+<p>where $I_{\text{cyclophosphamide}, i}$ is an 0/1 indicator for whether study $i$ has cyclophosphamide in the regimen.<br />
+The interpretation of $\beta_1$ is the effect of taxane dose among the studies with no cyclophosphamide in the regimen.</p>
+<pre><code class="r">mal &lt;- &quot;AML or MDS&quot;
+D3 &lt;- D2[malType == mal]
+D3 &lt;- D3[, drug := &quot;Taxane&quot;]
+D3 &lt;- D3[isTaxane == FALSE, xTaxHighDose := FALSE]
+D3 &lt;- D3[!(is.na(xTax) | is.na(xTaxHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
+xData &lt;- unique(D3[, .(drug, xTax, xTaxHighDose, isCyclo, malType)])
+D3 &lt;- escalc(&quot;IRLN&quot;, xi=malN, ti=py, data=D3)
+randomEffect &lt;- list(~ 1 | id)
+MLin &lt;- rma.mv(yi ~ xTax + isCyclo + xTax * isCyclo,
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin &lt;- rma.mv(yi ~ xTaxHighDose + isCyclo + xTaxHighDose * isCyclo,
+               vi,
+               random=randomEffect,
+               data=D3)
+M &lt;- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2450  0.4950     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 23) = 27.4468, p-val = 0.2374
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 4.2772, p-val = 0.2330
+## 
+## Model Results:
+## 
+##                   estimate      se     zval    pval    ci.lb    ci.ub     
+## intrcpt            -7.0009  1.1275  -6.2093  &lt;.0001  -9.2107  -4.7910  ***
+## xTax               -0.2287  0.3018  -0.7576  0.4487  -0.8203   0.3629     
+## isCycloTRUE        -1.5096  1.3259  -1.1386  0.2549  -4.1083   1.0891     
+## xTax:isCycloTRUE    0.4203  0.3208   1.3101  0.1902  -0.2085   1.0490     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2074  0.4554     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 23) = 25.4274, p-val = 0.3286
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 4.9601, p-val = 0.1747
+## 
+## Model Results:
+## 
+##                               estimate      se      zval    pval    ci.lb
+## intrcpt                        -7.6999  0.5210  -14.7783  &lt;.0001  -8.7211
+## xTaxHighDoseTRUE               -0.3292  1.5744   -0.2091  0.8344  -3.4151
+## isCycloTRUE                    -0.0492  0.5954   -0.0827  0.9341  -1.2162
+## xTaxHighDoseTRUE:isCycloTRUE    1.0174  1.6090    0.6323  0.5272  -2.1361
+##                                 ci.ub     
+## intrcpt                       -6.6787  ***
+## xTaxHighDoseTRUE               2.7566     
+## isCycloTRUE                    1.1177     
+## xTaxHighDoseTRUE:isCycloTRUE   4.1709     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<p>Next, the model is reparameterized as</p>
+<p>$$\frac{y_i}{\text{py}<em _text_taxane="\text{taxane" dose="dose">i} = \beta_0 + \beta_1^\prime x</em>, i} + \beta_2^\prime I_{\text{no cyclophosphamide}, i} + \beta_3^\prime x_{\text{taxane dose}, i} I_{\text{no cyclophosphamide}, i} + \sigma_\text{study}$$</p>
+<p>so the interpretation of $\beta_1^\prime$ is the effect of taxane dose among the studies with cyclophosphamide in the regimen.</p>
+<pre><code class="r">MLin &lt;- rma.mv(yi ~ xTax + (isCyclo == FALSE) + xTax * (isCyclo == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin &lt;- rma.mv(yi ~ xTaxHighDose + (isCyclo == FALSE) + xTaxHighDose * (isCyclo == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+M &lt;- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2450  0.4950     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 23) = 27.4468, p-val = 0.2374
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 4.2772, p-val = 0.2330
+## 
+## Model Results:
+## 
+##                            estimate      se      zval    pval    ci.lb
+## intrcpt                     -8.5105  0.6977  -12.1981  &lt;.0001  -9.8779
+## xTax                         0.1916  0.1086    1.7641  0.0777  -0.0213
+## isCyclo == FALSETRUE         1.5096  1.3259    1.1386  0.2549  -1.0891
+## xTax:isCyclo == FALSETRUE   -0.4203  0.3208   -1.3101  0.1902  -1.0490
+##                              ci.ub     
+## intrcpt                    -7.1430  ***
+## xTax                        0.4044    .
+## isCyclo == FALSETRUE        4.1083     
+## xTax:isCyclo == FALSETRUE   0.2085     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2074  0.4554     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 23) = 25.4274, p-val = 0.3286
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 4.9601, p-val = 0.1747
+## 
+## Model Results:
+## 
+##                                        estimate      se      zval    pval
+## intrcpt                                 -7.7491  0.2881  -26.8934  &lt;.0001
+## xTaxHighDoseTRUE                         0.6882  0.3316    2.0755  0.0379
+## isCyclo == FALSETRUE                     0.0492  0.5954    0.0827  0.9341
+## xTaxHighDoseTRUE:isCyclo == FALSETRUE   -1.0174  1.6090   -0.6323  0.5272
+##                                          ci.lb    ci.ub     
+## intrcpt                                -8.3138  -7.1843  ***
+## xTaxHighDoseTRUE                        0.0383   1.3380    *
+## isCyclo == FALSETRUE                   -1.1177   1.2162     
+## xTaxHighDoseTRUE:isCyclo == FALSETRUE  -4.1709   2.1361     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<h2 id="aml-only"><a name="user-content-aml-only" href="#aml-only" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>AML only</h2>
+<p>Run models for AML malignancies alone for compatibility with the SEER incidence statistics.</p>
+<blockquote>
+<p>From: Rivera, Donna (NIH/NCI) [F] [mailto:donna.<a href="mailto:rivera@nih.gov">rivera@nih.gov</a>] <br />
+Sent: Monday, June 27, 2016 6:37 AM<br />
+To: Benjamin Chan; Barbara M. Galligan<br />
+Subject: RE: SEER Data for NCI secondary malignancies  </p>
+<p>I just wanted to make sure you saw the <strong>SEER statistics are only for AML and do not include MDS</strong>. MDS is categorized separately and we could get that as well for reference if you would like.  There are other types such as AMoL and more rare versions ,if  you would like to look at those. Let me know if there are other types needed for your reference.</p>
+</blockquote>
+<pre><code class="r">mal &lt;- &quot;AML&quot;
+D3 &lt;- D2[malType == mal]
+</code></pre>
+
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Cyclophosphamide&quot;, x = xCyc, xHighDose = xCycHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 33; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.0000  0.0000     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 31) = 18.6684, p-val = 0.9602
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 15.7569, p-val &lt; .0001
+## 
+## Model Results:
+## 
+##          estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt   -8.1876  0.2406  -34.0286  &lt;.0001  -8.6592  -7.7160  ***
+## x          0.1815  0.0457    3.9695  &lt;.0001   0.0919   0.2712  ***
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 33; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1754  0.4189     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 31) = 33.5018, p-val = 0.3469
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.2921, p-val = 0.5889
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -7.7554  0.4852  -15.9846  &lt;.0001  -8.7064  -6.8045  ***
+## xHighDoseTRUE    0.2736  0.5063    0.5404  0.5889  -0.7187   1.2659     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p &lt; 0.001&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.589&quot;
+## 
+## $pred
+##                 drug    x xHighDose malType   predLin confLowerLin
+##  1: Cyclophosphamide 1.20     FALSE     AML  3.457526     2.366230
+##  2: Cyclophosphamide 1.50     FALSE     AML  3.651035     2.553605
+##  3: Cyclophosphamide 2.00     FALSE     AML  3.997916     2.894449
+##  4: Cyclophosphamide 2.40      TRUE     AML  4.299004     3.193261
+##  5: Cyclophosphamide 3.00      TRUE     AML  4.793680     3.683655
+##  6: Cyclophosphamide 3.60      TRUE     AML  5.345277     4.217774
+##  7: Cyclophosphamide 4.00      TRUE     AML  5.747835     4.590982
+##  8: Cyclophosphamide 4.80      TRUE     AML  6.646187     5.351142
+##  9: Cyclophosphamide 6.64      TRUE     AML  9.281742     7.021552
+## 10: Cyclophosphamide 7.20      TRUE     AML 10.274892     7.512187
+## 11: Cyclophosphamide 9.60      TRUE     AML 15.884809     9.715305
+##     confUpperLin  predBin confLowerBin confUpperBin scale
+##  1:     5.052123 4.284091     1.219738     15.04703 10000
+##  2:     5.220095 4.284091     1.219738     15.04703 10000
+##  3:     5.522064 4.284091     1.219738     15.04703 10000
+##  4:     5.787635 5.632298     2.310703     13.72862 10000
+##  5:     6.238197 5.632298     2.310703     13.72862 10000
+##  6:     6.774184 5.632298     2.310703     13.72862 10000
+##  7:     7.196197 5.632298     2.310703     13.72862 10000
+##  8:     8.254649 5.632298     2.310703     13.72862 10000
+##  9:    12.269472 5.632298     2.310703     13.72862 10000
+## 10:    14.053619 5.632298     2.310703     13.72862 10000
+## 11:    25.972130 5.632298     2.310703     13.72862 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Cyclophosphamide cumulative dose&quot;,
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                            size               mtime
+## AML_Cyclophosphamide.png 131156 2016-08-01 15:39:02
+## AML_Cyclophosphamide.csv   4081 2016-08-01 15:39:02
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-33" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-33-1.png" /></p>
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Taxane&quot;, x = xTax, xHighDose = xTaxHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 8; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.0000  0.0000      7     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 6) = 1.9360, p-val = 0.9255
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.0440, p-val = 0.8339
+## 
+## Model Results:
+## 
+##          estimate      se     zval    pval    ci.lb    ci.ub     
+## intrcpt   -7.6963  1.0564  -7.2856  &lt;.0001  -9.7667  -5.6258  ***
+## x         -0.0469  0.2235  -0.2097  0.8339  -0.4849   0.3912     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 8; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.0000  0.0000      7     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 6) = 1.6490, p-val = 0.9490
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.3310, p-val = 0.5651
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -7.8615  0.2722  -28.8851  &lt;.0001  -8.3950  -7.3281  ***
+## xHighDoseTRUE   -0.4952  0.8607   -0.5753  0.5651  -2.1820   1.1917     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p = 0.834&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.565&quot;
+## 
+## $pred
+##      drug   x xHighDose malType  predLin confLowerLin confUpperLin
+## 1: Taxane 3.0     FALSE     AML 3.949141    1.6735475     9.318956
+## 2: Taxane 4.0     FALSE     AML 3.768340    2.1376866     6.642876
+## 3: Taxane 4.5     FALSE     AML 3.681068    2.2162744     6.113981
+## 4: Taxane 7.5      TRUE     AML 3.198278    0.8093204    12.638974
+## 5: Taxane 8.0      TRUE     AML 3.124208    0.6436008    15.165725
+##     predBin confLowerBin confUpperBin scale
+## 1: 3.852856    2.2600347     6.568263 10000
+## 2: 3.852856    2.2600347     6.568263 10000
+## 3: 3.852856    2.2600347     6.568263 10000
+## 4: 2.348185    0.4739464    11.634173 10000
+## 5: 2.348185    0.4739464    11.634173 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Taxane cumulative dose&quot;,
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                 size               mtime
+## AML_Taxane.png 83306 2016-08-01 15:39:03
+## AML_Taxane.csv  1028 2016-08-01 15:39:03
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-34" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-34-1.png" /></p>
+<h2 id="non-breast-solid"><a name="user-content-non-breast-solid" href="#non-breast-solid" class="headeranchor-link" aria-hidden="true"><span class="headeranchor"></span></a>Non-Breast Solid</h2>
+<ul>
+<li>Fit the models</li>
+<li>Show model summaries</li>
+<li>Plot the predicted values</li>
+</ul>
+<pre><code class="r">mal &lt;- &quot;Non-Breast Solid&quot;
+D3 &lt;- D2[malType == mal]
+</code></pre>
+
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Cyclophosphamide&quot;, x = xCyc, xHighDose = xCycHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1551  0.3939     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 29) = 66.2474, p-val &lt; .0001
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.0199, p-val = 0.8879
+## 
+## Model Results:
+## 
+##          estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt   -5.7765  0.2196  -26.3022  &lt;.0001  -6.2069  -5.3460  ***
+## x         -0.0069  0.0488   -0.1410  0.8879  -0.1025   0.0887     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1082  0.3289     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 29) = 57.9772, p-val = 0.0011
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 2.8246, p-val = 0.0928
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -6.2561  0.3017  -20.7368  &lt;.0001  -6.8473  -5.6648  ***
+## xHighDoseTRUE    0.5130  0.3052    1.6806  0.0928  -0.0853   1.1112    .
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p = 0.888&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.093&quot;
+## 
+## $pred
+##                 drug     x xHighDose          malType  predLin
+##  1: Cyclophosphamide  1.20     FALSE Non-Breast Solid 30.74218
+##  2: Cyclophosphamide  1.50     FALSE Non-Breast Solid 30.67884
+##  3: Cyclophosphamide  2.00     FALSE Non-Breast Solid 30.57357
+##  4: Cyclophosphamide  2.40      TRUE Non-Breast Solid 30.48961
+##  5: Cyclophosphamide  3.00      TRUE Non-Breast Solid 30.36411
+##  6: Cyclophosphamide  3.60      TRUE Non-Breast Solid 30.23912
+##  7: Cyclophosphamide  4.00      TRUE Non-Breast Solid 30.15608
+##  8: Cyclophosphamide  4.80      TRUE Non-Breast Solid 29.99069
+##  9: Cyclophosphamide  6.64      TRUE Non-Breast Solid 29.61371
+## 10: Cyclophosphamide  7.20      TRUE Non-Breast Solid 29.49992
+## 11: Cyclophosphamide 14.40      TRUE Non-Breast Solid 28.07529
+##     confLowerLin confUpperLin  predBin confLowerBin confUpperBin scale
+##  1:    13.213812     71.52227 19.18809     8.000458     46.02023 10000
+##  2:    13.288517     70.82743 19.18809     8.000458     46.02023 10000
+##  3:    13.386423     69.82771 19.18809     8.000458     46.02023 10000
+##  4:    13.439607     69.16992 32.04961    16.215812     63.34418 10000
+##  5:    13.475559     68.41862 32.04961    16.215812     63.34418 10000
+##  6:    13.457464     67.94775 32.04961    16.215812     63.34418 10000
+##  7:    13.415149     67.78823 32.04961    16.215812     63.34418 10000
+##  8:    13.259259     67.83495 32.04961    16.215812     63.34418 10000
+##  9:    12.574606     69.74149 32.04961    16.215812     63.34418 10000
+## 10:    12.291105     70.80286 32.04961    16.215812     63.34418 10000
+## 11:     7.624903    103.37467 32.04961    16.215812     63.34418 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Cyclophosphamide cumulative dose&quot;,
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                                       size               mtime
+## NonBreastSolid_Cyclophosphamide.png 116913 2016-08-01 15:39:04
+## NonBreastSolid_Cyclophosphamide.csv   4356 2016-08-01 15:39:04
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-36" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-36-1.png" /></p>
+<pre><code class="r">D3 &lt;- D3[, `:=` (drug = &quot;Taxane&quot;, x = xTax, xHighDose = xTaxHighDose)]
+M &lt;- metareg(D3)
+M
+</code></pre>
+
+<pre><code>## $rmaLin
+## 
+## Multivariate Meta-Analysis Model (k = 13; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1613  0.4016      8     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 11) = 29.6283, p-val = 0.0018
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.1777, p-val = 0.6733
+## 
+## Model Results:
+## 
+##          estimate      se     zval    pval    ci.lb    ci.ub     
+## intrcpt   -6.0630  0.6630  -9.1447  &lt;.0001  -7.3625  -4.7635  ***
+## x          0.0468  0.1110   0.4216  0.6733  -0.1707   0.2643     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaBin
+## 
+## Multivariate Meta-Analysis Model (k = 13; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1426  0.3776      8     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 11) = 28.1761, p-val = 0.0030
+## 
+## Test of Moderators (coefficient(s) 2): 
+## QM(df = 1) = 0.7789, p-val = 0.3775
+## 
+## Model Results:
+## 
+##                estimate      se      zval    pval    ci.lb    ci.ub     
+## intrcpt         -5.9390  0.2443  -24.3128  &lt;.0001  -6.4178  -5.4603  ***
+## xHighDoseTRUE    0.3056  0.3462    0.8826  0.3775  -0.3730   0.9841     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $pvalueLin
+## [1] &quot;p = 0.673&quot;
+## 
+## $pvalueBin
+## [1] &quot;p = 0.377&quot;
+## 
+## $pred
+##      drug   x xHighDose          malType  predLin confLowerLin
+## 1: Taxane 4.0     FALSE Non-Breast Solid 28.06250     10.92877
+## 2: Taxane 4.5     FALSE Non-Breast Solid 28.72660     11.62530
+## 3: Taxane 7.0      TRUE Non-Breast Solid 32.29043     13.06744
+## 4: Taxane 7.5      TRUE Non-Breast Solid 33.05458     12.87278
+## 5: Taxane 8.0      TRUE Non-Breast Solid 33.83682     12.54870
+##    confUpperLin  predBin confLowerBin confUpperBin scale
+## 1:     72.05784 26.34603     10.91134     63.61393 10000
+## 2:     70.98462 26.34603     10.91134     63.61393 10000
+## 3:     79.79158 35.76138     14.79403     86.44543 10000
+## 4:     84.87719 35.76138     14.79403     86.44543 10000
+## 5:     91.23898 35.76138     14.79403     86.44543 10000
+</code></pre>
+
+<pre><code class="r">plotreg(M,
+        D3,
+        mal,
+        &quot;Taxane cumulative dose&quot;,
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code>##                            size               mtime
+## NonBreastSolid_Taxane.png 92252 2016-08-01 15:39:05
+## NonBreastSolid_Taxane.csv  1762 2016-08-01 15:39:05
+</code></pre>
+
+<p><img alt="plot of chunk unnamed-chunk-37" src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-37-1.png" /></p></article></body></html>
