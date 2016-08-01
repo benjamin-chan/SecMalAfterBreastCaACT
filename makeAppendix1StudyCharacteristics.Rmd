@@ -1,0 +1,59 @@
+# Study Characteristics and Outcomes
+
+Populate Appendix Table 1.
+Need columns for
+
+* Study
+* Country
+* Median follow-up (months)
+* Regimen name
+* Cumulative dose
+    * Anthracyclines
+    * Cyclophosphamide
+    * Taxanes
+* N
+* Person-years (the denominator for the incidence rate)
+* AML/MDS count (the numerator for the incidence rate)
+* AML/MDS incidence, per 10,000 person-years
+* Non-breast solid count (the numerator for the incidence rate)
+* Non-breast solid incidence, per 10,000 person-years
+
+Output to multiple formats:
+
+* Excel workbook, [appendixTableStudyCharacteristicsAndOutcomes.xlsx](appendixTableStudyCharacteristicsAndOutcomes.xlsx)
+* CSV file, [appendixTableStudyCharacteristicsAndOutcomes.csv](appendixTableStudyCharacteristicsAndOutcomes.csv)
+* Markdown file, [appendixTableStudyCharacteristicsAndOutcomes.md](appendixTableStudyCharacteristicsAndOutcomes.md)
+
+
+```{r}
+library(xlsx)
+library(IRdisplay)
+library(xtable)
+T <- D[,
+       .(study = ifelse(!is.na(trial), paste(authorYear, trial), authorYear),
+         country = NA,
+         medianFU = round(medianFU),
+         regimen,
+         anthrCumulDose = round(anthracyclineCumulDose),
+         cycloCumulaDose = round(cyclophosphamideCumulDose),
+         taxaneCumulDose = round(taxaneCumulDose),
+         nITT,
+         py = nITT * (medianFU / 12),
+         nAMLOrMDS = malAMLOrMDSTotal,
+         incidenceAMLOrMDS = signif(malAMLOrMDSTotal / (nITT * (medianFU / 12)) * scale, digits=3),
+         nNonBreastSolid = malNonBreastSolid,
+         incidenceNonBreastSolid = signif(malNonBreastSolid / (nITT * (medianFU / 12)) * scale, digits=3))]
+write.xlsx(T,
+           "appendixTableStudyCharacteristicsAndOutcomes.xlsx",
+           row.names=FALSE,
+           showNA=FALSE)
+write.csv(T,
+          "appendixTableStudyCharacteristicsAndOutcomes.csv",
+          quote=FALSE,
+          row.names=FALSE)
+cat(kable(T),
+    file = "appendixTableStudyCharacteristicsAndOutcomes.md",
+    sep = "\n")
+file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), value=TRUE))[c("size", "mtime")]
+T <- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
+```

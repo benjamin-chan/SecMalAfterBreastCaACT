@@ -1,0 +1,65 @@
+# Summarize
+
+Define some functions.
+
+
+```{r}
+scale <- 1e4
+calcPct <- function (x, n) {
+  prec <- "%.3g"
+  sprintf(paste0(prec, "%%"),
+          median(x / n, na.rm = TRUE) * 100)
+}
+calcRate <- function (x, n, y) {
+  prec <- "%.3g"
+  py <- scale
+  sprintf(paste(prec, "per %s p-y"),
+          median(x / (n * (y / 12)), na.rm=TRUE) * py,
+          py)
+}
+```
+
+Summarize the regimens.
+Output to [summaryRegimens.md](summaryRegimens.md) for checking.
+
+
+```{r}
+D <- D[,
+       `:=` (isAnthra = !is.na(anthracyclineTotalDose),
+             isCyclo = !is.na(cyclophosphamideDose),
+             isTaxane = !is.na(taxaneTotalDose),
+             isFluoro = !is.na(fluoroucilTotalDose))]
+D1 <- melt(D,
+           id.vars=c("id", "authorYear", "arm",
+                     "isAnthra", "anthracyclineCumulDose",
+                     "isCyclo", "cyclophosphamideCumulDose",
+                     "isTaxane", "taxaneCumulDose",
+                     "isFluoro", "fluoroucilCumulDose",
+                     "nITT", "medianFU"),
+           measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
+           value.name="malN",
+           variable.name="malType")
+
+D1 <- D1[, malType := gsub("^mal", "", malType)]
+D1 <- D1[, malType := factor(malType,
+                             levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
+                             labels=c("AML", "MDS", "AML or MDS", "Non-Breast Solid"))]
+D1 <- D1[, py := nITT * (medianFU / 12)]
+D1 <- D1[, rate := malN / py * scale]
+summaryRegimens <- D1[,
+                      .(totalN = sum(nITT, na.rm = TRUE),
+                        totalPersonYears = round(sum(py, na.rm = TRUE)),
+                        totalMalignancies = sum(malN, na.rm = TRUE),
+                        medianPct = calcPct(malN, nITT),
+                        medianRate = calcRate(malN, nITT, medianFU)),
+                      .(isAnthra,
+                        isCyclo,
+                        isTaxane,
+                        isFluoro,
+                        malType)]
+summaryRegimens <- summaryRegimens[order(-isAnthra, -isCyclo, -isTaxane, -isFluoro, malType)]
+cat(kable(summaryRegimens),
+    file = "summaryRegimens.md",
+    sep = "\n")
+file.info("summaryRegimens.md")
+```

@@ -1,0 +1,361 @@
+# Meta-regression
+
+Estimate meta-regression models for log transformed incidence rate.
+Model is
+
+$$\frac{y_i}{\text{py}_i} = \beta x_i + \sigma_\text{study}$$
+
+Or
+
+$$\frac{y_i}{\text{py}_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
+
+Models were estimated using the `rma.mv()` function from the metafor` package for R.
+
+
+```{r}
+library(metafor)
+citation("metafor")
+```
+
+Define meta-regression functions.
+
+
+```{r}
+pvalToChar <- function (p) {
+  if (p < 0.001) {
+    pvalue <- "p < 0.001"
+  } else {
+    pvalue <- sprintf("p = %.03f", p)
+  }
+  pvalue
+}
+metareg <- function (D) {
+  require(metafor)
+  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  xData <- unique(D[, .(drug, x, xHighDose, malType)])
+  D <- escalc("IRLN", xi=malN, ti=py, data=D)
+  randomEffect <- list(~ 1 | id)
+  MLin <- rma.mv(yi ~ x, vi, random=randomEffect, data=D)
+  MBin <- rma.mv(yi ~ xHighDose, vi, random=randomEffect, data=D)
+  pvalueLin <- MLin$pval[which(row.names(MLin$b) == "x")]
+  pvalueBin <- MBin$pval[which(row.names(MBin$b) == "xHighDoseTRUE")]
+  predLin <- predict(MLin, xData[, x], transf = exp)[["pred"]] * scale
+  confLowerLin <- predict(MLin, xData[, x], transf = exp)[["cr.lb"]] * scale
+  confUpperLin <- predict(MLin, xData[, x], transf = exp)[["cr.ub"]] * scale
+  predBin <- predict(MBin, xData[, xHighDose], transf = exp)[["pred"]] * scale
+  confLowerBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.lb"]] * scale
+  confUpperBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.ub"]] * scale
+  pred <- data.table(xData, predLin, confLowerLin, confUpperLin, predBin, confLowerBin, confUpperBin, scale)
+  setorder(pred, x)
+  list(rmaLin = MLin,
+       rmaBin = MBin,
+       pvalueLin = pvalToChar(pvalueLin),
+       pvalueBin = pvalToChar(pvalueBin),
+       pred = pred)
+}
+plotreg <- function (M, D, title, xlab, xbreaks, xscale) {
+  require(ggplot2)
+  require(RColorBrewer)
+  require(tools)
+  pvalues <- c(M$pvalueLin, M$pvalueBin)
+  x <- seq(min(M$rmaLin$X[, "x"]), max(M$rmaLin$X[, "x"]), length.out=100)
+  yhat1 <- unique(data.table(malType = mal,
+                             x,
+                             yhat = predict(M$rmaLin, x, transf = exp)[["pred"]] * scale))
+  xHighDose <- as.logical(M$rmaBin$X[, "xHighDoseTRUE"])
+  yhat2 <- unique(data.table(malType = mal,
+                             xHighDose,
+                             yhat = predict(M$rmaBin, xHighDose, transf = exp)[["pred"]] * scale))
+  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
+  D <- D[, malType := droplevels(malType)]
+  steps <- merge(D[, .(min = min(x), max = max(x)), .(malType, xHighDose)],
+                 yhat2,
+                 by=c("malType", "xHighDose"))
+  steps <- melt(steps, id.vars=c("malType", "xHighDose", "yhat"), measure.vars=c("min", "max"), value.name="x")
+  annoLin <- data.frame(x=Inf, y=1.2, label=pvalues[c(1)], malType=levels(D[, malType]))
+  annoBin <- data.frame(x=Inf, y=1.4, label=pvalues[c(2)], malType=levels(D[, malType]))
+  pal <- brewer.pal(4, name="RdBu")
+  G <- ggplot(D, aes(x=x * xscale, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
+  G <- G + geom_point(alpha=1/3, position="jitter")
+  G <- G + geom_line(data=yhat1, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[4])
+  G <- G + geom_step(data=steps, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[1])
+  G <- G + geom_text(data=annoLin,
+                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[4])
+  G <- G + geom_text(data=annoBin,
+                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[1])
+  G <- G + scale_x_log10(xlab, breaks=xbreaks)
+  G <- G + scale_y_log10(sprintf("Rate per %s person-years", format(scale, big.mark=",")))
+  G <- G + labs(title=title)
+  G <- G + theme_bw()
+  G <- G + theme(legend.position="none")
+  filename <- gsub("\\s+",
+                   "",
+                   toTitleCase(paste(gsub("[[:punct:]]", "", title),
+                                     gsub("cumulative dose", "", xlab),
+                                     sep="_")))
+  ggsave(filename=sprintf("%s.png", filename))
+  write.csv(D, file=sprintf("%s.csv", filename), row.names=FALSE, quote=FALSE)
+  M$pred[, x := x * xscale]
+  write.csv(M$pred, file=sprintf("%s_Pred.csv", filename), row.names=FALSE, quote=FALSE)
+  show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
+  G
+}
+```
+
+Dichotomize cumulative doses
+
+* Cyclophosphamide
+    * $\lt 2400$
+    * $\ge 2400$
+* Taxane
+    * $\lt 500$
+    * $\ge 500$
+
+
+```{r}
+D2 <- D1[,
+         .(id = factor(id),
+           authorYear,
+           isCyclo,
+           xCyc = cyclophosphamideCumulDose / 1e3,
+           xCycHighDose = cyclophosphamideCumulDose >= 2400,
+           xTax = taxaneCumulDose / 1e2,
+           xTaxHighDose = taxaneCumulDose >= 500,
+           isAnthra,
+           isTaxane,
+           isFluoro,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+```
+
+## AML/MDS
+
+* Fit the models
+* Show model summaries
+* Plot the predicted values
+
+
+```{r}
+mal <- "AML or MDS"
+D3 <- D2[malType == mal]
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Cyclophosphamide cumulative dose",
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Taxane cumulative dose",
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+```
+
+### Cyclophosphamide, with and without Taxanes
+
+The effect of cyclophosphamide could be due to taxanes in the regimen.
+
+Fit the meta-regression model
+
+$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
+
+where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.
+The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.
+
+```{r}
+mal <- "AML or MDS"
+D3 <- D2[malType == mal]
+D3 <- D3[, drug := "Cyclophosphamide"]
+D3 <- D3[isCyclo == FALSE, xCycHighDose := FALSE]
+D3 <- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
+xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxane, malType)])
+D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
+randomEffect <- list(~ 1 | id)
+MLin <- rma.mv(yi ~ xCyc + isTaxane + xCyc * isTaxane,
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin <- rma.mv(yi ~ xCycHighDose + isTaxane + xCycHighDose * isTaxane,
+               vi,
+               random=randomEffect,
+               data=D3)
+M <- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+```
+
+Next, the model is reparameterized as
+
+$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
+
+so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.
+
+```{r}
+MLin <- rma.mv(yi ~ xCyc + (isTaxane == FALSE) + xCyc * (isTaxane == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin <- rma.mv(yi ~ xCycHighDose + (isTaxane == FALSE) + xCycHighDose * (isTaxane == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+M <- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+```
+
+
+### Taxanes, with and without Cyclophosphamide
+
+The effect of taxane could be due to cyclophosphamide in the regimen.
+
+Fit the meta-regression model
+
+$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{taxane dose}, i} + \beta_2 I_{\text{cyclophosphamide}, i} + \beta_3 x_{\text{taxane dose}, i} I_{\text{cyclophosphamide}, i} + \sigma_\text{study}$$
+
+where $I_{\text{cyclophosphamide}, i}$ is an 0/1 indicator for whether study $i$ has cyclophosphamide in the regimen.
+The interpretation of $\beta_1$ is the effect of taxane dose among the studies with no cyclophosphamide in the regimen.
+
+```{r}
+mal <- "AML or MDS"
+D3 <- D2[malType == mal]
+D3 <- D3[, drug := "Taxane"]
+D3 <- D3[isTaxane == FALSE, xTaxHighDose := FALSE]
+D3 <- D3[!(is.na(xTax) | is.na(xTaxHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
+xData <- unique(D3[, .(drug, xTax, xTaxHighDose, isCyclo, malType)])
+D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
+randomEffect <- list(~ 1 | id)
+MLin <- rma.mv(yi ~ xTax + isCyclo + xTax * isCyclo,
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin <- rma.mv(yi ~ xTaxHighDose + isCyclo + xTaxHighDose * isCyclo,
+               vi,
+               random=randomEffect,
+               data=D3)
+M <- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+```
+
+Next, the model is reparameterized as
+
+$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1^\prime x_{\text{taxane dose}, i} + \beta_2^\prime I_{\text{no cyclophosphamide}, i} + \beta_3^\prime x_{\text{taxane dose}, i} I_{\text{no cyclophosphamide}, i} + \sigma_\text{study}$$
+
+so the interpretation of $\beta_1^\prime$ is the effect of taxane dose among the studies with cyclophosphamide in the regimen.
+
+```{r}
+MLin <- rma.mv(yi ~ xTax + (isCyclo == FALSE) + xTax * (isCyclo == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+MBin <- rma.mv(yi ~ xTaxHighDose + (isCyclo == FALSE) + xTaxHighDose * (isCyclo == FALSE),
+               vi,
+               random=randomEffect,
+               data=D3)
+M <- list(rmaLin = MLin,
+          rmaBin = MBin)
+M
+```
+
+
+## AML only
+
+Run models for AML malignancies alone for compatibility with the SEER incidence statistics.
+
+> From: Rivera, Donna (NIH/NCI) [F] [mailto:donna.rivera@nih.gov]   
+> Sent: Monday, June 27, 2016 6:37 AM  
+> To: Benjamin Chan; Barbara M. Galligan  
+> Subject: RE: SEER Data for NCI secondary malignancies  
+>
+> I just wanted to make sure you saw the **SEER statistics are only for AML and do not include MDS**. MDS is categorized separately and we could get that as well for reference if you would like.  There are other types such as AMoL and more rare versions ,if  you would like to look at those. Let me know if there are other types needed for your reference.
+
+
+```{r}
+mal <- "AML"
+D3 <- D2[malType == mal]
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Cyclophosphamide cumulative dose",
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Taxane cumulative dose",
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+```
+
+
+## Non-Breast Solid
+
+* Fit the models
+* Show model summaries
+* Plot the predicted values
+
+
+```{r}
+mal <- "Non-Breast Solid"
+D3 <- D2[malType == mal]
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Cyclophosphamide cumulative dose",
+        1e3 * c(0.5, 1, 2, 4, 8, 16),
+        1e3)
+```
+
+
+```{r}
+D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
+M <- metareg(D3)
+M
+plotreg(M,
+        D3,
+        mal,
+        "Taxane cumulative dose",
+        1e2 * c(0.5, 1, 2, 4, 8, 16),
+        1e2)
+```

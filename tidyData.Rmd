@@ -1,0 +1,320 @@
+# Load data
+
+Load the data from [GitHub](https://github.com/benjamin-chan/SecMalAfterBreastCaACT).
+
+
+```{r}
+repo <- "https://github.com/benjamin-chan/SecMalAfterBreastCaACT"
+url <- paste0(repo, "/raw/26115dab1eb2b075d40f545514a03c3b30cde6b4/SecondaryMalignancies_Data_BG_3_4.xlsx")
+f <- tempfile()
+download.file(url, f, mode="wb")
+file.info(f)[c("size", "mtime")]
+sheets <- getSheetNames(f)
+# sheets
+D <- read.xlsx(f, sheet = sheets[1], startRow = 3, colNames = FALSE)
+D <- data.table(D)
+oldnames <- names(D)
+newnames <- c("id",
+              "authorYear",
+              "trial",
+              "quality",
+              "arm",
+              "nRandomized",
+              "nITT",
+              # "pctCompletingTx",
+              "medianFU",
+              "regimen",
+              "anthracyclineType",
+              "anthracyclineTotalDose",
+              "anthracyclineDuration",
+              "anthracyclineCourses",
+              "cyclophosphamideDose",
+              "cyclophosphamideDuration",
+              "cyclophosphamideCourses",
+              "taxaneType",
+              "taxaneTotalDose",
+              "taxaneDuration",
+              "taxaneCourses",
+              "fluoroucilTotalDose",
+              "fluoroucilDuration",
+              "fluoroucilCourses",
+              "otherTxDetails",
+              "malAML",
+              "malMDS",
+              "malAMLOrMDS",
+              "malNonBreastSolid",
+              "malNonBreastSolidType",
+              "malOtherBloodCancers",
+              "malSMRelatedDeaths",
+              "malSecondPrimary",
+              "NOTES")
+setnames(D, oldnames, newnames[1:33])
+```
+
+# Tidy data
+
+Create a `rowid` variable.
+This will be handy later.
+
+
+```{r}
+D <- D[, rowid := .I]
+```
+
+Fix some minor data entry inconsistencies.
+
+
+```{r}
+D <- D[grep("Nitz", authorYear), authorYear := gsub("2014$", "2014)", authorYear)]
+D <- D[grep("Wolmark", authorYear), authorYear := gsub(", 2001$", " (2001)", authorYear)]
+```
+
+Input missing data for Bergh (2000); row was split.
+
+
+```{r}
+col <- grep("^cyclophosphamide", names(D), invert = TRUE)
+D[11, col] <- D[10, col, with = FALSE]
+# D[11, ]
+# D[10, ]
+```
+
+Fix trial column for Romond (2005).
+
+
+```{r}
+D <- D[grep("Romond", authorYear), trial := gsub("&N", "& N", trial)]
+```
+
+Make `medianFU` numeric.
+
+
+```{r}
+D <- D[grep("-", medianFU, invert = TRUE), medianFUNum := round(as.numeric(medianFU), digits = 2)]
+x <- D[grep("-", medianFU), medianFU]
+x <- as.numeric(unlist(strsplit(x, "-")))
+x1 <- x[seq(1, length(x), 2)]
+x2 <- x[seq(2, length(x), 2)]
+xbar <- rowMeans(cbind(x1, x2))
+D <- D[grep("-", medianFU), medianFUNum := xbar]
+D <- D[,
+       `:=` (medianFUChar = medianFU,
+             medianFU = medianFUNum,
+             medianFUNum = NULL)]
+unique(D[as.character(medianFU) != medianFUChar, .(medianFU, medianFUChar)])
+D <- D[, medianFUChar := NULL]
+```
+
+Recode mal* values of `NR` and `-` to `NA`.
+
+
+```{r}
+recode <- function(x) {
+    missval <- c("-", "NR", " ")
+    vec <- D[, get(x)]
+    vec[vec %in% missval] <- NA
+    vec
+}
+col <- grep("^mal", names(D), value = TRUE)
+for (i in 1:length(col)) {
+    D[, col[i]] <- recode(col[i])
+}
+```
+
+Substitute non-numeric text in mal* values.
+
+
+```{r}
+substitute <- function(x) {
+    vec <- D[, get(x)]
+    vec <- gsub("[[:alpha:]]", "", vec)
+    vec
+}
+col <- grep("^mal", names(D), value = TRUE)
+for (i in 1:4) {
+    # Only substitute a subset of mal* columns
+    D[, col[i]] <- substitute(col[i])
+}
+```
+
+Convert mal* values to numeric.
+
+
+```{r}
+for (i in 1:4) {
+    # Only convert a subset of mal* columns
+    D <- D[, col[i] := as.numeric(get(col[i]))]
+}
+```
+
+The `malAMLOrMDS` column, as entered, captures number of AML or MDS malignancies if the study reported them grouped as opposed to separately.
+If the study reported them as separately, then these counts are captures in the `malAML` and `malMDS` columns.
+I.e., the `malAML`, `malMDS`, and `malAMLOrMDS` columns are mutually exclusive counts.
+We want to create another column, `malAMLOrMDSTotal`, to be non-mutually exclusive from `malAML`, `malMDS`, and `malAMLOrMDS`.
+If none of the `malAML`, `malMDS`, and `malAMLOrMDS` values are populated, then set `malAMLOrMDSTotal` to `NA`, also.
+NOTE: Couldn't get this to work: [http://stackoverflow.com/a/16513949/1427069](http://stackoverflow.com/a/16513949/1427069).
+
+
+```{r}
+s <- sample(D[, rowid], 12)
+malAMLOrMDSTotal <- rowSums(D[, .(malAML, malMDS, malAMLOrMDS)], na.rm=TRUE)
+D <- D[, malAMLOrMDSTotal := malAMLOrMDSTotal]
+D <- D[is.na(malAML) & is.na(malMDS) & is.na(malAMLOrMDS), malAMLOrMDSTotal := NA]
+D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
+```
+
+Remove text from `nITT` column.
+
+
+```{r}
+D <- D[authorYear == "Misset (1996)" & arm == 2, nITT := "137"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 1, nITT := "210"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 2, nITT := "197"]
+D <- D[authorYear == "Fumoleu (2003)" & arm == 3, nITT := "195"]
+D <- D[, nITT := as.integer(nITT)]
+```
+
+Clean up the `regimen` and `dose` columns.
+Output to [regimens.md](regimens.md) for checking.
+
+
+```{r}
+D <- D[, regimen := gsub("\\s$", "", regimen)]
+D <- D[, regimen := gsub("\\r*\\n", " ", regimen)]
+doseVar <- grep("dose", names(D), ignore.case = TRUE, value = TRUE)
+for (i in 1:length(doseVar)) {
+    D <- D[, doseVar[i] := gsub("\\r*\\n", " ", get(doseVar[i]))]
+}
+cat(kable(D[, .N, c("regimen", doseVar), with = TRUE][order(regimen)]),
+    file = "regimens.md",
+    sep = "\n")
+file.info("regimens.md")
+```
+
+Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.
+
+
+```{r}
+D <- D[, anthracyclineTotalDose := as.numeric(anthracyclineTotalDose)]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", anthracyclineTotalDose := 75]
+D <- D[authorYear == "Henderson (2003)", anthracyclineTotalDose := 75]
+D <- D[authorYear == "Colleoni (2009)" & regimen == "AC-CMF", anthracyclineTotalDose := 75]
+D <- D[, cyclophosphamideDose := as.numeric(cyclophosphamideDose)]
+D <- D[authorYear == "Colleoni (2009)" & regimen == "EC", cyclophosphamideDose := 600]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", cyclophosphamideDose := 900]
+D <- D[authorYear == "Henderson (2003)", anthracyclineTotalDose := 75]
+D <- D[, taxaneCourses := as.numeric(taxaneCourses)]
+D <- D[authorYear == "Shulman (2014)" & regimen == "T" & arm == 3, taxaneCourses := 4]
+D <- D[authorYear == "Shulman (2014)" & regimen == "T" & arm == 4, taxaneCourses := 6]
+D <- D[, fluoroucilTotalDose := as.numeric(fluoroucilTotalDose)]
+D <- D[authorYear == "Bergh (2000)" & regimen == "FEC\nTailored", fluoroucilTotalDose := 600]
+D <- D[authorYear == "Joensuu (2012)" & regimen == "TX-CEX", fluoroucilTotalDose := NA]
+D <- D[!is.na(anthracyclineTotalDose) & !is.na(anthracyclineTotalDose),
+       anthracyclineCumulDose := anthracyclineTotalDose * anthracyclineCourses]
+D <- D[!is.na(cyclophosphamideDose) & !is.na(cyclophosphamideCourses),
+       cyclophosphamideCumulDose := cyclophosphamideDose * cyclophosphamideCourses]
+D <- D[!is.na(as.numeric(taxaneTotalDose)) & !is.na(taxaneCourses),
+       taxaneCumulDose := as.numeric(taxaneTotalDose) * taxaneCourses]
+D <- D[!is.na(fluoroucilTotalDose) & !is.na(fluoroucilCourses),
+       fluoroucilCumulDose := fluoroucilTotalDose * fluoroucilCourses]
+# D <- D[is.na(anthracyclineCumulDose), anthracyclineCumulDose := 0]
+# D <- D[is.na(cyclophosphamideCumulDose), cyclophosphamideCumulDose := 0]
+# D <- D[is.na(taxaneCumulDose), taxaneCumulDose := 0]
+# D <- D[is.na(fluoroucilCumulDose), fluoroucilCumulDose := 0]
+```
+
+Check.
+
+
+```{r}
+head(D[!is.na(anthracyclineCumulDose),
+       .(authorYear, regimen, anthracyclineCumulDose, anthracyclineTotalDose, anthracyclineCourses)])
+head(D[!is.na(cyclophosphamideCumulDose),
+       .(authorYear, regimen, cyclophosphamideCumulDose, cyclophosphamideDose, cyclophosphamideCourses)])
+head(D[!is.na(taxaneCumulDose),
+       .(authorYear, regimen, taxaneCumulDose, taxaneTotalDose, taxaneCourses)])
+head(D[!is.na(fluoroucilCumulDose),
+       .(authorYear, regimen, fluoroucilCumulDose, fluoroucilTotalDose, fluoroucilCourses)])
+```
+
+## Manual tidying
+
+After an early round of analysis, we realized there were some `nITT` data entry errors in the commit [26115da](https://github.com/benjamin-chan/SecMalAfterBreastCaACT/raw/26115dab1eb2b075d40f545514a03c3b30cde6b4/SecondaryMalignancies_Data_BG_3_4.xlsx) (Jun 1, 2016) spreadsheet.
+
+
+```{r}
+D <- D[authorYear == "Mamounas (2005)" & nITT == 1528, `:=` (nITTOld = nITT, nITT = 1529, isFixed = TRUE)]
+D <- D[authorYear == "Fumoleu (2003)" & nITT == 210, `:=` (nITTOld = nITT, nITT = 212, isFixed = TRUE)]
+D <- D[authorYear == "Fumoleu (2003)" & nITT == 197, `:=` (nITTOld = nITT, nITT = 209, isFixed = TRUE)]
+D <- D[authorYear == "Fumoleu (2003)" & nITT == 195, `:=` (nITTOld = nITT, nITT = 200, isFixed = TRUE)]
+D <- D[authorYear == "Fargeot (2004)" & nITT == 155, `:=` (nITTOld = nITT, nITT = 164, isFixed = TRUE)]
+D <- D[authorYear == "Fargeot (2004)" & nITT == 163, `:=` (nITTOld = nITT, nITT = 174, isFixed = TRUE)]
+D <- D[authorYear == "Kerbrat (2007)" & nITT == 235, `:=` (nITTOld = nITT, nITT = 241, isFixed = TRUE)]
+D <- D[authorYear == "Kerbrat (2007)" & nITT == 236, `:=` (nITTOld = nITT, nITT = 241, isFixed = TRUE)]
+D <- D[authorYear == "Fisher (1997)" & nITT == 763, `:=` (nITTOld = nITT, nITT = 767, isFixed = TRUE)]
+D <- D[authorYear == "Fisher (1997)" & nITT == 771, `:=` (nITTOld = nITT, nITT = 772, isFixed = TRUE)]
+D <- D[authorYear == "Bonneterre (2005)" & nITT == 271, `:=` (nITTOld = nITT, nITT = 289, isFixed = TRUE)]
+D <- D[authorYear == "Bonneterre (2005)" & nITT == 266, `:=` (nITTOld = nITT, nITT = 276, isFixed = TRUE)]
+D <- D[authorYear == "Roche (2006)" & nITT == 163, `:=` (nITTOld = nITT, nITT = 164, isFixed = TRUE)]
+D <- D[authorYear == "Roche (2006)" & nITT == 168, `:=` (nITTOld = nITT, nITT = 169, isFixed = TRUE)]
+D <- D[authorYear == "Shulman (2014)" & nITT == 1107, `:=` (nITTOld = nITT, nITT = 1142, isFixed = TRUE)]
+D <- D[authorYear == "Shulman (2014)" & nITT ==  766, `:=` (nITTOld = nITT, nITT =  789, isFixed = TRUE)]
+D <- D[authorYear == "Shulman (2014)" & nITT == 1119, `:=` (nITTOld = nITT, nITT = 1151, isFixed = TRUE)]
+D <- D[authorYear == "Shulman (2014)" & nITT ==  782, `:=` (nITTOld = nITT, nITT =  789, isFixed = TRUE)]
+D <- D[authorYear == "Swain (2013)" & nITT == 1617, `:=` (nITTOld = nITT, nITT = 1630, isFixed = TRUE)]
+D <- D[authorYear == "Swain (2013)" & nITT == 1624, `:=` (nITTOld = nITT, nITT = 1634, isFixed = TRUE)]
+D <- D[authorYear == "Swain (2013)" & nITT == 1618, `:=` (nITTOld = nITT, nITT = 1630, isFixed = TRUE)]
+D[isFixed == TRUE, .(authorYear, regimen, nITTOld, nITT)]
+D <- D[, `:=` (nITTOld = NULL, isFixed = NULL)]
+```
+
+We also made the decision to use the AML/MDS outcomes reported in Perez (2011) as the outcomes for Romond (2005) since they study the same cohort. Other edits to *AML or MDS* and *non-breast solid* malignancy outcome were needed, as well.
+
+
+```{r}
+D <- D[authorYear == "Martin (2010)" & regimen == "TAC",
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D <- D[authorYear == "Martin (2010)" & regimen == "FAC",
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D <- D[authorYear == "Romond (2005)" & regimen == "AC-T",
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 2, isFixed = TRUE)]
+D <- D[authorYear == "Romond (2005)" & regimen == "ACT-T-Trast",
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 1, isFixed = TRUE)]
+D <- D[authorYear == "Del Mastro (2015)",
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 0, isFixed = TRUE)]
+D <- D[authorYear == "Del Mastro (2015)" & regimen == "EC-T" & nITT == 502,
+      `:=` (malAMLOrMDSTotalOld = malAMLOrMDSTotal, malAMLOrMDSTotal = 2, isFixed = TRUE)]
+
+D <- D[authorYear == "Bernard-Marty (2003)" & regimen == "EC" & nITT == 267,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 4, isFixed = TRUE)]
+D <- D[authorYear == "Bonneterre (2005)" & regimen == "FEC 50",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D <- D[authorYear == "Bonneterre (2005)" & regimen == "FEC 100",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 15, isFixed = TRUE)]
+D <- D[authorYear == "Citron (2003)" & regimen == "A-T-C" & nITT == 493,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D <- D[authorYear == "Citron (2003)" & regimen == "AC-T" & nITT == 495,
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 11, isFixed = TRUE)]
+D <- D[authorYear == "Eiermann (2011)" & regimen == "AC-T",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 34, isFixed = TRUE)]
+D <- D[authorYear == "Eiermann (2011)" & regimen == "TAC",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 31, isFixed = TRUE)]
+D <- D[authorYear == "Romond (2005)" & regimen == "AC-T",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 13, isFixed = TRUE)]
+D <- D[authorYear == "Romond (2005)" & regimen == "ACT-T-Trast",
+      `:=` (malNonBreastSolidOld = malNonBreastSolid, malNonBreastSolid = 4, isFixed = TRUE)]
+
+D[isFixed == TRUE,
+  .(authorYear, regimen, nITT, malAMLOrMDSTotalOld, malAMLOrMDSTotal, malNonBreastSolidOld, malNonBreastSolid)]
+D <- D[, `:=` (malAMLOrMDSTotalOld = NULL, malNonBreastSolidOld = NULL, isFixed = NULL)]
+```
+
+Deduplicate.
+
+
+```{r}
+n0 <- nrow(D)
+setkey(D, authorYear, trial, arm)
+D <- unique(D)
+message(sprintf("Removed %d duplicate row(s) (%.03g%%)", n0 - nrow(D), (n0 - nrow(D)) / n0 * 100))
+```
