@@ -278,50 +278,6 @@ M
 ```
 
 
-## AML only
-
-Run models for AML malignancies alone for compatibility with the SEER incidence statistics.
-
-> From: Rivera, Donna (NIH/NCI) [F] [mailto:donna.rivera@nih.gov]   
-> Sent: Monday, June 27, 2016 6:37 AM  
-> To: Benjamin Chan; Barbara M. Galligan  
-> Subject: RE: SEER Data for NCI secondary malignancies  
->
-> I just wanted to make sure you saw the **SEER statistics are only for AML and do not include MDS**. MDS is categorized separately and we could get that as well for reference if you would like.  There are other types such as AMoL and more rare versions ,if  you would like to look at those. Let me know if there are other types needed for your reference.
-
-
-```{r}
-mal <- "AML"
-D3 <- D2[malType == mal]
-```
-
-
-```{r}
-D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
-M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Cyclophosphamide cumulative dose",
-        1e3 * c(0.5, 1, 2, 4, 8, 16),
-        1e3)
-```
-
-
-```{r}
-D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
-M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Taxane cumulative dose",
-        1e2 * c(0.5, 1, 2, 4, 8, 16),
-        1e2)
-```
-
-
 ## Non-Breast Solid
 
 * Fit the models
