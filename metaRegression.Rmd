@@ -224,60 +224,6 @@ M
 ```
 
 
-### Taxanes, with and without Cyclophosphamide
-
-The effect of taxane could be due to cyclophosphamide in the regimen.
-
-Fit the meta-regression model
-
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{taxane dose}, i} + \beta_2 I_{\text{cyclophosphamide}, i} + \beta_3 x_{\text{taxane dose}, i} I_{\text{cyclophosphamide}, i} + \sigma_\text{study}$$
-
-where $I_{\text{cyclophosphamide}, i}$ is an 0/1 indicator for whether study $i$ has cyclophosphamide in the regimen.
-The interpretation of $\beta_1$ is the effect of taxane dose among the studies with no cyclophosphamide in the regimen.
-
-```{r}
-mal <- "AML or MDS"
-D3 <- D2[malType == mal]
-D3 <- D3[, drug := "Taxane"]
-D3 <- D3[isTaxane == FALSE, xTaxHighDose := FALSE]
-D3 <- D3[!(is.na(xTax) | is.na(xTaxHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
-xData <- unique(D3[, .(drug, xTax, xTaxHighDose, isCyclo, malType)])
-D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
-randomEffect <- list(~ 1 | id)
-MLin <- rma.mv(yi ~ xTax + isCyclo + xTax * isCyclo,
-               vi,
-               random=randomEffect,
-               data=D3)
-MBin <- rma.mv(yi ~ xTaxHighDose + isCyclo + xTaxHighDose * isCyclo,
-               vi,
-               random=randomEffect,
-               data=D3)
-M <- list(rmaLin = MLin,
-          rmaBin = MBin)
-M
-```
-
-Next, the model is reparameterized as
-
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1^\prime x_{\text{taxane dose}, i} + \beta_2^\prime I_{\text{no cyclophosphamide}, i} + \beta_3^\prime x_{\text{taxane dose}, i} I_{\text{no cyclophosphamide}, i} + \sigma_\text{study}$$
-
-so the interpretation of $\beta_1^\prime$ is the effect of taxane dose among the studies with cyclophosphamide in the regimen.
-
-```{r}
-MLin <- rma.mv(yi ~ xTax + (isCyclo == FALSE) + xTax * (isCyclo == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-MBin <- rma.mv(yi ~ xTaxHighDose + (isCyclo == FALSE) + xTaxHighDose * (isCyclo == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-M <- list(rmaLin = MLin,
-          rmaBin = MBin)
-M
-```
-
-
 ## Non-Breast Solid
 
 * Fit the models
