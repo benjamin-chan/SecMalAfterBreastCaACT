@@ -318,3 +318,12 @@ setkey(D, authorYear, trial, arm)
 D <- unique(D)
 message(sprintf("Removed %d duplicate row(s) (%.03g%%)", n0 - nrow(D), (n0 - nrow(D)) / n0 * 100))
 ```
+
+
+Save data.table to file.
+
+```{r}
+f <- "data.RData"
+save(D, file = f)
+file.info(f)[c("size", "mtime")]
+```
