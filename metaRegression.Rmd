@@ -174,6 +174,17 @@ plotreg(M,
 
 The effect of cyclophosphamide could be due to taxanes in the regimen.
 
+> From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
+> Sent: Monday, August 01, 2016 2:47 PM  
+> To: Benjamin Chan <chanb@ohsu.edu>  
+> Subject: RE: secondary malignancies  
+> 
+> The one I'm asking about is cyclophosphamide with high dose taxane vs
+> cyclophosphamide alone.  I think if it looks like taxane augments the known
+> risk of cyclophosphamide this would be an important addition to the
+> literature.
+
+
 Fit the meta-regression model
 
 $$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
