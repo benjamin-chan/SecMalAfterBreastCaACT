@@ -97,7 +97,7 @@ plotreg <- function (M, D, title, xlab, xbreaks, xscale) {
   write.csv(D, file=sprintf("%s.csv", filename), row.names=FALSE, quote=FALSE)
   M$pred[, x := x * xscale]
   write.csv(M$pred, file=sprintf("%s_Pred.csv", filename), row.names=FALSE, quote=FALSE)
-  show(file.info(c(sprintf("%s.png", filename), sprintf("%s.csv", filename)))[c("size", "mtime")])
+  show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
   G
 }
 ```
@@ -209,9 +209,9 @@ MBin <- rma.mv(yi ~ xCycHighDose + isTaxane + xCycHighDose * isTaxane,
                vi,
                random=randomEffect,
                data=D3)
-M <- list(rmaLin = MLin,
-          rmaBin = MBin)
-M
+M1 <- list(rmaLin = MLin,
+           rmaBin = MBin)
+M1
 ```
 
 Next, the model is reparameterized as
@@ -229,9 +229,82 @@ MBin <- rma.mv(yi ~ xCycHighDose + (isTaxane == FALSE) + xCycHighDose * (isTaxan
                vi,
                random=randomEffect,
                data=D3)
-M <- list(rmaLin = MLin,
-          rmaBin = MBin)
-M
+M2 <- list(rmaLin = MLin,
+           rmaBin = MBin)
+M2
+```
+
+Plot predicted values.
+
+```{r}
+pred <- function (M, s = scale) {
+  X <- data.frame(M$rmaLin$X)
+  X <- unique(X)
+  X <- X[X[, 3] == 0, ]
+  varnames <- names(X)[2:ncol(X)]
+  X <- data.frame(seq(min(X[, "xCyc"]), max(X[, "xCyc"]), length.out = 100),
+                  rep(0, 100),
+                  rep(0, 100))
+  names(X) <- varnames
+  yhat <- data.frame(malType = mal,
+                     X,
+                     yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * s)
+  yhat
+}
+xscale <- 1e3
+yhat1 <- pred(M1)
+yhat2 <- pred(M2)
+yhat <- rbind(cbind(isTaxane = FALSE, yhat1[, c("malType", "xCyc", "yhat")]),
+              cbind(isTaxane = TRUE , yhat2[, c("malType", "xCyc", "yhat")]))
+pvalues <- c(M1$rmaLin$pval[which(row.names(M1$rmaLin$b) == "xCyc")],
+             M2$rmaLin$pval[which(row.names(M2$rmaLin$b) == "xCyc")])
+anno1 <- data.frame(x = Inf,
+                    y = 1.2,
+                    label = paste("Without taxane:", pvalToChar(pvalues[c(1)])),
+                    malType = levels(D3[, "malType"]))
+anno2 <- data.frame(x = Inf,
+                    y = 1.4,
+                    label = paste("With taxane:", pvalToChar(pvalues[c(2)])),
+                    malType = levels(D3[, "malType"]))
+pal <- brewer.pal(4, name = "PuOr")
+G <- ggplot(D3, aes(x = xCyc * xscale,
+                    y = rate + 1/2,
+                    size = nITT / min(nITT, na.rm=TRUE),
+                    color = isTaxane))
+G <- G + geom_point(alpha = 1/2,
+                    position = "jitter")
+G <- G + geom_line(data = yhat[yhat$isTaxane == FALSE, ],
+                   aes(x = xCyc * xscale, y = yhat),
+                   inherit.aes = FALSE,
+                   color = pal[1])
+G <- G + geom_line(data = yhat[yhat$isTaxane == TRUE, ],
+                   aes(x = xCyc * xscale, y = yhat),
+                   inherit.aes = FALSE,
+                   color = pal[4])
+G <- G + geom_text(data = anno1,
+                   aes(x, y, label = label),
+                   inherit.aes = FALSE,
+                   hjust = 1,
+                   color = pal[1])
+G <- G + geom_text(data = anno2,
+                   aes(x, y, label = label),
+                   inherit.aes = FALSE,
+                   hjust = 1,
+                   color = pal[4])
+G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
+                       breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
+G <- G + scale_y_log10(sprintf("Rate per %s person-years",
+                               format(scale, big.mark = ",")))
+G <- G + scale_color_manual(values = c(pal[1], pal[4]))
+G <- G + labs(title = mal)
+G <- G + theme_bw()
+G <- G + theme(legend.position = "none")
+filename <- "AMLorMDS_Cyclophosphamide_byTaxane"
+ggsave(filename = sprintf("%s.png", filename))
+yhat$xCyc <- yhat$xCyc * xscale
+write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
+show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
+G
 ```
 
 
