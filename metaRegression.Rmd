@@ -3,11 +3,11 @@
 Estimate meta-regression models for log transformed incidence rate.
 Model is
 
-$$\frac{y_i}{\text{py}_i} = \beta x_i + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta x_i + \sigma_\text{study}$$
 
 Or
 
-$$\frac{y_i}{\text{py}_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
 
@@ -187,7 +187,7 @@ The effect of cyclophosphamide could be due to taxanes in the regimen.
 
 Fit the meta-regression model
 
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
 
 where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.
 The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.
@@ -216,7 +216,7 @@ M1
 
 Next, the model is reparameterized as
 
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
 
 so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.
 
