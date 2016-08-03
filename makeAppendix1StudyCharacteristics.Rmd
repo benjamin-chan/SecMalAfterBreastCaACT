@@ -27,7 +27,6 @@ Output to multiple formats:
 
 ```{r}
 library(xlsx)
-library(IRdisplay)
 library(xtable)
 T <- D[,
        .(study = ifelse(!is.na(trial), paste(authorYear, trial), authorYear),
