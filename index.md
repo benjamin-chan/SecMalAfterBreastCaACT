@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-03 11:19:26
+* Date: 2016-08-03 14:35:44
 
 
 # Load packages
@@ -30,7 +30,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##                                   size               mtime
-## /tmp/RtmpPr21ld/filececc398e23b8 59619 2016-08-03 11:19:29
+## /tmp/RtmpTlJPv0/filee1cc510a95a7 59619 2016-08-03 14:35:45
 ```
 
 ```r
@@ -210,18 +210,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    41      1     NA          NA                1
-##  2:    32      4      4          NA                8
-##  3:    84     NA     NA           0                0
-##  4:    70     NA     NA          NA               NA
-##  5:    35     NA     NA           2                2
-##  6:    44     NA     NA           1                1
-##  7:     5     NA     NA          NA               NA
-##  8:    31      6      2          NA                8
-##  9:     3     NA     NA          NA               NA
-## 10:    59      9      4          NA               13
-## 11:    37      3     NA          NA                3
-## 12:    17     NA     NA           4                4
+##  1:    34      0      1          NA                1
+##  2:    59      9      4          NA               13
+##  3:    30      0      0          NA                0
+##  4:    52      1      1          NA                2
+##  5:    87     NA     NA           8                8
+##  6:    91     NA     NA          NA               NA
+##  7:    76      1      0          NA                1
+##  8:    25     NA     NA           7                7
+##  9:    20      0      0          NA                0
+## 10:    57     NA     NA          NA               NA
+## 11:    31      6      2          NA                8
+## 12:    40      2     NA          NA                2
 ```
 
 Remove text from `nITT` column.
@@ -256,7 +256,7 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-03 11:19:29 2016-08-03 11:19:29
+## regimens.md 7215 FALSE  644 2016-08-03 14:35:45 2016-08-03 14:35:45
 ##                           atime  uid  gid uname   grname
 ## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -575,7 +575,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-03 11:19:29
+## data.RData 7448 2016-08-03 14:35:46
 ```
 
 ---
@@ -650,7 +650,7 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-03 11:19:29 2016-08-03 11:19:29
+## summaryRegimens.md 4624 FALSE  644 2016-08-03 14:35:46 2016-08-03 14:35:46
 ##                                  atime  uid  gid uname   grname
 ## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -714,14 +714,6 @@ library(xlsx)
 ```
 
 ```r
-library(IRdisplay)
-```
-
-```
-## Error in library(IRdisplay): there is no package called 'IRdisplay'
-```
-
-```r
 library(xtable)
 T <- D[,
        .(study = ifelse(!is.na(trial), paste(authorYear, trial), authorYear),
@@ -755,11 +747,11 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 ##                                                    size
 ## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9473
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-03 11:19:31
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-03 11:19:31
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-03 11:19:31
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-03 14:35:47
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-03 14:35:47
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-03 14:35:47
 ```
 
 ```r
@@ -773,11 +765,11 @@ T <- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
 Estimate meta-regression models for log transformed incidence rate.
 Model is
 
-$$\frac{y_i}{\text{py}_i} = \beta x_i + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta x_i + \sigma_\text{study}$$
 
 Or
 
-$$\frac{y_i}{\text{py}_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
 
@@ -953,6 +945,8 @@ D3 <- D2[malType == mal]
 ```
 
 
+### Cyclophosphamide
+
 
 ```r
 D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
@@ -1073,13 +1067,14 @@ plotreg(M,
 
 ```
 ##                                      size               mtime
-## AMLorMDS_Cyclophosphamide_Pred.csv   1845 2016-08-03 11:19:33
-## AMLorMDS_Cyclophosphamide.csv        7240 2016-08-03 11:19:33
-## AMLorMDS_Cyclophosphamide.png      159620 2016-08-03 11:19:33
+## AMLorMDS_Cyclophosphamide_Pred.csv   1845 2016-08-03 14:35:50
+## AMLorMDS_Cyclophosphamide.csv        7240 2016-08-03 14:35:49
+## AMLorMDS_Cyclophosphamide.png      158433 2016-08-03 14:35:49
 ```
 
 ![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
+### Taxane
 
 
 ```r
@@ -1187,14 +1182,14 @@ plotreg(M,
 
 ```
 ##                            size               mtime
-## AMLorMDS_Taxane_Pred.csv   1585 2016-08-03 11:19:34
-## AMLorMDS_Taxane.csv        3262 2016-08-03 11:19:34
-## AMLorMDS_Taxane.png      118542 2016-08-03 11:19:34
+## AMLorMDS_Taxane_Pred.csv   1585 2016-08-03 14:35:50
+## AMLorMDS_Taxane.csv        3262 2016-08-03 14:35:50
+## AMLorMDS_Taxane.png      119234 2016-08-03 14:35:50
 ```
 
 ![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
 
-### Cyclophosphamide, with and without Taxanes
+### Cyclophosphamide, with and without Taxane
 
 The effect of cyclophosphamide could be due to taxanes in the regimen.
 
@@ -1211,7 +1206,7 @@ The effect of cyclophosphamide could be due to taxanes in the regimen.
 
 Fit the meta-regression model
 
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
 
 where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.
 The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.
@@ -1306,7 +1301,7 @@ M1
 
 Next, the model is reparameterized as
 
-$$\frac{y_i}{\text{py}_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
 
 so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.
 
@@ -1472,8 +1467,8 @@ show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE)
 
 ```
 ##                                               size               mtime
-## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   9992 2016-08-03 11:19:35
-## AMLorMDS_Cyclophosphamide_byTaxane.png      174784 2016-08-03 11:19:35
+## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   9992 2016-08-03 14:35:51
+## AMLorMDS_Cyclophosphamide_byTaxane.png      176154 2016-08-03 14:35:51
 ```
 
 ```r
@@ -1496,6 +1491,7 @@ mal <- "Non-Breast Solid"
 D3 <- D2[malType == mal]
 ```
 
+### Cyclophosphamide
 
 
 ```r
@@ -1603,13 +1599,14 @@ plotreg(M,
 
 ```
 ##                                            size               mtime
-## NonBreastSolid_Cyclophosphamide_Pred.csv   1771 2016-08-03 11:19:36
-## NonBreastSolid_Cyclophosphamide.csv        4356 2016-08-03 11:19:36
-## NonBreastSolid_Cyclophosphamide.png      116895 2016-08-03 11:19:36
+## NonBreastSolid_Cyclophosphamide_Pred.csv   1771 2016-08-03 14:35:52
+## NonBreastSolid_Cyclophosphamide.csv        4356 2016-08-03 14:35:52
+## NonBreastSolid_Cyclophosphamide.png      117031 2016-08-03 14:35:52
 ```
 
 ![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
 
+### Taxane
 
 
 ```r
@@ -1705,9 +1702,9 @@ plotreg(M,
 
 ```
 ##                                 size               mtime
-## NonBreastSolid_Taxane_Pred.csv   804 2016-08-03 11:19:37
-## NonBreastSolid_Taxane.csv       1762 2016-08-03 11:19:37
-## NonBreastSolid_Taxane.png      92156 2016-08-03 11:19:37
+## NonBreastSolid_Taxane_Pred.csv   804 2016-08-03 14:35:53
+## NonBreastSolid_Taxane.csv       1762 2016-08-03 14:35:53
+## NonBreastSolid_Taxane.png      92278 2016-08-03 14:35:53
 ```
 
 ![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
