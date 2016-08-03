@@ -145,6 +145,8 @@ D3 <- D2[malType == mal]
 ```
 
 
+### Cyclophosphamide
+
 ```{r}
 D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
 M <- metareg(D3)
@@ -157,6 +159,7 @@ plotreg(M,
         1e3)
 ```
 
+### Taxane
 
 ```{r}
 D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
@@ -170,7 +173,7 @@ plotreg(M,
         1e2)
 ```
 
-### Cyclophosphamide, with and without Taxanes
+### Cyclophosphamide, with and without Taxane
 
 The effect of cyclophosphamide could be due to taxanes in the regimen.
 
@@ -320,6 +323,7 @@ mal <- "Non-Breast Solid"
 D3 <- D2[malType == mal]
 ```
 
+### Cyclophosphamide
 
 ```{r}
 D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
@@ -333,6 +337,7 @@ plotreg(M,
         1e3)
 ```
 
+### Taxane
 
 ```{r}
 D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
