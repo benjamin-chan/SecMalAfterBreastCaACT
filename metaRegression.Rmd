@@ -173,9 +173,9 @@ plotreg(M,
         1e2)
 ```
 
-### Cyclophosphamide, with and without Taxane
+### Cyclophosphamide, with and without High Dose Taxane
 
-The effect of cyclophosphamide could be due to taxanes in the regimen.
+The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
 
 > From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
 > Sent: Monday, August 01, 2016 2:47 PM  
@@ -190,120 +190,88 @@ The effect of cyclophosphamide could be due to taxanes in the regimen.
 
 Fit the meta-regression model
 
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
 
-where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.
-The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.
+where $I_{\text{high dose taxane}, i}$ is an 0/1 indicator for whether study $i$ has high dose taxane in the regimen.
+The interpretation of $\beta_1$ is the effect of cyclophosphamide dose adjusted for high dose taxane in the regimen.
 
 ```{r}
 mal <- "AML or MDS"
 D3 <- D2[malType == mal]
 D3 <- D3[, drug := "Cyclophosphamide"]
 D3 <- D3[isCyclo == FALSE, xCycHighDose := FALSE]
+D3 <- D3[, isTaxaneHighDose := FALSE]
+D3 <- D3[xTaxHighDose == TRUE, isTaxaneHighDose := TRUE]
 D3 <- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
-xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxane, malType)])
+xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxaneHighDose, malType)])
 D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
 randomEffect <- list(~ 1 | id)
-MLin <- rma.mv(yi ~ xCyc + isTaxane + xCyc * isTaxane,
+MLin <- rma.mv(yi ~ xCyc + isTaxaneHighDose,
                vi,
                random=randomEffect,
                data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + isTaxane + xCycHighDose * isTaxane,
+MLinInt <- rma.mv(yi ~ xCyc + isTaxaneHighDose + xCyc * isTaxaneHighDose,
+                  vi,
+                  random=randomEffect,
+                  data=D3)
+MBin <- rma.mv(yi ~ xCycHighDose + isTaxaneHighDose,
                vi,
                random=randomEffect,
                data=D3)
-M1 <- list(rmaLin = MLin,
-           rmaBin = MBin)
-M1
-```
-
-Next, the model is reparameterized as
-
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
-
-so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.
-
-```{r}
-MLin <- rma.mv(yi ~ xCyc + (isTaxane == FALSE) + xCyc * (isTaxane == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + (isTaxane == FALSE) + xCycHighDose * (isTaxane == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-M2 <- list(rmaLin = MLin,
-           rmaBin = MBin)
-M2
+M <- list(rmaLin = MLin,
+          rmaLinInt = MLinInt,
+          rmaBin = MBin)
+M
 ```
 
 Plot predicted values.
 
 ```{r}
-pred <- function (M, s = scale) {
-  X <- data.frame(M$rmaLin$X)
-  X <- unique(X)
-  X <- X[X[, 3] == 0, ]
-  varnames <- names(X)[2:ncol(X)]
-  X <- data.frame(seq(min(X[, "xCyc"]), max(X[, "xCyc"]), length.out = 100),
-                  rep(0, 100),
-                  rep(0, 100))
-  names(X) <- varnames
-  yhat <- data.frame(malType = mal,
-                     X,
-                     yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * s)
-  yhat
-}
+X <- data.frame(M$rmaLin$X)
+X <- unique(X)
+varnames <- names(X)[2:ncol(X)]
+X0 <- data.frame(x1 = seq(min(X[X[, 3] == 0, "xCyc"]), max(X[X[, 3] == 0, "xCyc"]),
+                          length.out = 100),
+                 x2 = rep(0, 100))
+X1 <- data.frame(x1 = seq(min(X[X[, 3] == 1, "xCyc"]), max(X[X[, 3] == 1, "xCyc"]),
+                          length.out = 100),
+                 x2 = rep(1, 100))
+X <- rbind(X0, X1)
+names(X) <- varnames
+X$xCyc <- round(X$xCyc, digits = 1)
+X <- unique(X)
+yhat <- data.frame(malType = mal,
+                   X,
+                   yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * scale)
 xscale <- 1e3
-yhat1 <- pred(M1)
-yhat2 <- pred(M2)
-yhat <- rbind(cbind(isTaxane = FALSE, yhat1[, c("malType", "xCyc", "yhat")]),
-              cbind(isTaxane = TRUE , yhat2[, c("malType", "xCyc", "yhat")]))
-pvalues <- c(M1$rmaLin$pval[which(row.names(M1$rmaLin$b) == "xCyc")],
-             M2$rmaLin$pval[which(row.names(M2$rmaLin$b) == "xCyc")])
-anno1 <- data.frame(x = Inf,
-                    y = 1.2,
-                    label = paste("Without taxane:", pvalToChar(pvalues[c(1)])),
-                    malType = levels(D3[, "malType"]))
-anno2 <- data.frame(x = Inf,
-                    y = 1.4,
-                    label = paste("With taxane:", pvalToChar(pvalues[c(2)])),
-                    malType = levels(D3[, "malType"]))
+pvalues <- c(M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxaneHighDoseTRUE")])
 pal <- brewer.pal(4, name = "PuOr")
 G <- ggplot(D3, aes(x = xCyc * xscale,
                     y = rate + 1/2,
                     size = nITT / min(nITT, na.rm=TRUE),
-                    color = isTaxane))
+                    color = isTaxaneHighDose))
 G <- G + geom_point(alpha = 1/2,
                     position = "jitter")
-G <- G + geom_line(data = yhat[yhat$isTaxane == FALSE, ],
+G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == FALSE, ],
                    aes(x = xCyc * xscale, y = yhat),
                    inherit.aes = FALSE,
                    color = pal[1])
-G <- G + geom_line(data = yhat[yhat$isTaxane == TRUE, ],
+G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == TRUE, ],
                    aes(x = xCyc * xscale, y = yhat),
                    inherit.aes = FALSE,
-                   color = pal[4])
-G <- G + geom_text(data = anno1,
-                   aes(x, y, label = label),
-                   inherit.aes = FALSE,
-                   hjust = 1,
-                   color = pal[1])
-G <- G + geom_text(data = anno2,
-                   aes(x, y, label = label),
-                   inherit.aes = FALSE,
-                   hjust = 1,
                    color = pal[4])
 G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
                        breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
 G <- G + scale_y_log10(sprintf("Rate per %s person-years",
                                format(scale, big.mark = ",")))
-G <- G + scale_color_manual(values = c(pal[1], pal[4]))
+G <- G + scale_color_manual(sprintf("Taxane, %s", pvalToChar(pvalues[c(1)])),
+                            values = c(pal[1], pal[4]),
+                            labels = c("None or low dose", "High dose"))
+G <- G + scale_size_continuous(guide = FALSE)
 G <- G + labs(title = mal)
 G <- G + theme_bw()
-G <- G + theme(legend.position = "none")
-filename <- "AMLorMDS_Cyclophosphamide_byTaxane"
-ggsave(filename = sprintf("%s.png", filename))
+filename <- "AMLorMDS_Cyclophosphamide_byHighDoseTaxane"
+ggsave(filename = sprintf("%s.png", filename), width = 9)
 yhat$xCyc <- yhat$xCyc * xscale
 write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
 show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
