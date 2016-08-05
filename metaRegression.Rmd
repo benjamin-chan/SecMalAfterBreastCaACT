@@ -17,11 +17,12 @@ Cumulative doses are dichotomized into low and high doses.
     * $\ge 500$
 
 ```{r}
+xscale <- 1e3
 D2 <- D1[,
          .(id = factor(id),
            authorYear,
            isCyclo,
-           xCyc = cyclophosphamideCumulDose / 1e3,  # scale units
+           xCyc = cyclophosphamideCumulDose / xscale,  # scale units
            isCycHighDose = cyclophosphamideCumulDose >= 2400,
            xTax = taxaneCumulDose / 1e2,  # scale units
            isTaxHighDose = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
@@ -136,7 +137,6 @@ plotreg <- function (M, D, title) {
   setkeyv(ci.lb, keyvar)
   setkeyv(ci.ub, keyvar)
   yhat <- merge(merge(yhat, ci.lb), ci.ub)
-  xscale <- 1e3
   pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
   pal <- brewer.pal(5, name = "RdBu")[c(1, 5)]
   G <- ggplot(D, aes(x = xCyc * xscale,
@@ -193,6 +193,15 @@ D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
 M <- metareg(D3)
 ```
 
+### Findings
+
+* `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose
+  * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
+* High dose taxane confounded the cyclophosphamide dose response
+  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")])`)
+* High dose taxane did not modify the dose response effect of cyclophosphamide
+  * Interaction term estimate was `r sprintf("%.03g", M$rmaLinInt$b[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])` (95% CI: `r sprintf("%.03g", M$rmaLinInt$ci.lb[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`, `r sprintf("%.03g", M$rmaLinInt$ci.ub[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`; p = `r sprintf("%.03g", M$rmaLinInt$pval[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`)
+
 ### Cyclophosphamide: dose response; Taxane: confounder
 
 ```{r, fig.width = 9}
@@ -227,6 +236,11 @@ D3 <- D2[malType == mal]
 D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
 M <- metareg(D3)
 ```
+
+* `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose
+  * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
+* High dose taxane did not confound the cyclophosphamide dose response
+  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")])`)
 
 ### Cyclophosphamide: dose response; Taxane: confounder
 
