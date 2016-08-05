@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-03 14:35:44
+* Date: 2016-08-05 10:27:20
 
 
 # Load packages
@@ -29,8 +29,8 @@ file.info(f)[c("size", "mtime")]
 ```
 
 ```
-##                                   size               mtime
-## /tmp/RtmpTlJPv0/filee1cc510a95a7 59619 2016-08-03 14:35:45
+##                                    size               mtime
+## /tmp/RtmpROx4al/file1bea71699c21e 59619 2016-08-05 10:27:22
 ```
 
 ```r
@@ -210,18 +210,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    34      0      1          NA                1
-##  2:    59      9      4          NA               13
-##  3:    30      0      0          NA                0
-##  4:    52      1      1          NA                2
-##  5:    87     NA     NA           8                8
-##  6:    91     NA     NA          NA               NA
-##  7:    76      1      0          NA                1
-##  8:    25     NA     NA           7                7
-##  9:    20      0      0          NA                0
-## 10:    57     NA     NA          NA               NA
-## 11:    31      6      2          NA                8
-## 12:    40      2     NA          NA                2
+##  1:    28     NA     NA          NA               NA
+##  2:    20      0      0          NA                0
+##  3:    21     NA     NA          NA               NA
+##  4:    89     NA     NA          NA               NA
+##  5:    18     NA     NA           2                2
+##  6:    50     NA     NA          NA               NA
+##  7:    49     NA     NA          NA               NA
+##  8:    41      1     NA          NA                1
+##  9:     4     NA     NA          NA               NA
+## 10:    66      4     NA          NA                4
+## 11:    88     NA     NA          11               11
+## 12:    95      0     NA          NA                0
 ```
 
 Remove text from `nITT` column.
@@ -256,7 +256,7 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-03 14:35:45 2016-08-03 14:35:45
+## regimens.md 7215 FALSE  644 2016-08-05 10:27:22 2016-08-05 10:27:22
 ##                           atime  uid  gid uname   grname
 ## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -575,7 +575,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-03 14:35:46
+## data.RData 7448 2016-08-05 10:27:23
 ```
 
 ---
@@ -650,7 +650,7 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-03 14:35:46 2016-08-03 14:35:46
+## summaryRegimens.md 4624 FALSE  644 2016-08-05 10:27:23 2016-08-05 10:27:23
 ##                                  atime  uid  gid uname   grname
 ## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -749,9 +749,9 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
 ## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-03 14:35:47
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-03 14:35:47
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-03 14:35:47
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 10:27:25
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 10:27:25
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 10:27:25
 ```
 
 ```r
@@ -1067,9 +1067,9 @@ plotreg(M,
 
 ```
 ##                                      size               mtime
-## AMLorMDS_Cyclophosphamide_Pred.csv   1845 2016-08-03 14:35:50
-## AMLorMDS_Cyclophosphamide.csv        7240 2016-08-03 14:35:49
-## AMLorMDS_Cyclophosphamide.png      158433 2016-08-03 14:35:49
+## AMLorMDS_Cyclophosphamide_Pred.csv   1845 2016-08-05 10:27:27
+## AMLorMDS_Cyclophosphamide.csv        7240 2016-08-05 10:27:27
+## AMLorMDS_Cyclophosphamide.png      159211 2016-08-05 10:27:27
 ```
 
 ![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
@@ -1182,16 +1182,16 @@ plotreg(M,
 
 ```
 ##                            size               mtime
-## AMLorMDS_Taxane_Pred.csv   1585 2016-08-03 14:35:50
-## AMLorMDS_Taxane.csv        3262 2016-08-03 14:35:50
-## AMLorMDS_Taxane.png      119234 2016-08-03 14:35:50
+## AMLorMDS_Taxane_Pred.csv   1585 2016-08-05 10:27:27
+## AMLorMDS_Taxane.csv        3262 2016-08-05 10:27:27
+## AMLorMDS_Taxane.png      118806 2016-08-05 10:27:27
 ```
 
 ![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
 
-### Cyclophosphamide, with and without Taxane
+### Cyclophosphamide, with and without High Dose Taxane
 
-The effect of cyclophosphamide could be due to taxanes in the regimen.
+The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
 
 > From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
 > Sent: Monday, August 01, 2016 2:47 PM  
@@ -1206,10 +1206,10 @@ The effect of cyclophosphamide could be due to taxanes in the regimen.
 
 Fit the meta-regression model
 
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{taxane}, i} + \beta_3 x_{\text{cyclophosphamide dose}, i} I_{\text{taxane}, i} + \sigma_\text{study}$$
+$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
 
-where $I_{\text{taxane}, i}$ is an 0/1 indicator for whether study $i$ has taxane in the regimen.
-The interpretation of $\beta_1$ is the effect of cyclophosphamide dose among the studies with no taxane in the regimen.
+where $I_{\text{high dose taxane}, i}$ is an 0/1 indicator for whether study $i$ has high dose taxane in the regimen.
+The interpretation of $\beta_1$ is the effect of cyclophosphamide dose adjusted for high dose taxane in the regimen.
 
 
 ```r
@@ -1217,21 +1217,28 @@ mal <- "AML or MDS"
 D3 <- D2[malType == mal]
 D3 <- D3[, drug := "Cyclophosphamide"]
 D3 <- D3[isCyclo == FALSE, xCycHighDose := FALSE]
+D3 <- D3[, isTaxaneHighDose := FALSE]
+D3 <- D3[xTaxHighDose == TRUE, isTaxaneHighDose := TRUE]
 D3 <- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
-xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxane, malType)])
+xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxaneHighDose, malType)])
 D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
 randomEffect <- list(~ 1 | id)
-MLin <- rma.mv(yi ~ xCyc + isTaxane + xCyc * isTaxane,
+MLin <- rma.mv(yi ~ xCyc + isTaxaneHighDose,
                vi,
                random=randomEffect,
                data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + isTaxane + xCycHighDose * isTaxane,
+MLinInt <- rma.mv(yi ~ xCyc + isTaxaneHighDose + xCyc * isTaxaneHighDose,
+                  vi,
+                  random=randomEffect,
+                  data=D3)
+MBin <- rma.mv(yi ~ xCycHighDose + isTaxaneHighDose,
                vi,
                random=randomEffect,
                data=D3)
-M1 <- list(rmaLin = MLin,
-           rmaBin = MBin)
-M1
+M <- list(rmaLin = MLin,
+          rmaLinInt = MLinInt,
+          rmaBin = MBin)
+M
 ```
 
 ```
@@ -1242,26 +1249,56 @@ M1
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1591  0.3988     26     no      id
+## sigma^2    0.1262  0.3552     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 52) = 64.6531, p-val = 0.1119
+## QE(df = 53) = 59.4849, p-val = 0.2514
 ## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 5.4087, p-val = 0.1442
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 10.0425, p-val = 0.0066
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -7.7389  0.2767  -27.9695  <.0001  -8.2812  -7.1966
-## xCyc                 0.1374  0.0594    2.3141  0.0207   0.0210   0.2537
-## isTaxaneTRUE         0.6291  0.8762    0.7180  0.4728  -1.0883   2.3465
-## xCyc:isTaxaneTRUE   -0.1950  0.3478   -0.5607  0.5750  -0.8767   0.4867
-##                       
-## intrcpt            ***
-## xCyc                 *
-## isTaxaneTRUE          
-## xCyc:isTaxaneTRUE     
+##                       estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt                -7.8593  0.2434  -32.2878  <.0001  -8.3363  -7.3822
+## xCyc                    0.1577  0.0554    2.8465  0.0044   0.0491   0.2662
+## isTaxaneHighDoseTRUE    0.5261  0.2430    2.1654  0.0304   0.0499   1.0023
+##                          
+## intrcpt               ***
+## xCyc                   **
+## isTaxaneHighDoseTRUE    *
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+## 
+## 
+## $rmaLinInt
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1321  0.3635     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 59.3513, p-val = 0.2254
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 9.8227, p-val = 0.0201
+## 
+## Model Results:
+## 
+##                            estimate      se      zval    pval    ci.lb
+## intrcpt                     -7.8579  0.2456  -31.9923  <.0001  -8.3393
+## xCyc                         0.1565  0.0561    2.7914  0.0052   0.0466
+## isTaxaneHighDoseTRUE         0.4712  1.2386    0.3804  0.7036  -1.9564
+## xCyc:isTaxaneHighDoseTRUE    0.0237  0.5319    0.0446  0.9645  -1.0188
+##                              ci.ub     
+## intrcpt                    -7.3765  ***
+## xCyc                        0.2664   **
+## isTaxaneHighDoseTRUE        2.8988     
+## xCyc:isTaxaneHighDoseTRUE   1.0662     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
@@ -1274,112 +1311,24 @@ M1
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2853  0.5341     26     no      id
+## sigma^2    0.2573  0.5072     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 52) = 80.2650, p-val = 0.0072
+## QE(df = 53) = 80.3706, p-val = 0.0090
 ## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 1.1729, p-val = 0.7595
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 2.8038, p-val = 0.2461
 ## 
 ## Model Results:
 ## 
-##                                estimate      se      zval    pval    ci.lb
-## intrcpt                         -7.1843  0.6818  -10.5377  <.0001  -8.5205
-## xCycHighDoseTRUE                -0.1052  0.7003   -0.1501  0.8806  -1.4777
-## isTaxaneTRUE                    -0.6230  0.8812   -0.7070  0.4796  -2.3501
-## xCycHighDoseTRUE:isTaxaneTRUE    0.7382  0.9238    0.7992  0.4242  -1.0723
-##                                  ci.ub     
-## intrcpt                        -5.8481  ***
-## xCycHighDoseTRUE                1.2674     
-## isTaxaneTRUE                    1.1041     
-## xCycHighDoseTRUE:isTaxaneTRUE   2.5488     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-Next, the model is reparameterized as
-
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1^\prime x_{\text{cyclophosphamide dose}, i} + \beta_2^\prime I_{\text{no taxane}, i} + \beta_3^\prime x_{\text{cyclophosphamide dose}, i} I_{\text{no taxane}, i} + \sigma_\text{study}$$
-
-so the interpretation of $\beta_1^\prime$ is the effect of cyclophosphamide dose among the studies with taxane in the regimen.
-
-
-```r
-MLin <- rma.mv(yi ~ xCyc + (isTaxane == FALSE) + xCyc * (isTaxane == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + (isTaxane == FALSE) + xCycHighDose * (isTaxane == FALSE),
-               vi,
-               random=randomEffect,
-               data=D3)
-M2 <- list(rmaLin = MLin,
-           rmaBin = MBin)
-M2
-```
-
-```
-## $rmaLin
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1591  0.3988     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 52) = 64.6531, p-val = 0.1119
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 5.4087, p-val = 0.1442
-## 
-## Model Results:
-## 
-##                             estimate      se     zval    pval    ci.lb
-## intrcpt                      -7.1098  0.8508  -8.3569  <.0001  -8.7772
-## xCyc                         -0.0577  0.3441  -0.1675  0.8670  -0.7321
-## isTaxane == FALSETRUE        -0.6291  0.8762  -0.7180  0.4728  -2.3465
-## xCyc:isTaxane == FALSETRUE    0.1950  0.3478   0.5607  0.5750  -0.4867
-##                               ci.ub     
-## intrcpt                     -5.4423  ***
-## xCyc                         0.6168     
-## isTaxane == FALSETRUE        1.0883     
-## xCyc:isTaxane == FALSETRUE   0.8767     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2853  0.5341     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 52) = 80.2650, p-val = 0.0072
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 1.1729, p-val = 0.7595
-## 
-## Model Results:
-## 
-##                                         estimate      se      zval    pval
-## intrcpt                                  -7.8073  0.5608  -13.9227  <.0001
-## xCycHighDoseTRUE                          0.6331  0.5928    1.0681  0.2855
-## isTaxane == FALSETRUE                     0.6230  0.8812    0.7070  0.4796
-## xCycHighDoseTRUE:isTaxane == FALSETRUE   -0.7382  0.9238   -0.7992  0.4242
-##                                           ci.lb    ci.ub     
-## intrcpt                                 -8.9063  -6.7082  ***
-## xCycHighDoseTRUE                        -0.5287   1.7949     
-## isTaxane == FALSETRUE                   -1.1041   2.3501     
-## xCycHighDoseTRUE:isTaxane == FALSETRUE  -2.5488   1.0723     
+##                       estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt                -7.7360  0.4480  -17.2685  <.0001  -8.6140  -6.8580
+## xCycHighDoseTRUE        0.4187  0.4447    0.9415  0.3464  -0.4529   1.2903
+## isTaxaneHighDoseTRUE    0.4006  0.2635    1.5207  0.1283  -0.1157   0.9170
+##                          
+## intrcpt               ***
+## xCycHighDoseTRUE         
+## isTaxaneHighDoseTRUE     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1389,74 +1338,55 @@ Plot predicted values.
 
 
 ```r
-pred <- function (M, s = scale) {
-  X <- data.frame(M$rmaLin$X)
-  X <- unique(X)
-  X <- X[X[, 3] == 0, ]
-  varnames <- names(X)[2:ncol(X)]
-  X <- data.frame(seq(min(X[, "xCyc"]), max(X[, "xCyc"]), length.out = 100),
-                  rep(0, 100),
-                  rep(0, 100))
-  names(X) <- varnames
-  yhat <- data.frame(malType = mal,
-                     X,
-                     yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * s)
-  yhat
-}
+X <- data.frame(M$rmaLin$X)
+X <- unique(X)
+varnames <- names(X)[2:ncol(X)]
+X0 <- data.frame(x1 = seq(min(X[X[, 3] == 0, "xCyc"]), max(X[X[, 3] == 0, "xCyc"]),
+                          length.out = 100),
+                 x2 = rep(0, 100))
+X1 <- data.frame(x1 = seq(min(X[X[, 3] == 1, "xCyc"]), max(X[X[, 3] == 1, "xCyc"]),
+                          length.out = 100),
+                 x2 = rep(1, 100))
+X <- rbind(X0, X1)
+names(X) <- varnames
+X$xCyc <- round(X$xCyc, digits = 1)
+X <- unique(X)
+yhat <- data.frame(malType = mal,
+                   X,
+                   yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * scale)
 xscale <- 1e3
-yhat1 <- pred(M1)
-yhat2 <- pred(M2)
-yhat <- rbind(cbind(isTaxane = FALSE, yhat1[, c("malType", "xCyc", "yhat")]),
-              cbind(isTaxane = TRUE , yhat2[, c("malType", "xCyc", "yhat")]))
-pvalues <- c(M1$rmaLin$pval[which(row.names(M1$rmaLin$b) == "xCyc")],
-             M2$rmaLin$pval[which(row.names(M2$rmaLin$b) == "xCyc")])
-anno1 <- data.frame(x = Inf,
-                    y = 1.2,
-                    label = paste("Without taxane:", pvalToChar(pvalues[c(1)])),
-                    malType = levels(D3[, "malType"]))
-anno2 <- data.frame(x = Inf,
-                    y = 1.4,
-                    label = paste("With taxane:", pvalToChar(pvalues[c(2)])),
-                    malType = levels(D3[, "malType"]))
+pvalues <- c(M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxaneHighDoseTRUE")])
 pal <- brewer.pal(4, name = "PuOr")
 G <- ggplot(D3, aes(x = xCyc * xscale,
                     y = rate + 1/2,
                     size = nITT / min(nITT, na.rm=TRUE),
-                    color = isTaxane))
+                    color = isTaxaneHighDose))
 G <- G + geom_point(alpha = 1/2,
                     position = "jitter")
-G <- G + geom_line(data = yhat[yhat$isTaxane == FALSE, ],
+G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == FALSE, ],
                    aes(x = xCyc * xscale, y = yhat),
                    inherit.aes = FALSE,
                    color = pal[1])
-G <- G + geom_line(data = yhat[yhat$isTaxane == TRUE, ],
+G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == TRUE, ],
                    aes(x = xCyc * xscale, y = yhat),
                    inherit.aes = FALSE,
-                   color = pal[4])
-G <- G + geom_text(data = anno1,
-                   aes(x, y, label = label),
-                   inherit.aes = FALSE,
-                   hjust = 1,
-                   color = pal[1])
-G <- G + geom_text(data = anno2,
-                   aes(x, y, label = label),
-                   inherit.aes = FALSE,
-                   hjust = 1,
                    color = pal[4])
 G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
                        breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
 G <- G + scale_y_log10(sprintf("Rate per %s person-years",
                                format(scale, big.mark = ",")))
-G <- G + scale_color_manual(values = c(pal[1], pal[4]))
+G <- G + scale_color_manual(sprintf("Taxane, %s", pvalToChar(pvalues[c(1)])),
+                            values = c(pal[1], pal[4]),
+                            labels = c("None or low dose", "High dose"))
+G <- G + scale_size_continuous(guide = FALSE)
 G <- G + labs(title = mal)
 G <- G + theme_bw()
-G <- G + theme(legend.position = "none")
-filename <- "AMLorMDS_Cyclophosphamide_byTaxane"
-ggsave(filename = sprintf("%s.png", filename))
+filename <- "AMLorMDS_Cyclophosphamide_byHighDoseTaxane"
+ggsave(filename = sprintf("%s.png", filename), width = 9)
 ```
 
 ```
-## Saving 7 x 7 in image
+## Saving 9 x 7 in image
 ```
 
 ```r
@@ -1466,16 +1396,19 @@ show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE)
 ```
 
 ```
-##                                               size               mtime
-## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   9992 2016-08-03 14:35:51
-## AMLorMDS_Cyclophosphamide_byTaxane.png      176154 2016-08-03 14:35:51
+##                                                       size
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   3560
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      182958
+##                                                                   mtime
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 10:27:28
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 10:27:28
 ```
 
 ```r
 G
 ```
 
-![plot of chunk unnamed-chunk-31](figure/unnamed-chunk-31-1.png)
+![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
 
 
 ## Non-Breast Solid
@@ -1599,12 +1532,12 @@ plotreg(M,
 
 ```
 ##                                            size               mtime
-## NonBreastSolid_Cyclophosphamide_Pred.csv   1771 2016-08-03 14:35:52
-## NonBreastSolid_Cyclophosphamide.csv        4356 2016-08-03 14:35:52
-## NonBreastSolid_Cyclophosphamide.png      117031 2016-08-03 14:35:52
+## NonBreastSolid_Cyclophosphamide_Pred.csv   1771 2016-08-05 10:27:29
+## NonBreastSolid_Cyclophosphamide.csv        4356 2016-08-05 10:27:29
+## NonBreastSolid_Cyclophosphamide.png      116930 2016-08-05 10:27:29
 ```
 
-![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 
 ### Taxane
 
@@ -1702,9 +1635,9 @@ plotreg(M,
 
 ```
 ##                                 size               mtime
-## NonBreastSolid_Taxane_Pred.csv   804 2016-08-03 14:35:53
-## NonBreastSolid_Taxane.csv       1762 2016-08-03 14:35:53
-## NonBreastSolid_Taxane.png      92278 2016-08-03 14:35:53
+## NonBreastSolid_Taxane_Pred.csv   804 2016-08-05 10:27:30
+## NonBreastSolid_Taxane.csv       1762 2016-08-05 10:27:30
+## NonBreastSolid_Taxane.png      92483 2016-08-05 10:27:30
 ```
 
-![plot of chunk unnamed-chunk-34](figure/unnamed-chunk-34-1.png)
+![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)
