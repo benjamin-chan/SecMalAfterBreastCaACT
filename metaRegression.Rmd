@@ -1,16 +1,63 @@
 # Meta-regression
 
 Estimate meta-regression models for log transformed incidence rate.
-Model is
 
-$$\frac{y_i}{t_i} = \beta x_i + \sigma_\text{study}$$
+Two outcomes are modeled separately.
 
-Or
+1. AML or MDS secondary malignancies
+1. Non-breast solid secondary malignancies
 
-$$\frac{y_i}{t_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
+Cumulative doses are dichotomized into low and high doses.
+
+* Cyclophosphamide
+    * $\lt 2400$
+    * $\ge 2400$
+* Taxane
+    * $\lt 500$
+    * $\ge 500$
+
+```{r}
+D2 <- D1[,
+         .(id = factor(id),
+           authorYear,
+           isCyclo,
+           xCyc = cyclophosphamideCumulDose / 1e3,  # scale units
+           isCycHighDose = cyclophosphamideCumulDose >= 2400,
+           xTax = taxaneCumulDose / 1e2,  # scale units
+           isTaxHighDose = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isAnthra,
+           isTaxane,
+           isFluoro,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+D2 <- D2[isTaxane == FALSE, isTaxHighDose := FALSE]
+D2 <- D2[!(is.na(xCyc) | is.na(isCycHighDose) | is.na(isTaxHighDose))]
+```
+
+The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
+
+> From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
+> Sent: Monday, August 01, 2016 2:47 PM  
+> To: Benjamin Chan <chanb@ohsu.edu>  
+> Subject: RE: secondary malignancies  
+> 
+> The one I'm asking about is cyclophosphamide with high dose taxane vs
+> cyclophosphamide alone.  I think if it looks like taxane augments the known
+> risk of cyclophosphamide this would be an important addition to the
+> literature.
+
+Four model are estimated.
+
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
-
 
 ```{r}
 library(metafor)
@@ -102,219 +149,71 @@ plotreg <- function (M, D, title, xlab, xbreaks, xscale) {
 }
 ```
 
-Dichotomize cumulative doses
-
-* Cyclophosphamide
-    * $\lt 2400$
-    * $\ge 2400$
-* Taxane
-    * $\lt 500$
-    * $\ge 500$
-
-
-```{r}
-D2 <- D1[,
-         .(id = factor(id),
-           authorYear,
-           isCyclo,
-           xCyc = cyclophosphamideCumulDose / 1e3,
-           xCycHighDose = cyclophosphamideCumulDose >= 2400,
-           xTax = taxaneCumulDose / 1e2,
-           xTaxHighDose = taxaneCumulDose >= 500,
-           isAnthra,
-           isTaxane,
-           isFluoro,
-           nITT,
-           medianFU,
-           malType,
-           malN,
-           py,
-           rate)]
-```
-
 ## AML/MDS
 
-* Fit the models
-* Show model summaries
-* Plot the predicted values
-
-
 ```{r}
 mal <- "AML or MDS"
 D3 <- D2[malType == mal]
-```
-
-
-### Cyclophosphamide
-
-```{r}
-D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
+D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
 M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Cyclophosphamide cumulative dose",
-        1e3 * c(0.5, 1, 2, 4, 8, 16),
-        1e3)
 ```
 
-### Taxane
+### Cyclophosphamide: dose response; Taxane: confounder
 
-```{r}
-D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
-M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Taxane cumulative dose",
-        1e2 * c(0.5, 1, 2, 4, 8, 16),
-        1e2)
+```{r, fig.width = 9}
+M$rmaLin
+plotreg(M$rmaLin, D3, mal)
 ```
 
-### Cyclophosphamide, with and without High Dose Taxane
-
-The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
-
-> From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
-> Sent: Monday, August 01, 2016 2:47 PM  
-> To: Benjamin Chan <chanb@ohsu.edu>  
-> Subject: RE: secondary malignancies  
-> 
-> The one I'm asking about is cyclophosphamide with high dose taxane vs
-> cyclophosphamide alone.  I think if it looks like taxane augments the known
-> risk of cyclophosphamide this would be an important addition to the
-> literature.
-
-
-Fit the meta-regression model
-
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-
-where $I_{\text{high dose taxane}, i}$ is an 0/1 indicator for whether study $i$ has high dose taxane in the regimen.
-The interpretation of $\beta_1$ is the effect of cyclophosphamide dose adjusted for high dose taxane in the regimen.
+### Cyclophosphamide: dose response; Taxane: effect modifier
 
 ```{r}
-mal <- "AML or MDS"
-D3 <- D2[malType == mal]
-D3 <- D3[, drug := "Cyclophosphamide"]
-D3 <- D3[isCyclo == FALSE, xCycHighDose := FALSE]
-D3 <- D3[, isTaxaneHighDose := FALSE]
-D3 <- D3[xTaxHighDose == TRUE, isTaxaneHighDose := TRUE]
-D3 <- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
-xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxaneHighDose, malType)])
-D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
-randomEffect <- list(~ 1 | id)
-MLin <- rma.mv(yi ~ xCyc + isTaxaneHighDose,
-               vi,
-               random=randomEffect,
-               data=D3)
-MLinInt <- rma.mv(yi ~ xCyc + isTaxaneHighDose + xCyc * isTaxaneHighDose,
-                  vi,
-                  random=randomEffect,
-                  data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + isTaxaneHighDose,
-               vi,
-               random=randomEffect,
-               data=D3)
-M <- list(rmaLin = MLin,
-          rmaLinInt = MLinInt,
-          rmaBin = MBin)
-M
+M$rmaLinInt
 ```
 
-Plot predicted values.
+### Cyclophosphamide: dichotomous; Taxane: confounder
 
 ```{r}
-X <- data.frame(M$rmaLin$X)
-X <- unique(X)
-varnames <- names(X)[2:ncol(X)]
-X0 <- data.frame(x1 = seq(min(X[X[, 3] == 0, "xCyc"]), max(X[X[, 3] == 0, "xCyc"]),
-                          length.out = 100),
-                 x2 = rep(0, 100))
-X1 <- data.frame(x1 = seq(min(X[X[, 3] == 1, "xCyc"]), max(X[X[, 3] == 1, "xCyc"]),
-                          length.out = 100),
-                 x2 = rep(1, 100))
-X <- rbind(X0, X1)
-names(X) <- varnames
-X$xCyc <- round(X$xCyc, digits = 1)
-X <- unique(X)
-yhat <- data.frame(malType = mal,
-                   X,
-                   yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * scale)
-xscale <- 1e3
-pvalues <- c(M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxaneHighDoseTRUE")])
-pal <- brewer.pal(4, name = "PuOr")
-G <- ggplot(D3, aes(x = xCyc * xscale,
-                    y = rate + 1/2,
-                    size = nITT / min(nITT, na.rm=TRUE),
-                    color = isTaxaneHighDose))
-G <- G + geom_point(alpha = 1/2,
-                    position = "jitter")
-G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == FALSE, ],
-                   aes(x = xCyc * xscale, y = yhat),
-                   inherit.aes = FALSE,
-                   color = pal[1])
-G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == TRUE, ],
-                   aes(x = xCyc * xscale, y = yhat),
-                   inherit.aes = FALSE,
-                   color = pal[4])
-G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
-                       breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
-G <- G + scale_y_log10(sprintf("Rate per %s person-years",
-                               format(scale, big.mark = ",")))
-G <- G + scale_color_manual(sprintf("Taxane, %s", pvalToChar(pvalues[c(1)])),
-                            values = c(pal[1], pal[4]),
-                            labels = c("None or low dose", "High dose"))
-G <- G + scale_size_continuous(guide = FALSE)
-G <- G + labs(title = mal)
-G <- G + theme_bw()
-filename <- "AMLorMDS_Cyclophosphamide_byHighDoseTaxane"
-ggsave(filename = sprintf("%s.png", filename), width = 9)
-yhat$xCyc <- yhat$xCyc * xscale
-write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
-show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
-G
+M$rmaBin
+```
+
+### Cyclophosphamide: dichotomous; Taxane: effect modifier
+
+```{r}
+M$rmaBinInt
 ```
 
 
 ## Non-Breast Solid
 
-* Fit the models
-* Show model summaries
-* Plot the predicted values
-
-
 ```{r}
 mal <- "Non-Breast Solid"
 D3 <- D2[malType == mal]
+D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+M <- metareg(D3)
 ```
 
-### Cyclophosphamide
+### Cyclophosphamide: dose response; Taxane: confounder
 
-```{r}
-D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
-M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Cyclophosphamide cumulative dose",
-        1e3 * c(0.5, 1, 2, 4, 8, 16),
-        1e3)
+```{r, fig.width = 9}
+M$rmaLin
+plotreg(M$rmaLin, D3, mal)
 ```
 
-### Taxane
+### Cyclophosphamide: dose response; Taxane: effect modifier
 
 ```{r}
-D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
-M <- metareg(D3)
-M
-plotreg(M,
-        D3,
-        mal,
-        "Taxane cumulative dose",
-        1e2 * c(0.5, 1, 2, 4, 8, 16),
-        1e2)
+M$rmaLinInt
+```
+
+### Cyclophosphamide: dichotomous; Taxane: confounder
+
+```{r}
+M$rmaBin
+```
+
+### Cyclophosphamide: dichotomous; Taxane: effect modifier
+
+```{r}
+M$rmaBinInt
 ```
