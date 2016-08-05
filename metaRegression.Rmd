@@ -178,6 +178,7 @@ plotreg <- function (M, D, title) {
                       gsub("(\\s)|(-)", "", title))
   ggsave(filename = sprintf("%s.png", filename), width = 9)
   yhat$xCyc <- yhat$xCyc * xscale
+  write.csv(D, file = sprintf("%s.csv", filename), row.names = FALSE, quote = FALSE)
   write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
   show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
 }
