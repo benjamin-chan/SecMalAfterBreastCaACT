@@ -78,74 +78,108 @@ pvalToChar <- function (p) {
 }
 metareg <- function (D) {
   require(metafor)
-  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  xData <- unique(D[, .(drug, x, xHighDose, malType)])
-  D <- escalc("IRLN", xi=malN, ti=py, data=D)
+  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxHighDose, malType)])
+  D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ x, vi, random=randomEffect, data=D)
-  MBin <- rma.mv(yi ~ xHighDose, vi, random=randomEffect, data=D)
-  pvalueLin <- MLin$pval[which(row.names(MLin$b) == "x")]
-  pvalueBin <- MBin$pval[which(row.names(MBin$b) == "xHighDoseTRUE")]
-  predLin <- predict(MLin, xData[, x], transf = exp)[["pred"]] * scale
-  confLowerLin <- predict(MLin, xData[, x], transf = exp)[["cr.lb"]] * scale
-  confUpperLin <- predict(MLin, xData[, x], transf = exp)[["cr.ub"]] * scale
-  predBin <- predict(MBin, xData[, xHighDose], transf = exp)[["pred"]] * scale
-  confLowerBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.lb"]] * scale
-  confUpperBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.ub"]] * scale
-  pred <- data.table(xData, predLin, confLowerLin, confUpperLin, predBin, confLowerBin, confUpperBin, scale)
-  setorder(pred, x)
+  MLin <- rma.mv(yi ~ xCyc + isTaxHighDose,
+                 vi,
+                 random = randomEffect,
+                 data = D)
+  MLinInt <- rma.mv(yi ~ xCyc + isTaxHighDose + xCyc * isTaxHighDose,
+                    vi,
+                    random = randomEffect,
+                    data = D)
+  MBin <- rma.mv(yi ~ isCycHighDose + isTaxHighDose,
+                 vi,
+                 random = randomEffect,
+                 data = D)
+  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxHighDose + isCycHighDose * isTaxHighDose,
+                    vi,
+                    random = randomEffect,
+                    data = D)
   list(rmaLin = MLin,
+       rmaLinInt = MLinInt,
        rmaBin = MBin,
-       pvalueLin = pvalToChar(pvalueLin),
-       pvalueBin = pvalToChar(pvalueBin),
-       pred = pred)
+       rmaBinInt = MBinInt)
 }
-plotreg <- function (M, D, title, xlab, xbreaks, xscale) {
+plotreg <- function (M, D, title) {
   require(ggplot2)
   require(RColorBrewer)
-  require(tools)
-  pvalues <- c(M$pvalueLin, M$pvalueBin)
-  x <- seq(min(M$rmaLin$X[, "x"]), max(M$rmaLin$X[, "x"]), length.out=100)
-  yhat1 <- unique(data.table(malType = mal,
-                             x,
-                             yhat = predict(M$rmaLin, x, transf = exp)[["pred"]] * scale))
-  xHighDose <- as.logical(M$rmaBin$X[, "xHighDoseTRUE"])
-  yhat2 <- unique(data.table(malType = mal,
-                             xHighDose,
-                             yhat = predict(M$rmaBin, xHighDose, transf = exp)[["pred"]] * scale))
-  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  D <- D[, malType := droplevels(malType)]
-  steps <- merge(D[, .(min = min(x), max = max(x)), .(malType, xHighDose)],
-                 yhat2,
-                 by=c("malType", "xHighDose"))
-  steps <- melt(steps, id.vars=c("malType", "xHighDose", "yhat"), measure.vars=c("min", "max"), value.name="x")
-  annoLin <- data.frame(x=Inf, y=1.2, label=pvalues[c(1)], malType=levels(D[, malType]))
-  annoBin <- data.frame(x=Inf, y=1.4, label=pvalues[c(2)], malType=levels(D[, malType]))
-  pal <- brewer.pal(4, name="RdBu")
-  G <- ggplot(D, aes(x=x * xscale, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
-  G <- G + geom_point(alpha=1/3, position="jitter")
-  G <- G + geom_line(data=yhat1, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[4])
-  G <- G + geom_step(data=steps, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[1])
-  G <- G + geom_text(data=annoLin,
-                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[4])
-  G <- G + geom_text(data=annoBin,
-                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[1])
-  G <- G + scale_x_log10(xlab, breaks=xbreaks)
-  G <- G + scale_y_log10(sprintf("Rate per %s person-years", format(scale, big.mark=",")))
-  G <- G + labs(title=title)
+  require(data.table)
+  X <- data.table(M$X)
+  X <- unique(X)
+  varnames <- names(X)[2:ncol(X)]
+  X0 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 0, xCyc]), max(X[isTaxHighDoseTRUE == 0, xCyc]),
+                            length.out = 100),
+                   x2 = rep(0, 100))
+  X1 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 1, xCyc]), max(X[isTaxHighDoseTRUE == 1, xCyc]),
+                            length.out = 100),
+                   x2 = rep(1, 100))
+  X <- rbind(X0, X1)
+  names(X) <- varnames
+  X$xCyc <- round(X$xCyc, digits = 1)
+  X <- unique(X)
+  yhat <- data.table(malType = mal,
+                     X,
+                     # variable = "pred",
+                     pred = predict(M, as.matrix(X), transf = exp)[["pred"]] * scale)
+  ci.lb <- data.table(malType = mal,
+                      X,
+                      # variable = "ci.lb",
+                      ci.lb = predict(M, as.matrix(X), transf = exp)[["ci.lb"]] * scale)
+  ci.ub <- data.table(malType = mal,
+                      X,
+                      # variable = "ci.ub",
+                      ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
+  keyvar <- c("malType", "xCyc", "isTaxHighDoseTRUE")
+  setkeyv(yhat, keyvar)
+  setkeyv(ci.lb, keyvar)
+  setkeyv(ci.ub, keyvar)
+  yhat <- merge(merge(yhat, ci.lb), ci.ub)
+  xscale <- 1e3
+  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
+  pal <- brewer.pal(5, name = "RdBu")[c(1, 5)]
+  G <- ggplot(D, aes(x = xCyc * xscale,
+                     y = rate + 1/2,
+                     size = nITT / min(nITT, na.rm = TRUE),
+                     color = isTaxHighDose))
+  G <- G + geom_point(alpha = 1/2,
+                      position = "jitter")
+  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 0, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[1])
+  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 1, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[2])
+  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 0, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[1],
+                       alpha = 1/8)
+  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 1, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[2],
+                       alpha = 1/8)
+  G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
+                         breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
+  G <- G + scale_y_log10(sprintf("Rate per %s person-years",
+                                 format(scale, big.mark = ",")))
+  G <- G + scale_color_manual(sprintf("Taxane\n(%s)", pvalToChar(pvalues[c(1)])),
+                              values = pal,
+                              labels = c("None or low dose", "High dose"))
+  G <- G + scale_size_continuous(guide = FALSE)
+  G <- G + labs(title = title)
   G <- G + theme_bw()
-  G <- G + theme(legend.position="none")
-  filename <- gsub("\\s+",
-                   "",
-                   toTitleCase(paste(gsub("[[:punct:]]", "", title),
-                                     gsub("cumulative dose", "", xlab),
-                                     sep="_")))
-  ggsave(filename=sprintf("%s.png", filename))
-  write.csv(D, file=sprintf("%s.csv", filename), row.names=FALSE, quote=FALSE)
-  M$pred[, x := x * xscale]
-  write.csv(M$pred, file=sprintf("%s_Pred.csv", filename), row.names=FALSE, quote=FALSE)
-  show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
   G
+  filename <- sprintf("%s_Cyclophosphamide_byHighDoseTaxane",
+                      gsub("(\\s)|(-)", "", title))
+  ggsave(filename = sprintf("%s.png", filename), width = 9)
+  yhat$xCyc <- yhat$xCyc * xscale
+  write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
+  show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
 }
 ```
 
