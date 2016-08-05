@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-05 10:27:20
+* Date: 2016-08-05 15:16:04
 
 
 # Load packages
@@ -30,7 +30,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##                                    size               mtime
-## /tmp/RtmpROx4al/file1bea71699c21e 59619 2016-08-05 10:27:22
+## /tmp/RtmpJXd13F/file1d9aa29da3250 59619 2016-08-05 15:16:05
 ```
 
 ```r
@@ -210,18 +210,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    28     NA     NA          NA               NA
-##  2:    20      0      0          NA                0
-##  3:    21     NA     NA          NA               NA
-##  4:    89     NA     NA          NA               NA
-##  5:    18     NA     NA           2                2
-##  6:    50     NA     NA          NA               NA
+##  1:    39      0     NA          NA                0
+##  2:    84     NA     NA           0                0
+##  3:    45     NA     NA           0                0
+##  4:    53      1      0          NA                1
+##  5:    63     NA     NA          NA               NA
+##  6:    77     NA     NA          NA               NA
 ##  7:    49     NA     NA          NA               NA
-##  8:    41      1     NA          NA                1
-##  9:     4     NA     NA          NA               NA
-## 10:    66      4     NA          NA                4
-## 11:    88     NA     NA          11               11
-## 12:    95      0     NA          NA                0
+##  8:     5     NA     NA          NA               NA
+##  9:    90     NA     NA          NA               NA
+## 10:    54      2      1          NA                3
+## 11:    43      0     NA          NA                0
+## 12:    61      1     NA          NA                1
 ```
 
 Remove text from `nITT` column.
@@ -256,7 +256,7 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-05 10:27:22 2016-08-05 10:27:22
+## regimens.md 7215 FALSE  644 2016-08-05 15:16:05 2016-08-05 15:16:05
 ##                           atime  uid  gid uname   grname
 ## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -575,7 +575,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-05 10:27:23
+## data.RData 7448 2016-08-05 15:16:05
 ```
 
 ---
@@ -650,7 +650,7 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-05 10:27:23 2016-08-05 10:27:23
+## summaryRegimens.md 4624 FALSE  644 2016-08-05 15:16:05 2016-08-05 15:16:05
 ##                                  atime  uid  gid uname   grname
 ## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -747,11 +747,11 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 ##                                                    size
 ## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9473
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 10:27:25
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 10:27:25
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 10:27:25
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 15:16:07
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 15:16:07
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 15:16:07
 ```
 
 ```r
@@ -763,16 +763,65 @@ T <- xtable(T, digits=c(rep(0, ncol(T) - 3), 0, 2, 0, 2))
 # Meta-regression
 
 Estimate meta-regression models for log transformed incidence rate.
-Model is
 
-$$\frac{y_i}{t_i} = \beta x_i + \sigma_\text{study}$$
+Two outcomes are modeled separately.
 
-Or
+1. AML or MDS secondary malignancies
+1. Non-breast solid secondary malignancies
 
-$$\frac{y_i}{t_i} = \beta I_{\text{high dose}, i} + \sigma_\text{study}$$
+Cumulative doses are dichotomized into low and high doses.
+
+* Cyclophosphamide
+    * $\lt 2400$
+    * $\ge 2400$
+* Taxane
+    * $\lt 500$
+    * $\ge 500$
+
+
+```r
+xscale <- 1e3
+D2 <- D1[,
+         .(id = factor(id),
+           authorYear,
+           isCyclo,
+           xCyc = cyclophosphamideCumulDose / xscale,  # scale units
+           isCycHighDose = cyclophosphamideCumulDose >= 2400,
+           xTax = taxaneCumulDose / 1e2,  # scale units
+           isTaxHighDose = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isAnthra,
+           isTaxane,
+           isFluoro,
+           nITT,
+           medianFU,
+           malType,
+           malN,
+           py,
+           rate)]
+D2 <- D2[isTaxane == FALSE, isTaxHighDose := FALSE]
+D2 <- D2[!(is.na(xCyc) | is.na(isCycHighDose) | is.na(isTaxHighDose))]
+```
+
+The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
+
+> From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
+> Sent: Monday, August 01, 2016 2:47 PM  
+> To: Benjamin Chan <chanb@ohsu.edu>  
+> Subject: RE: secondary malignancies  
+> 
+> The one I'm asking about is cyclophosphamide with high dose taxane vs
+> cyclophosphamide alone.  I think if it looks like taxane augments the known
+> risk of cyclophosphamide this would be an important addition to the
+> literature.
+
+Four model are estimated.
+
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
-
 
 
 ```r
@@ -829,224 +878,169 @@ pvalToChar <- function (p) {
 }
 metareg <- function (D) {
   require(metafor)
-  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  xData <- unique(D[, .(drug, x, xHighDose, malType)])
-  D <- escalc("IRLN", xi=malN, ti=py, data=D)
+  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxHighDose, malType)])
+  D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ x, vi, random=randomEffect, data=D)
-  MBin <- rma.mv(yi ~ xHighDose, vi, random=randomEffect, data=D)
-  pvalueLin <- MLin$pval[which(row.names(MLin$b) == "x")]
-  pvalueBin <- MBin$pval[which(row.names(MBin$b) == "xHighDoseTRUE")]
-  predLin <- predict(MLin, xData[, x], transf = exp)[["pred"]] * scale
-  confLowerLin <- predict(MLin, xData[, x], transf = exp)[["cr.lb"]] * scale
-  confUpperLin <- predict(MLin, xData[, x], transf = exp)[["cr.ub"]] * scale
-  predBin <- predict(MBin, xData[, xHighDose], transf = exp)[["pred"]] * scale
-  confLowerBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.lb"]] * scale
-  confUpperBin <- predict(MBin, xData[, xHighDose], transf = exp)[["cr.ub"]] * scale
-  pred <- data.table(xData, predLin, confLowerLin, confUpperLin, predBin, confLowerBin, confUpperBin, scale)
-  setorder(pred, x)
+  MLin <- rma.mv(yi ~ xCyc + isTaxHighDose,
+                 vi,
+                 random = randomEffect,
+                 data = D)
+  MLinInt <- rma.mv(yi ~ xCyc + isTaxHighDose + xCyc * isTaxHighDose,
+                    vi,
+                    random = randomEffect,
+                    data = D)
+  MBin <- rma.mv(yi ~ isCycHighDose + isTaxHighDose,
+                 vi,
+                 random = randomEffect,
+                 data = D)
+  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxHighDose + isCycHighDose * isTaxHighDose,
+                    vi,
+                    random = randomEffect,
+                    data = D)
   list(rmaLin = MLin,
+       rmaLinInt = MLinInt,
        rmaBin = MBin,
-       pvalueLin = pvalToChar(pvalueLin),
-       pvalueBin = pvalToChar(pvalueBin),
-       pred = pred)
+       rmaBinInt = MBinInt)
 }
-plotreg <- function (M, D, title, xlab, xbreaks, xscale) {
+plotreg <- function (M, D, title) {
   require(ggplot2)
   require(RColorBrewer)
-  require(tools)
-  pvalues <- c(M$pvalueLin, M$pvalueBin)
-  x <- seq(min(M$rmaLin$X[, "x"]), max(M$rmaLin$X[, "x"]), length.out=100)
-  yhat1 <- unique(data.table(malType = mal,
-                             x,
-                             yhat = predict(M$rmaLin, x, transf = exp)[["pred"]] * scale))
-  xHighDose <- as.logical(M$rmaBin$X[, "xHighDoseTRUE"])
-  yhat2 <- unique(data.table(malType = mal,
-                             xHighDose,
-                             yhat = predict(M$rmaBin, xHighDose, transf = exp)[["pred"]] * scale))
-  D <- D[!(is.na(x) | is.na(rate) | is.na(nITT) | is.na(malType))]
-  D <- D[, malType := droplevels(malType)]
-  steps <- merge(D[, .(min = min(x), max = max(x)), .(malType, xHighDose)],
-                 yhat2,
-                 by=c("malType", "xHighDose"))
-  steps <- melt(steps, id.vars=c("malType", "xHighDose", "yhat"), measure.vars=c("min", "max"), value.name="x")
-  annoLin <- data.frame(x=Inf, y=1.2, label=pvalues[c(1)], malType=levels(D[, malType]))
-  annoBin <- data.frame(x=Inf, y=1.4, label=pvalues[c(2)], malType=levels(D[, malType]))
-  pal <- brewer.pal(4, name="RdBu")
-  G <- ggplot(D, aes(x=x * xscale, y=rate + 1/2, size=nITT / min(nITT, na.rm=TRUE)))
-  G <- G + geom_point(alpha=1/3, position="jitter")
-  G <- G + geom_line(data=yhat1, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[4])
-  G <- G + geom_step(data=steps, aes(x=x * xscale, y=yhat), inherit.aes=FALSE, color=pal[1])
-  G <- G + geom_text(data=annoLin,
-                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[4])
-  G <- G + geom_text(data=annoBin,
-                     aes(x, y, label=label), inherit.aes=FALSE, hjust=1, color=pal[1])
-  G <- G + scale_x_log10(xlab, breaks=xbreaks)
-  G <- G + scale_y_log10(sprintf("Rate per %s person-years", format(scale, big.mark=",")))
-  G <- G + labs(title=title)
+  require(data.table)
+  X <- data.table(M$X)
+  X <- unique(X)
+  varnames <- names(X)[2:ncol(X)]
+  X0 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 0, xCyc]), max(X[isTaxHighDoseTRUE == 0, xCyc]),
+                            length.out = 100),
+                   x2 = rep(0, 100))
+  X1 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 1, xCyc]), max(X[isTaxHighDoseTRUE == 1, xCyc]),
+                            length.out = 100),
+                   x2 = rep(1, 100))
+  X <- rbind(X0, X1)
+  names(X) <- varnames
+  X$xCyc <- round(X$xCyc, digits = 1)
+  X <- unique(X)
+  yhat <- data.table(malType = mal,
+                     X,
+                     # variable = "pred",
+                     pred = predict(M, as.matrix(X), transf = exp)[["pred"]] * scale)
+  ci.lb <- data.table(malType = mal,
+                      X,
+                      # variable = "ci.lb",
+                      ci.lb = predict(M, as.matrix(X), transf = exp)[["ci.lb"]] * scale)
+  ci.ub <- data.table(malType = mal,
+                      X,
+                      # variable = "ci.ub",
+                      ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
+  keyvar <- c("malType", "xCyc", "isTaxHighDoseTRUE")
+  setkeyv(yhat, keyvar)
+  setkeyv(ci.lb, keyvar)
+  setkeyv(ci.ub, keyvar)
+  yhat <- merge(merge(yhat, ci.lb), ci.ub)
+  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
+  pal <- brewer.pal(5, name = "RdBu")[c(1, 5)]
+  G <- ggplot(D, aes(x = xCyc * xscale,
+                     y = rate + 1/2,
+                     size = nITT / min(nITT, na.rm = TRUE),
+                     color = isTaxHighDose))
+  G <- G + geom_point(alpha = 1/2,
+                      position = "jitter")
+  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 0, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[1])
+  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 1, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[2])
+  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 0, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[1],
+                       alpha = 1/8)
+  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 1, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[2],
+                       alpha = 1/8)
+  G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
+                         breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
+  G <- G + scale_y_log10(sprintf("Rate per %s person-years",
+                                 format(scale, big.mark = ",")))
+  G <- G + scale_color_manual(sprintf("Taxane\n(%s)", pvalToChar(pvalues[c(1)])),
+                              values = pal,
+                              labels = c("None or low dose", "High dose"))
+  G <- G + scale_size_continuous(guide = FALSE)
+  G <- G + labs(title = title)
   G <- G + theme_bw()
-  G <- G + theme(legend.position="none")
-  filename <- gsub("\\s+",
-                   "",
-                   toTitleCase(paste(gsub("[[:punct:]]", "", title),
-                                     gsub("cumulative dose", "", xlab),
-                                     sep="_")))
-  ggsave(filename=sprintf("%s.png", filename))
-  write.csv(D, file=sprintf("%s.csv", filename), row.names=FALSE, quote=FALSE)
-  M$pred[, x := x * xscale]
-  write.csv(M$pred, file=sprintf("%s_Pred.csv", filename), row.names=FALSE, quote=FALSE)
-  show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
   G
+  filename <- sprintf("%s_Cyclophosphamide_byHighDoseTaxane",
+                      gsub("(\\s)|(-)", "", title))
+  ggsave(filename = sprintf("%s.png", filename), width = 9)
+  yhat$xCyc <- yhat$xCyc * xscale
+  write.csv(D, file = sprintf("%s.csv", filename), row.names = FALSE, quote = FALSE)
+  write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
+  show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
 }
-```
-
-Dichotomize cumulative doses
-
-* Cyclophosphamide
-    * $\lt 2400$
-    * $\ge 2400$
-* Taxane
-    * $\lt 500$
-    * $\ge 500$
-
-
-
-```r
-D2 <- D1[,
-         .(id = factor(id),
-           authorYear,
-           isCyclo,
-           xCyc = cyclophosphamideCumulDose / 1e3,
-           xCycHighDose = cyclophosphamideCumulDose >= 2400,
-           xTax = taxaneCumulDose / 1e2,
-           xTaxHighDose = taxaneCumulDose >= 500,
-           isAnthra,
-           isTaxane,
-           isFluoro,
-           nITT,
-           medianFU,
-           malType,
-           malN,
-           py,
-           rate)]
 ```
 
 ## AML/MDS
-
-* Fit the models
-* Show model summaries
-* Plot the predicted values
-
 
 
 ```r
 mal <- "AML or MDS"
 D3 <- D2[malType == mal]
-```
-
-
-### Cyclophosphamide
-
-
-```r
-D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
+D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
 M <- metareg(D3)
-M
+```
+
+### Findings
+
+* AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose
+  * AML or MDS rate increased 1.17 times (95% CI: 1.05, 1.31; p = 0.0035) for each 1000 $\text{mg} / \text{m}^2$
+* High dose taxane confounded the cyclophosphamide dose response
+  * High dose taxane increased AML or MDS rate by 1.71 times (95% CI: 1.07, 2.76; p = 0.0264)
+* High dose taxane did not modify the dose response effect of cyclophosphamide
+  * Interaction term estimate was 0.0149 (95% CI: -1.02, 1.05; p = 0.978)
+
+### Cyclophosphamide: dose response; Taxane: confounder
+
+
+```r
+M$rmaLin
 ```
 
 ```
-## $rmaLin
 ## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1693  0.4115     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 54) = 67.8113, p-val = 0.0980
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 4.4383, p-val = 0.0351
-## 
-## Model Results:
-## 
-##          estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt   -7.6135  0.2258  -33.7187  <.0001  -8.0560  -7.1709  ***
-## x          0.1182  0.0561    2.1067  0.0351   0.0082   0.2281    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## Multivariate Meta-Analysis Model (k = 55; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2447  0.4946     26     no      id
+## sigma^2    0.1206  0.3473     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 54) = 81.5431, p-val = 0.0091
+## QE(df = 52) = 58.1475, p-val = 0.2593
 ## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 0.4988, p-val = 0.4800
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 10.5094, p-val = 0.0052
 ## 
 ## Model Results:
 ## 
-##                estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt         -7.5326  0.4261  -17.6799  <.0001  -8.3676  -6.6975  ***
-## xHighDoseTRUE    0.3084  0.4367    0.7062  0.4800  -0.5475   1.1642     
+##                    estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt             -7.8796  0.2447  -32.1959  <.0001  -8.3593  -7.3999
+## xCyc                 0.1611  0.0552    2.9204  0.0035   0.0530   0.2692
+## isTaxHighDoseTRUE    0.5386  0.2425    2.2209  0.0264   0.0633   1.0139
+##                       
+## intrcpt            ***
+## xCyc                **
+## isTaxHighDoseTRUE    *
 ## 
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $pvalueLin
-## [1] "p = 0.035"
-## 
-## $pvalueBin
-## [1] "p = 0.480"
-## 
-## $pred
-##                 drug    x xHighDose    malType   predLin confLowerLin
-##  1: Cyclophosphamide 0.90     FALSE AML or MDS  5.491553     2.267006
-##  2: Cyclophosphamide 1.20     FALSE AML or MDS  5.689755     2.371329
-##  3: Cyclophosphamide 1.50     FALSE AML or MDS  5.895109     2.477600
-##  4: Cyclophosphamide 2.00     FALSE AML or MDS  6.253970     2.658358
-##  5: Cyclophosphamide 2.40      TRUE AML or MDS  6.556724     2.805509
-##  6: Cyclophosphamide 3.00      TRUE AML or MDS  7.038556     3.028854
-##  7: Cyclophosphamide 3.60      TRUE AML or MDS  7.555796     3.253208
-##  8: Cyclophosphamide 4.00      TRUE AML or MDS  7.921572     3.402173
-##  9: Cyclophosphamide 4.80      TRUE AML or MDS  8.707101     3.695747
-## 10: Cyclophosphamide 6.64      TRUE AML or MDS 10.822230     4.329759
-## 11: Cyclophosphamide 7.20      TRUE AML or MDS 11.562728     4.507659
-## 12: Cyclophosphamide 9.60      TRUE AML or MDS 15.354901     5.182626
-##     confUpperLin  predBin confLowerBin confUpperBin scale
-##  1:     13.30264 5.353449     1.489197     19.24488 10000
-##  2:     13.65197 5.353449     1.489197     19.24488 10000
-##  3:     14.02661 5.353449     1.489197     19.24488 10000
-##  4:     14.71289 5.353449     1.489197     19.24488 10000
-##  5:     15.32365 7.287257     2.658349     19.97636 10000
-##  6:     16.35644 7.287257     2.658349     19.97636 10000
-##  7:     17.54885 7.287257     2.658349     19.97636 10000
-##  8:     18.44448 7.287257     2.658349     19.97636 10000
-##  9:     20.51374 7.287257     2.658349     19.97636 10000
-## 10:     27.05016 7.287257     2.658349     19.97636 10000
-## 11:     29.65989 7.287257     2.658349     19.97636 10000
-## 12:     45.49296 7.287257     2.658349     19.97636 10000
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```r
-plotreg(M,
-        D3,
-        mal,
-        "Cyclophosphamide cumulative dose",
-        1e3 * c(0.5, 1, 2, 4, 8, 16),
-        1e3)
+plotreg(M$rmaLin, D3, mal)
 ```
 
 ```
@@ -1058,586 +1052,318 @@ plotreg(M,
 ```
 
 ```
-## Loading required package: tools
+## Saving 9 x 7 in image
 ```
 
 ```
-## Saving 7 x 7 in image
+##                                                       size
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   6979
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv        5787
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      188739
+##                                                                   mtime
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:16:10
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:16:10
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:16:10
 ```
 
-```
-##                                      size               mtime
-## AMLorMDS_Cyclophosphamide_Pred.csv   1845 2016-08-05 10:27:27
-## AMLorMDS_Cyclophosphamide.csv        7240 2016-08-05 10:27:27
-## AMLorMDS_Cyclophosphamide.png      159211 2016-08-05 10:27:27
-```
-
-![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
-
-### Taxane
+### Cyclophosphamide: dose response; Taxane: effect modifier
 
 
 ```r
-D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
-M <- metareg(D3)
-M
+M$rmaLinInt
 ```
 
 ```
-## $rmaLin
 ## 
-## Multivariate Meta-Analysis Model (k = 27; method: REML)
+## Multivariate Meta-Analysis Model (k = 55; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2494  0.4994     16     no      id
+## sigma^2    0.1264  0.3555     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 25) = 30.4549, p-val = 0.2077
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 2.5512, p-val = 0.1102
-## 
-## Model Results:
-## 
-##          estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt   -8.2329  0.5566  -14.7925  <.0001  -9.3238  -7.1421  ***
-## x          0.1455  0.0911    1.5972  0.1102  -0.0331   0.3241     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
-## 
-## Multivariate Meta-Analysis Model (k = 27; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1712  0.4137     16     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 25) = 26.2243, p-val = 0.3957
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 4.7966, p-val = 0.0285
-## 
-## Model Results:
-## 
-##                estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt         -7.7251  0.2433  -31.7527  <.0001  -8.2019  -7.2482  ***
-## xHighDoseTRUE    0.6598  0.3013    2.1901  0.0285   0.0693   1.2503    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $pvalueLin
-## [1] "p = 0.110"
-## 
-## $pvalueBin
-## [1] "p = 0.029"
-## 
-## $pred
-##       drug   x xHighDose    malType  predLin confLowerLin confUpperLin
-##  1: Taxane 2.4     FALSE AML or MDS 3.768667     1.127516     12.59658
-##  2: Taxane 3.0     FALSE AML or MDS 4.112574     1.292010     13.09066
-##  3: Taxane 3.2     FALSE AML or MDS 4.234047     1.349621     13.28311
-##  4: Taxane 4.0     FALSE AML or MDS 4.756896     1.591300     14.21986
-##  5: Taxane 4.5     FALSE AML or MDS 5.115978     1.748778     14.96658
-##  6: Taxane 4.8     FALSE AML or MDS 5.344310     1.844382     15.48576
-##  7: Taxane 6.0      TRUE AML or MDS 6.364197     2.221764     18.23011
-##  8: Taxane 7.0      TRUE AML or MDS 7.361284     2.510308     21.58639
-##  9: Taxane 7.5      TRUE AML or MDS 7.916961     2.639796     23.74361
-## 10: Taxane 8.0      TRUE AML or MDS 8.514585     2.757579     26.29051
-## 11: Taxane 9.0      TRUE AML or MDS 9.848576     2.955772     32.81526
-##      predBin confLowerBin confUpperBin scale
-##  1: 4.416177     1.723889     11.31316 10000
-##  2: 4.416177     1.723889     11.31316 10000
-##  3: 4.416177     1.723889     11.31316 10000
-##  4: 4.416177     1.723889     11.31316 10000
-##  5: 4.416177     1.723889     11.31316 10000
-##  6: 4.416177     1.723889     11.31316 10000
-##  7: 8.542865     3.399838     21.46588 10000
-##  8: 8.542865     3.399838     21.46588 10000
-##  9: 8.542865     3.399838     21.46588 10000
-## 10: 8.542865     3.399838     21.46588 10000
-## 11: 8.542865     3.399838     21.46588 10000
-```
-
-```r
-plotreg(M,
-        D3,
-        mal,
-        "Taxane cumulative dose",
-        1e2 * c(0.5, 1, 2, 4, 8, 16),
-        1e2)
-```
-
-```
-## Saving 7 x 7 in image
-```
-
-```
-##                            size               mtime
-## AMLorMDS_Taxane_Pred.csv   1585 2016-08-05 10:27:27
-## AMLorMDS_Taxane.csv        3262 2016-08-05 10:27:27
-## AMLorMDS_Taxane.png      118806 2016-08-05 10:27:27
-```
-
-![plot of chunk unnamed-chunk-28](figure/unnamed-chunk-28-1.png)
-
-### Cyclophosphamide, with and without High Dose Taxane
-
-The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
-
-> From: Joy Melnikow [mailto:jamelnikow@ucdavis.edu]   
-> Sent: Monday, August 01, 2016 2:47 PM  
-> To: Benjamin Chan <chanb@ohsu.edu>  
-> Subject: RE: secondary malignancies  
-> 
-> The one I'm asking about is cyclophosphamide with high dose taxane vs
-> cyclophosphamide alone.  I think if it looks like taxane augments the known
-> risk of cyclophosphamide this would be an important addition to the
-> literature.
-
-
-Fit the meta-regression model
-
-$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-
-where $I_{\text{high dose taxane}, i}$ is an 0/1 indicator for whether study $i$ has high dose taxane in the regimen.
-The interpretation of $\beta_1$ is the effect of cyclophosphamide dose adjusted for high dose taxane in the regimen.
-
-
-```r
-mal <- "AML or MDS"
-D3 <- D2[malType == mal]
-D3 <- D3[, drug := "Cyclophosphamide"]
-D3 <- D3[isCyclo == FALSE, xCycHighDose := FALSE]
-D3 <- D3[, isTaxaneHighDose := FALSE]
-D3 <- D3[xTaxHighDose == TRUE, isTaxaneHighDose := TRUE]
-D3 <- D3[!(is.na(xCyc) | is.na(xCycHighDose) | is.na(rate) | is.na(nITT) | is.na(malType))]
-xData <- unique(D3[, .(drug, xCyc, xCycHighDose, isTaxaneHighDose, malType)])
-D3 <- escalc("IRLN", xi=malN, ti=py, data=D3)
-randomEffect <- list(~ 1 | id)
-MLin <- rma.mv(yi ~ xCyc + isTaxaneHighDose,
-               vi,
-               random=randomEffect,
-               data=D3)
-MLinInt <- rma.mv(yi ~ xCyc + isTaxaneHighDose + xCyc * isTaxaneHighDose,
-                  vi,
-                  random=randomEffect,
-                  data=D3)
-MBin <- rma.mv(yi ~ xCycHighDose + isTaxaneHighDose,
-               vi,
-               random=randomEffect,
-               data=D3)
-M <- list(rmaLin = MLin,
-          rmaLinInt = MLinInt,
-          rmaBin = MBin)
-M
-```
-
-```
-## $rmaLin
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1262  0.3552     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 53) = 59.4849, p-val = 0.2514
-## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 10.0425, p-val = 0.0066
-## 
-## Model Results:
-## 
-##                       estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt                -7.8593  0.2434  -32.2878  <.0001  -8.3363  -7.3822
-## xCyc                    0.1577  0.0554    2.8465  0.0044   0.0491   0.2662
-## isTaxaneHighDoseTRUE    0.5261  0.2430    2.1654  0.0304   0.0499   1.0023
-##                          
-## intrcpt               ***
-## xCyc                   **
-## isTaxaneHighDoseTRUE    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaLinInt
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1321  0.3635     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 52) = 59.3513, p-val = 0.2254
+## QE(df = 51) = 57.9982, p-val = 0.2330
 ## 
 ## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 9.8227, p-val = 0.0201
+## QM(df = 3) = 10.2679, p-val = 0.0164
 ## 
 ## Model Results:
 ## 
-##                            estimate      se      zval    pval    ci.lb
-## intrcpt                     -7.8579  0.2456  -31.9923  <.0001  -8.3393
-## xCyc                         0.1565  0.0561    2.7914  0.0052   0.0466
-## isTaxaneHighDoseTRUE         0.4712  1.2386    0.3804  0.7036  -1.9564
-## xCyc:isTaxaneHighDoseTRUE    0.0237  0.5319    0.0446  0.9645  -1.0188
-##                              ci.ub     
-## intrcpt                    -7.3765  ***
-## xCyc                        0.2664   **
-## isTaxaneHighDoseTRUE        2.8988     
-## xCyc:isTaxaneHighDoseTRUE   1.0662     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
-## 
-## Multivariate Meta-Analysis Model (k = 56; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2573  0.5072     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 53) = 80.3706, p-val = 0.0090
-## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 2.8038, p-val = 0.2461
-## 
-## Model Results:
-## 
-##                       estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt                -7.7360  0.4480  -17.2685  <.0001  -8.6140  -6.8580
-## xCycHighDoseTRUE        0.4187  0.4447    0.9415  0.3464  -0.4529   1.2903
-## isTaxaneHighDoseTRUE    0.4006  0.2635    1.5207  0.1283  -0.1157   0.9170
-##                          
-## intrcpt               ***
-## xCycHighDoseTRUE         
-## isTaxaneHighDoseTRUE     
+##                         estimate      se      zval    pval    ci.lb
+## intrcpt                  -7.8777  0.2469  -31.9122  <.0001  -8.3616
+## xCyc                      0.1599  0.0558    2.8640  0.0042   0.0505
+## isTaxHighDoseTRUE         0.5031  1.2358    0.4071  0.6839  -1.9191
+## xCyc:isTaxHighDoseTRUE    0.0149  0.5303    0.0282  0.9775  -1.0244
+##                           ci.ub     
+## intrcpt                 -7.3939  ***
+## xCyc                     0.2694   **
+## isTaxHighDoseTRUE        2.9253     
+## xCyc:isTaxHighDoseTRUE   1.0543     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-Plot predicted values.
+### Cyclophosphamide: dichotomous; Taxane: confounder
 
 
 ```r
-X <- data.frame(M$rmaLin$X)
-X <- unique(X)
-varnames <- names(X)[2:ncol(X)]
-X0 <- data.frame(x1 = seq(min(X[X[, 3] == 0, "xCyc"]), max(X[X[, 3] == 0, "xCyc"]),
-                          length.out = 100),
-                 x2 = rep(0, 100))
-X1 <- data.frame(x1 = seq(min(X[X[, 3] == 1, "xCyc"]), max(X[X[, 3] == 1, "xCyc"]),
-                          length.out = 100),
-                 x2 = rep(1, 100))
-X <- rbind(X0, X1)
-names(X) <- varnames
-X$xCyc <- round(X$xCyc, digits = 1)
-X <- unique(X)
-yhat <- data.frame(malType = mal,
-                   X,
-                   yhat = predict(M$rmaLin, as.matrix(X), transf = exp)[["pred"]] * scale)
-xscale <- 1e3
-pvalues <- c(M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxaneHighDoseTRUE")])
-pal <- brewer.pal(4, name = "PuOr")
-G <- ggplot(D3, aes(x = xCyc * xscale,
-                    y = rate + 1/2,
-                    size = nITT / min(nITT, na.rm=TRUE),
-                    color = isTaxaneHighDose))
-G <- G + geom_point(alpha = 1/2,
-                    position = "jitter")
-G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == FALSE, ],
-                   aes(x = xCyc * xscale, y = yhat),
-                   inherit.aes = FALSE,
-                   color = pal[1])
-G <- G + geom_line(data = yhat[yhat$isTaxaneHighDose == TRUE, ],
-                   aes(x = xCyc * xscale, y = yhat),
-                   inherit.aes = FALSE,
-                   color = pal[4])
-G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
-                       breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
-G <- G + scale_y_log10(sprintf("Rate per %s person-years",
-                               format(scale, big.mark = ",")))
-G <- G + scale_color_manual(sprintf("Taxane, %s", pvalToChar(pvalues[c(1)])),
-                            values = c(pal[1], pal[4]),
-                            labels = c("None or low dose", "High dose"))
-G <- G + scale_size_continuous(guide = FALSE)
-G <- G + labs(title = mal)
-G <- G + theme_bw()
-filename <- "AMLorMDS_Cyclophosphamide_byHighDoseTaxane"
-ggsave(filename = sprintf("%s.png", filename), width = 9)
+M$rmaBin
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2601  0.5100     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 80.3700, p-val = 0.0070
+## 
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 2.8181, p-val = 0.2444
+## 
+## Model Results:
+## 
+##                    estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt             -7.7392  0.4487  -17.2490  <.0001  -8.6186  -6.8599
+## isCycHighDoseTRUE    0.4177  0.4453    0.9381  0.3482  -0.4550   1.2904
+## isTaxHighDoseTRUE    0.4035  0.2642    1.5274  0.1267  -0.1143   0.9213
+##                       
+## intrcpt            ***
+## isCycHighDoseTRUE     
+## isTaxHighDoseTRUE     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+### Cyclophosphamide: dichotomous; Taxane: effect modifier
+
+
+```r
+M$rmaBinInt
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.2756  0.5250     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 51) = 80.3564, p-val = 0.0054
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 3.0856, p-val = 0.3786
+## 
+## Model Results:
+## 
+##                                      estimate      se      zval    pval
+## intrcpt                               -7.5614  0.5739  -13.1758  <.0001
+## isCycHighDoseTRUE                      0.2211  0.5874    0.3764  0.7067
+## isTaxHighDoseTRUE                     -0.0237  0.8653   -0.0274  0.9782
+## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.4790  0.9145    0.5238  0.6004
+##                                        ci.lb    ci.ub     
+## intrcpt                              -8.6862  -6.4366  ***
+## isCycHighDoseTRUE                    -0.9302   1.3723     
+## isTaxHighDoseTRUE                    -1.7197   1.6723     
+## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.3133   2.2714     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+## Non-Breast Solid
+
+
+```r
+mal <- "Non-Breast Solid"
+D3 <- D2[malType == mal]
+D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+M <- metareg(D3)
+```
+
+* Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose
+  * Non-Breast Solid rate increased 1.01 times (95% CI: 0.917, 1.11; p = 0.846) for each 1000 $\text{mg} / \text{m}^2$
+* High dose taxane did not confound the cyclophosphamide dose response
+  * High dose taxane increased Non-Breast Solid rate by 1.37 times (95% CI: 0.799, 2.35; p = 0.253)
+
+### Cyclophosphamide: dose response; Taxane: confounder
+
+
+```r
+M$rmaLin
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1370  0.3701     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 28) = 60.3828, p-val = 0.0004
+## 
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 1.3235, p-val = 0.5160
+## 
+## Model Results:
+## 
+##                    estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt             -5.8909  0.2354  -25.0234  <.0001  -6.3523  -5.4295
+## xCyc                 0.0096  0.0493    0.1944  0.8459  -0.0870   0.1062
+## isTaxHighDoseTRUE    0.3148  0.2752    1.1437  0.2527  -0.2246   0.8542
+##                       
+## intrcpt            ***
+## xCyc                  
+## isTaxHighDoseTRUE     
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+plotreg(M$rmaLin, D3, mal)
 ```
 
 ```
 ## Saving 9 x 7 in image
 ```
 
-```r
-yhat$xCyc <- yhat$xCyc * xscale
-write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
-show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
+```
+##                                                             size
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv   7917
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv        3608
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      147326
+##                                                                         mtime
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:16:10
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:16:10
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:16:10
 ```
 
-```
-##                                                       size
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   3560
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      182958
-##                                                                   mtime
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 10:27:28
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 10:27:28
-```
-
-```r
-G
-```
-
-![plot of chunk unnamed-chunk-30](figure/unnamed-chunk-30-1.png)
-
-
-## Non-Breast Solid
-
-* Fit the models
-* Show model summaries
-* Plot the predicted values
-
+### Cyclophosphamide: dose response; Taxane: effect modifier
 
 
 ```r
-mal <- "Non-Breast Solid"
-D3 <- D2[malType == mal]
-```
-
-### Cyclophosphamide
-
-
-```r
-D3 <- D3[, `:=` (drug = "Cyclophosphamide", x = xCyc, xHighDose = xCycHighDose)]
-M <- metareg(D3)
-M
+M$rmaLinInt
 ```
 
 ```
-## $rmaLin
 ## 
 ## Multivariate Meta-Analysis Model (k = 31; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1551  0.3939     16     no      id
+## sigma^2    0.1101  0.3318     16     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 29) = 66.2474, p-val < .0001
+## QE(df = 27) = 51.9353, p-val = 0.0027
 ## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 0.0199, p-val = 0.8879
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 4.7271, p-val = 0.1929
 ## 
 ## Model Results:
 ## 
-##          estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt   -5.7765  0.2196  -26.3022  <.0001  -6.2069  -5.3460  ***
-## x         -0.0069  0.0488   -0.1410  0.8879  -0.1025   0.0887     
+##                         estimate      se      zval    pval     ci.lb
+## intrcpt                  -5.9262  0.2235  -26.5193  <.0001   -6.3642
+## xCyc                      0.0137  0.0470    0.2913  0.7708   -0.0785
+## isTaxHighDoseTRUE        -4.6163  2.8129   -1.6411  0.1008  -10.1296
+## xCyc:isTaxHighDoseTRUE    2.1894  1.2396    1.7662  0.0774   -0.2402
+##                           ci.ub     
+## intrcpt                 -5.4882  ***
+## xCyc                     0.1059     
+## isTaxHighDoseTRUE        0.8970     
+## xCyc:isTaxHighDoseTRUE   4.6190    .
 ## 
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+### Cyclophosphamide: dichotomous; Taxane: confounder
+
+
+```r
+M$rmaBin
+```
+
+```
 ## 
 ## Multivariate Meta-Analysis Model (k = 31; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1082  0.3289     16     no      id
+## sigma^2    0.0822  0.2867     16     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 29) = 57.9772, p-val = 0.0011
+## QE(df = 28) = 51.0912, p-val = 0.0049
 ## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 2.8246, p-val = 0.0928
+## Test of Moderators (coefficient(s) 2,3): 
+## QM(df = 2) = 7.9497, p-val = 0.0188
 ## 
 ## Model Results:
 ## 
-##                estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt         -6.2561  0.3017  -20.7368  <.0001  -6.8473  -5.6648  ***
-## xHighDoseTRUE    0.5130  0.3052    1.6806  0.0928  -0.0853   1.1112    .
+##                    estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt             -6.5972  0.3296  -20.0147  <.0001  -7.2432  -5.9511
+## isCycHighDoseTRUE    0.7851  0.3185    2.4647  0.0137   0.1608   1.4094
+## isTaxHighDoseTRUE    0.5320  0.2491    2.1359  0.0327   0.0438   1.0202
+##                       
+## intrcpt            ***
+## isCycHighDoseTRUE    *
+## isTaxHighDoseTRUE    *
 ## 
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $pvalueLin
-## [1] "p = 0.888"
-## 
-## $pvalueBin
-## [1] "p = 0.093"
-## 
-## $pred
-##                 drug     x xHighDose          malType  predLin
-##  1: Cyclophosphamide  1.20     FALSE Non-Breast Solid 30.74218
-##  2: Cyclophosphamide  1.50     FALSE Non-Breast Solid 30.67884
-##  3: Cyclophosphamide  2.00     FALSE Non-Breast Solid 30.57357
-##  4: Cyclophosphamide  2.40      TRUE Non-Breast Solid 30.48961
-##  5: Cyclophosphamide  3.00      TRUE Non-Breast Solid 30.36411
-##  6: Cyclophosphamide  3.60      TRUE Non-Breast Solid 30.23912
-##  7: Cyclophosphamide  4.00      TRUE Non-Breast Solid 30.15608
-##  8: Cyclophosphamide  4.80      TRUE Non-Breast Solid 29.99069
-##  9: Cyclophosphamide  6.64      TRUE Non-Breast Solid 29.61371
-## 10: Cyclophosphamide  7.20      TRUE Non-Breast Solid 29.49992
-## 11: Cyclophosphamide 14.40      TRUE Non-Breast Solid 28.07529
-##     confLowerLin confUpperLin  predBin confLowerBin confUpperBin scale
-##  1:    13.213812     71.52227 19.18809     8.000458     46.02023 10000
-##  2:    13.288517     70.82743 19.18809     8.000458     46.02023 10000
-##  3:    13.386423     69.82771 19.18809     8.000458     46.02023 10000
-##  4:    13.439607     69.16992 32.04961    16.215812     63.34418 10000
-##  5:    13.475559     68.41862 32.04961    16.215812     63.34418 10000
-##  6:    13.457464     67.94775 32.04961    16.215812     63.34418 10000
-##  7:    13.415149     67.78823 32.04961    16.215812     63.34418 10000
-##  8:    13.259259     67.83495 32.04961    16.215812     63.34418 10000
-##  9:    12.574606     69.74149 32.04961    16.215812     63.34418 10000
-## 10:    12.291105     70.80286 32.04961    16.215812     63.34418 10000
-## 11:     7.624903    103.37467 32.04961    16.215812     63.34418 10000
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-```r
-plotreg(M,
-        D3,
-        mal,
-        "Cyclophosphamide cumulative dose",
-        1e3 * c(0.5, 1, 2, 4, 8, 16),
-        1e3)
-```
-
-```
-## Saving 7 x 7 in image
-```
-
-```
-##                                            size               mtime
-## NonBreastSolid_Cyclophosphamide_Pred.csv   1771 2016-08-05 10:27:29
-## NonBreastSolid_Cyclophosphamide.csv        4356 2016-08-05 10:27:29
-## NonBreastSolid_Cyclophosphamide.png      116930 2016-08-05 10:27:29
-```
-
-![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
-
-### Taxane
+### Cyclophosphamide: dichotomous; Taxane: effect modifier
 
 
 ```r
-D3 <- D3[, `:=` (drug = "Taxane", x = xTax, xHighDose = xTaxHighDose)]
-M <- metareg(D3)
-M
+M$rmaBinInt
 ```
 
 ```
-## $rmaLin
 ## 
-## Multivariate Meta-Analysis Model (k = 13; method: REML)
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1613  0.4016      8     no      id
+## sigma^2    0.0872  0.2952     16     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 11) = 29.6283, p-val = 0.0018
+## QE(df = 27) = 51.0178, p-val = 0.0035
 ## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 0.1777, p-val = 0.6733
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 7.7889, p-val = 0.0506
 ## 
 ## Model Results:
 ## 
-##          estimate      se     zval    pval    ci.lb    ci.ub     
-## intrcpt   -6.0630  0.6630  -9.1447  <.0001  -7.3625  -4.7635  ***
-## x          0.0468  0.1110   0.4216  0.6733  -0.1707   0.2643     
+##                                      estimate      se      zval    pval
+## intrcpt                               -6.5200  0.4346  -15.0023  <.0001
+## isCycHighDoseTRUE                      0.6981  0.4421    1.5791  0.1143
+## isTaxHighDoseTRUE                      0.3923  0.5885    0.6666  0.5051
+## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.1757  0.6572    0.2673  0.7892
+##                                        ci.lb    ci.ub     
+## intrcpt                              -7.3718  -5.6682  ***
+## isCycHighDoseTRUE                    -0.1684   1.5646     
+## isTaxHighDoseTRUE                    -0.7612   1.5457     
+## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.1124   1.4638     
 ## 
 ## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $rmaBin
-## 
-## Multivariate Meta-Analysis Model (k = 13; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1426  0.3776      8     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 11) = 28.1761, p-val = 0.0030
-## 
-## Test of Moderators (coefficient(s) 2): 
-## QM(df = 1) = 0.7789, p-val = 0.3775
-## 
-## Model Results:
-## 
-##                estimate      se      zval    pval    ci.lb    ci.ub     
-## intrcpt         -5.9390  0.2443  -24.3128  <.0001  -6.4178  -5.4603  ***
-## xHighDoseTRUE    0.3056  0.3462    0.8826  0.3775  -0.3730   0.9841     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
-## 
-## 
-## $pvalueLin
-## [1] "p = 0.673"
-## 
-## $pvalueBin
-## [1] "p = 0.377"
-## 
-## $pred
-##      drug   x xHighDose          malType  predLin confLowerLin
-## 1: Taxane 4.0     FALSE Non-Breast Solid 28.06250     10.92877
-## 2: Taxane 4.5     FALSE Non-Breast Solid 28.72660     11.62530
-## 3: Taxane 7.0      TRUE Non-Breast Solid 32.29043     13.06744
-## 4: Taxane 7.5      TRUE Non-Breast Solid 33.05458     12.87278
-## 5: Taxane 8.0      TRUE Non-Breast Solid 33.83682     12.54870
-##    confUpperLin  predBin confLowerBin confUpperBin scale
-## 1:     72.05784 26.34603     10.91134     63.61393 10000
-## 2:     70.98462 26.34603     10.91134     63.61393 10000
-## 3:     79.79158 35.76138     14.79403     86.44543 10000
-## 4:     84.87719 35.76138     14.79403     86.44543 10000
-## 5:     91.23898 35.76138     14.79403     86.44543 10000
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
-
-```r
-plotreg(M,
-        D3,
-        mal,
-        "Taxane cumulative dose",
-        1e2 * c(0.5, 1, 2, 4, 8, 16),
-        1e2)
-```
-
-```
-## Saving 7 x 7 in image
-```
-
-```
-##                                 size               mtime
-## NonBreastSolid_Taxane_Pred.csv   804 2016-08-05 10:27:30
-## NonBreastSolid_Taxane.csv       1762 2016-08-05 10:27:30
-## NonBreastSolid_Taxane.png      92483 2016-08-05 10:27:30
-```
-
-![plot of chunk unnamed-chunk-33](figure/unnamed-chunk-33-1.png)

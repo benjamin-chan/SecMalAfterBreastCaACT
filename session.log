@@ -1,5 +1,5 @@
 $completionDateTime
-[1] "2016-08-05 10:27:30 PDT"
+[1] "2016-08-05 15:16:10 PDT"
 
 $sessionInfo
 R version 3.3.0 (2016-05-03)
@@ -15,8 +15,7 @@ locale:
 [11] LC_MEASUREMENT=en_US.UTF-8    LC_IDENTIFICATION=en_US.UTF-8
 
 attached base packages:
-[1] tools     methods   stats     graphics  grDevices utils     datasets 
-[8] base     
+[1] methods   stats     graphics  grDevices utils     datasets  base     
 
 other attached packages:
  [1] RColorBrewer_1.1-2 ggplot2_2.1.0      metafor_1.9-8      Matrix_1.2-6      
@@ -26,7 +25,7 @@ other attached packages:
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.5      magrittr_1.5     munsell_0.4.3    colorspace_1.2-6
  [5] lattice_0.20-33  plyr_1.8.4       stringr_1.0.0    highr_0.6       
- [9] grid_3.3.0       gtable_0.2.0     htmltools_0.3.5  digest_0.6.9    
-[13] formatR_1.4      evaluate_0.9     stringi_1.1.1    scales_0.4.0    
-[17] chron_2.3-47    
+ [9] tools_3.3.0      grid_3.3.0       gtable_0.2.0     htmltools_0.3.5 
+[13] digest_0.6.9     formatR_1.4      evaluate_0.9     stringi_1.1.1   
+[17] scales_0.4.0     chron_2.3-47    
 
