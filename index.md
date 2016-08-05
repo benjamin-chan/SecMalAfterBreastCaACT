@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-05 15:16:04
+* Date: 2016-08-05 15:40:28
 
 
 # Load packages
@@ -30,7 +30,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##                                    size               mtime
-## /tmp/RtmpJXd13F/file1d9aa29da3250 59619 2016-08-05 15:16:05
+## /tmp/Rtmpu5Cg98/file1dcbf45103b33 59619 2016-08-05 15:40:30
 ```
 
 ```r
@@ -210,18 +210,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    39      0     NA          NA                0
-##  2:    84     NA     NA           0                0
-##  3:    45     NA     NA           0                0
-##  4:    53      1      0          NA                1
-##  5:    63     NA     NA          NA               NA
-##  6:    77     NA     NA          NA               NA
-##  7:    49     NA     NA          NA               NA
-##  8:     5     NA     NA          NA               NA
-##  9:    90     NA     NA          NA               NA
-## 10:    54      2      1          NA                3
-## 11:    43      0     NA          NA                0
-## 12:    61      1     NA          NA                1
+##  1:    38      1     NA          NA                1
+##  2:    61      1     NA          NA                1
+##  3:     4     NA     NA          NA               NA
+##  4:    34      0      1          NA                1
+##  5:    40      2     NA          NA                2
+##  6:    31      6      2          NA                8
+##  7:    86     NA     NA           5                5
+##  8:    21     NA     NA          NA               NA
+##  9:    44     NA     NA           1                1
+## 10:    49     NA     NA          NA               NA
+## 11:    27     NA     NA          NA               NA
+## 12:    96     NA     NA          NA               NA
 ```
 
 Remove text from `nITT` column.
@@ -256,7 +256,7 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-05 15:16:05 2016-08-05 15:16:05
+## regimens.md 7215 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
 ##                           atime  uid  gid uname   grname
 ## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -575,7 +575,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-05 15:16:05
+## data.RData 7448 2016-08-05 15:40:30
 ```
 
 ---
@@ -650,7 +650,7 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-05 15:16:05 2016-08-05 15:16:05
+## summaryRegimens.md 4624 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
 ##                                  atime  uid  gid uname   grname
 ## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
 ```
@@ -749,9 +749,9 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
 ## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9473
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 15:16:07
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 15:16:07
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 15:16:07
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 15:40:32
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 15:40:32
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 15:40:32
 ```
 
 ```r
@@ -972,7 +972,6 @@ plotreg <- function (M, D, title) {
   G <- G + scale_size_continuous(guide = FALSE)
   G <- G + labs(title = title)
   G <- G + theme_bw()
-  G
   filename <- sprintf("%s_Cyclophosphamide_byHighDoseTaxane",
                       gsub("(\\s)|(-)", "", title))
   ggsave(filename = sprintf("%s.png", filename), width = 9)
@@ -980,6 +979,7 @@ plotreg <- function (M, D, title) {
   write.csv(D, file = sprintf("%s.csv", filename), row.names = FALSE, quote = FALSE)
   write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
   show(file.info(grep(paste0(filename, "(_Pred)*\\."), list.files(), value = TRUE))[c("size", "mtime")])
+  G
 }
 ```
 
@@ -1059,12 +1059,14 @@ plotreg(M$rmaLin, D3, mal)
 ##                                                       size
 ## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   6979
 ## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv        5787
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      188739
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      188921
 ##                                                                   mtime
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:16:10
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:16:10
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:16:10
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:34
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:34
+## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:34
 ```
+
+![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
 ### Cyclophosphamide: dose response; Taxane: effect modifier
 
@@ -1246,12 +1248,14 @@ plotreg(M$rmaLin, D3, mal)
 ##                                                             size
 ## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv   7917
 ## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv        3608
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      147326
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      147159
 ##                                                                         mtime
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:16:10
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:16:10
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:16:10
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:35
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:35
+## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:35
 ```
+
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
 
 ### Cyclophosphamide: dose response; Taxane: effect modifier
 
