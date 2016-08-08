@@ -138,7 +138,7 @@ plotreg <- function (M, D, title) {
   setkeyv(ci.ub, keyvar)
   yhat <- merge(merge(yhat, ci.lb), ci.ub)
   pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
-  pal <- brewer.pal(5, name = "RdBu")[c(1, 5)]
+  pal <- brewer.pal(5, name = "Set1")[c(1, 2)]
   G <- ggplot(D, aes(x = xCyc * xscale,
                      y = rate + 1/2,
                      size = nITT / min(nITT, na.rm = TRUE),
