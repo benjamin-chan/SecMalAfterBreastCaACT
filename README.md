@@ -35,7 +35,7 @@ See [index.md](index.md) or [index.html](index.html) for full details, including
 
 ## Methods
 
-Statistical methods are [here](index.md#meta-regression).
+Statistical methods are described [here](index.md#meta-regression).
 
 
 ## Reproducibility

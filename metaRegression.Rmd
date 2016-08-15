@@ -53,10 +53,10 @@ The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
 
 Four model are estimated.
 
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_j$$
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
 
