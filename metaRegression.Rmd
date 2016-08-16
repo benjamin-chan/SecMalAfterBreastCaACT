@@ -189,8 +189,7 @@ plotreg <- function (M, D, title) {
 
 ```{r}
 mal <- "AML or MDS"
-D3 <- D2[malType == mal]
-D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+D3 <- drop_na(D2[malType == mal], rate, nITT, malType)
 M <- metareg(D3)
 ```
 
@@ -238,8 +237,7 @@ M$rmaBinInt
 
 ```{r}
 mal <- "Non-Breast Solid"
-D3 <- D2[malType == mal]
-D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+D3 <- drop_na(D2[malType == mal], rate, nITT, malType)
 M <- metareg(D3)
 ```
 
