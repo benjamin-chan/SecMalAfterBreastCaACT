@@ -26,6 +26,7 @@ D2 <- D1[,
            isCycHighDose = cyclophosphamideCumulDose >= 2400,
            xTax = taxaneCumulDose / 1e2,  # scale units
            isTaxDoseHigh = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isTaxDoseLow = ifelse(taxaneCumulDose < 500 & isTaxane == TRUE, TRUE, FALSE),
            isAnthra,
            isTaxane,
            isFluoro,
