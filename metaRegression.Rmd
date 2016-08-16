@@ -36,7 +36,7 @@ D2 <- D1[,
            py,
            rate)]
 D2 <- D2[isTaxane == FALSE, isTaxHighDose := FALSE]
-D2 <- D2[!(is.na(xCyc) | is.na(isCycHighDose) | is.na(isTaxHighDose))]
+D2 <- drop_na(D2, xCyc, isCycHighDose, isTaxDoseHigh)
 ```
 
 The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
