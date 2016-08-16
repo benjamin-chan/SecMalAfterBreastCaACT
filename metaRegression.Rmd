@@ -25,7 +25,7 @@ D2 <- D1[,
            xCyc = cyclophosphamideCumulDose / xscale,  # scale units
            isCycHighDose = cyclophosphamideCumulDose >= 2400,
            xTax = taxaneCumulDose / 1e2,  # scale units
-           isTaxHighDose = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isTaxDoseHigh = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
            isAnthra,
            isTaxane,
            isFluoro,
@@ -35,7 +35,7 @@ D2 <- D1[,
            malN,
            py,
            rate)]
-D2 <- D2[isTaxane == FALSE, isTaxHighDose := FALSE]
+D2 <- D2[isTaxane == FALSE, isTaxDoseHigh := FALSE]
 D2 <- drop_na(D2, xCyc, isCycHighDose, isTaxDoseHigh)
 ```
 
@@ -79,22 +79,22 @@ pvalToChar <- function (p) {
 }
 metareg <- function (D) {
   require(metafor)
-  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxHighDose, malType)])
+  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxDoseHigh, malType)])
   D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ xCyc + isTaxHighDose,
+  MLin <- rma.mv(yi ~ xCyc + isTaxDoseHigh,
                  vi,
                  random = randomEffect,
                  data = D)
-  MLinInt <- rma.mv(yi ~ xCyc + isTaxHighDose + xCyc * isTaxHighDose,
+  MLinInt <- rma.mv(yi ~ xCyc + isTaxDoseHigh + xCyc * isTaxDoseHigh,
                     vi,
                     random = randomEffect,
                     data = D)
-  MBin <- rma.mv(yi ~ isCycHighDose + isTaxHighDose,
+  MBin <- rma.mv(yi ~ isCycHighDose + isTaxDoseHigh,
                  vi,
                  random = randomEffect,
                  data = D)
-  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxHighDose + isCycHighDose * isTaxHighDose,
+  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxDoseHigh + isCycHighDose * isTaxDoseHigh,
                     vi,
                     random = randomEffect,
                     data = D)
@@ -110,10 +110,10 @@ plotreg <- function (M, D, title) {
   X <- data.table(M$X)
   X <- unique(X)
   varnames <- names(X)[2:ncol(X)]
-  X0 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 0, xCyc]), max(X[isTaxHighDoseTRUE == 0, xCyc]),
+  X0 <- data.table(x1 = seq(min(X[isTaxDoseHighTRUE == 0, xCyc]), max(X[isTaxDoseHighTRUE == 0, xCyc]),
                             length.out = 100),
                    x2 = rep(0, 100))
-  X1 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 1, xCyc]), max(X[isTaxHighDoseTRUE == 1, xCyc]),
+  X1 <- data.table(x1 = seq(min(X[isTaxDoseHighTRUE == 1, xCyc]), max(X[isTaxDoseHighTRUE == 1, xCyc]),
                             length.out = 100),
                    x2 = rep(1, 100))
   X <- rbind(X0, X1)
@@ -132,33 +132,33 @@ plotreg <- function (M, D, title) {
                       X,
                       # variable = "ci.ub",
                       ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
-  keyvar <- c("malType", "xCyc", "isTaxHighDoseTRUE")
+  keyvar <- c("malType", "xCyc", "isTaxDoseHighTRUE")
   setkeyv(yhat, keyvar)
   setkeyv(ci.lb, keyvar)
   setkeyv(ci.ub, keyvar)
   yhat <- merge(merge(yhat, ci.lb), ci.ub)
-  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
+  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxDoseHighTRUE")])
   pal <- brewer.pal(5, name = "Set1")[c(1, 2)]
   G <- ggplot(D, aes(x = xCyc * xscale,
                      y = rate + 1/2,
                      size = nITT / min(nITT, na.rm = TRUE),
-                     color = isTaxHighDose))
+                     color = isTaxDoseHigh))
   G <- G + geom_point(alpha = 1/2,
                       position = "jitter")
-  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 0, ],
+  G <- G + geom_line(data = yhat[isTaxDoseHighTRUE == 0, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[1])
-  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 1, ],
+  G <- G + geom_line(data = yhat[isTaxDoseHighTRUE == 1, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[2])
-  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 0, ],
+  G <- G + geom_ribbon(data = yhat[isTaxDoseHighTRUE == 0, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[1],
                        alpha = 1/8)
-  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 1, ],
+  G <- G + geom_ribbon(data = yhat[isTaxDoseHighTRUE == 1, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[2],
@@ -198,9 +198,9 @@ M <- metareg(D3)
 * `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose
   * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
 * High dose taxane confounded the cyclophosphamide dose response
-  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")])`)
+  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")])`)
 * High dose taxane did not modify the dose response effect of cyclophosphamide
-  * Interaction term estimate was `r sprintf("%.03g", M$rmaLinInt$b[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])` (95% CI: `r sprintf("%.03g", M$rmaLinInt$ci.lb[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`, `r sprintf("%.03g", M$rmaLinInt$ci.ub[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`; p = `r sprintf("%.03g", M$rmaLinInt$pval[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxHighDoseTRUE")])`)
+  * Interaction term estimate was `r sprintf("%.03g", M$rmaLinInt$b[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])` (95% CI: `r sprintf("%.03g", M$rmaLinInt$ci.lb[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`, `r sprintf("%.03g", M$rmaLinInt$ci.ub[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`; p = `r sprintf("%.03g", M$rmaLinInt$pval[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`)
 
 ### Cyclophosphamide: dose response; Taxane: confounder
 
@@ -240,7 +240,7 @@ M <- metareg(D3)
 * `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose
   * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
 * High dose taxane did not confound the cyclophosphamide dose response
-  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxHighDoseTRUE")])`)
+  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")])`)
 
 ### Cyclophosphamide: dose response; Taxane: confounder
 
