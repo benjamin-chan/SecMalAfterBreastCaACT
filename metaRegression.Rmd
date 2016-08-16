@@ -10,11 +10,11 @@ Two outcomes are modeled separately.
 Cumulative doses are dichotomized into low and high doses.
 
 * Cyclophosphamide
-    * $\lt 2400$
-    * $\ge 2400$
+    * $\lt 2400 \frac{\text{mg}}{\text{m}^2}$
+    * $\ge 2400 \frac{\text{mg}}{\text{m}^2}$
 * Taxane
-    * $\lt 500$
-    * $\ge 500$
+    * $\lt 500 \frac{\text{mg}}{\text{m}^2}$
+    * $\ge 500 \frac{\text{mg}}{\text{m}^2}$
 
 ```{r}
 xscale <- 1e3
