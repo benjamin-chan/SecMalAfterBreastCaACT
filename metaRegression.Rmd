@@ -195,6 +195,11 @@ M <- metareg(D3)
 
 ### Findings
 
+* Crude statistics
+  * Total person-years of follow-up: `r D3[, format(round(sum(py)), big.mark = ",")]`
+  * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
+  * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
 * `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose
   * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
 * High dose taxane confounded the cyclophosphamide dose response
@@ -237,6 +242,13 @@ D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
 M <- metareg(D3)
 ```
 
+### Findings
+
+* Crude statistics
+  * Total person-years of follow-up: `r D3[, format(round(sum(py)), big.mark = ",")]`
+  * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
+  * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
 * `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose
   * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
 * High dose taxane did not confound the cyclophosphamide dose response
