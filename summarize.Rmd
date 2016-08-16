@@ -29,6 +29,9 @@ D <- D[,
              isCyclo = !is.na(cyclophosphamideDose),
              isTaxane = !is.na(taxaneTotalDose),
              isFluoro = !is.na(fluoroucilTotalDose))]
+D <- D[isTaxane == TRUE,
+       `:=` (isDocetaxel = grepl("doce", tolower(taxaneType)),
+             isPaclitaxel = grepl("pacli", tolower(taxaneType)))]
 D1 <- melt(D,
            id.vars=c("id", "authorYear", "arm",
                      "isAnthra", "anthracyclineCumulDose",
@@ -39,7 +42,6 @@ D1 <- melt(D,
            measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
            value.name="malN",
            variable.name="malType")
-
 D1 <- D1[, malType := gsub("^mal", "", malType)]
 D1 <- D1[, malType := factor(malType,
                              levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
