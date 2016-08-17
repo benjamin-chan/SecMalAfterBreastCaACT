@@ -31,6 +31,7 @@ D2 <- D1[,
            isPaclitaxel,
            isAnthra,
            isTaxane,
+           isNoTaxane = !(isTaxane),
            isFluoro,
            nITT,
            medianFU,
@@ -54,12 +55,20 @@ The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
 > risk of cyclophosphamide this would be an important addition to the
 > literature.
 
-Four model are estimated.
+The following models are estimated.
 
-1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_j$$
-1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_j$$
-1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_j$$
-1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
+
+where
+
+* $x_{1, i}$ is the cumulative cyclophosphamide dose for the $i$-th treatment arm
+* $I_{\text{paclitaxel}, i}$ is an indicator for whether the $i$-th treatment arm included paclitaxel is the regimen
+* $I_{\text{docetaxel}, i}$ is an indicator for whether the $i$-th treatment arm included docetaxel is the regimen
+* $I_{\text{no taxane}, i}$ is an indicator for whether the $i$-th treatment arm did not include any taxane is the regimen
+* $\sigma_j$ is a random effect for the $j$-th study.
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
 
@@ -85,31 +94,29 @@ metareg <- function (D) {
   xData <- unique(D[, .(xCyc, isCycHighDose, isDocetaxel, isPaclitaxel, malType)])
   D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ xCyc + isDocetaxel + isPaclitaxel,
-                 vi,
-                 random = randomEffect,
-                 data = D)
-  MLinInt <- rma.mv(yi ~ xCyc + isDocetaxel + isPaclitaxel + xCyc * isPaclitaxel,
-                    vi,
-                    random = randomEffect,
-                    data = D)
-  MBin <- rma.mv(yi ~ isCycHighDose + isTaxDoseHigh,
-                 vi,
-                 random = randomEffect,
-                 data = D)
-  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxDoseHigh + isCycHighDose * isTaxDoseHigh,
-                    vi,
-                    random = randomEffect,
-                    data = D)
-  list(rmaLin = MLin,
-       rmaLinInt = MLinInt,
-       rmaBin = MBin,
-       rmaBinInt = MBinInt)
+  M1 <- rma.mv(yi ~ xCyc + isPaclitaxel + isDocetaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  M2 <- rma.mv(yi ~ xCyc + isPaclitaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  M3 <- rma.mv(yi ~ xCyc + isPaclitaxel + isNoTaxane,
+               vi,
+               random = randomEffect,
+               data = D)
+  M4 <- rma.mv(yi ~ xCyc + isPaclitaxel + xCyc * isPaclitaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  list(M1 = M1, M2 = M2, M3 = M3, M4 = M4)
 }
 plotreg <- function (M, D, title) {
   require(ggplot2)
   require(RColorBrewer)
   require(data.table)
+  D <- data.table(D)
   X <- data.table(M$X)
   X <- unique(X)
   varnames <- names(X)[2:ncol(X)]
@@ -191,10 +198,10 @@ plotreg <- function (M, D, title) {
                        fill = pal[3],
                        alpha = 1/8)
   G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
-                         breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
+                         breaks = 1e3 * (2 ^ seq(-1, 6)))
   G <- G + scale_y_log10(sprintf("Rate per %s person-years",
                                  format(scale, big.mark = ",")),
-                         breaks = c(1, 2, 4, 8, 16, 32))
+                         breaks = 2 ^ seq(-1, 6))
   G <- G + scale_color_manual("Taxane",
                               values = pal,
                               labels = c("None (reference)",
@@ -231,36 +238,58 @@ M <- metareg(D3)
   * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
   * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
   * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
-* `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose
-  * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
-* High dose taxane confounded the cyclophosphamide dose response
-  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")])`)
-* High dose taxane did not modify the dose response effect of cyclophosphamide
-  * Interaction term estimate was `r sprintf("%.03g", M$rmaLinInt$b[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])` (95% CI: `r sprintf("%.03g", M$rmaLinInt$ci.lb[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`, `r sprintf("%.03g", M$rmaLinInt$ci.ub[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`; p = `r sprintf("%.03g", M$rmaLinInt$pval[which(row.names(M$rmaLinInt$b) == "xCyc:isTaxDoseHighTRUE")])`)
+* `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
+  * `r mal` rate increased `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "xCyc")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
+* Paclitaxel confounded the cyclophosphamide dose response
+  * Compared to no taxane (M1), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "isPaclitaxelTRUE")])`)
+  * Compared to no taxane or docetaxel (M2), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M2$b[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M2$ci.lb[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M2$ci.ub[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M2$pval[which(row.names(M$M2$b) == "isPaclitaxelTRUE")])`)
+  * Compared to docetaxel (M3), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M3$b[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M3$ci.lb[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M3$ci.ub[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M3$pval[which(row.names(M$M3$b) == "isPaclitaxelTRUE")])`)
+* Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+  * Interaction term estimate was `r sprintf("%.03g", M$M4$b[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])` (95% CI: `r sprintf("%.03g", M$M4$ci.lb[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`, `r sprintf("%.03g", M$M4$ci.ub[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`; p = `r sprintf("%.02g", M$M4$pval[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`)
 
-### Cyclophosphamide: dose response; Taxane: confounder
+### M1
+
+* Cyclophosphamide: dose response
+* Paclitaxel and docetaxel: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
 
 ```{r, fig.width = 9}
-M$rmaLin
-plotreg(M$rmaLin, D3, mal)
+M$M1
+plotreg(M$M1, D3, mal)
 ```
 
-### Cyclophosphamide: dose response; Taxane: effect modifier
+### M2
+
+* Cyclophosphamide: dose response
+* Paclitaxel: confounder
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
 
 ```{r}
-M$rmaLinInt
+M$M2
 ```
 
-### Cyclophosphamide: dichotomous; Taxane: confounder
+### M3
+
+* Cyclophosphamide: dose response
+* Paclitaxel and no taxane: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
 
 ```{r}
-M$rmaBin
+M$M3
 ```
 
-### Cyclophosphamide: dichotomous; Taxane: effect modifier
+### M4
+
+* Cyclophosphamide: dose response
+* Paclitaxel: effect modifier
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
 
 ```{r}
-M$rmaBinInt
+M$M4
 ```
 
 
@@ -279,32 +308,56 @@ M <- metareg(D3)
   * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
   * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
   * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
-* `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose
-  * `r mal` rate increased `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "xCyc")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
-* High dose taxane did not confound the cyclophosphamide dose response
-  * High dose taxane increased `r mal` rate by `r sprintf("%.03g", exp(M$rmaLin$b[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$rmaLin$ci.lb[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`, `r sprintf("%.03g", exp(M$rmaLin$ci.ub[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")]))`; p = `r sprintf("%.03g", M$rmaLin$pval[which(row.names(M$rmaLin$b) == "isTaxDoseHighTRUE")])`)
+* `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
+  * `r mal` rate increased `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "xCyc")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
+* Paclitaxel did not confound the cyclophosphamide dose response
+  * Compared to no taxane (M1), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "isPaclitaxelTRUE")])`)
+  * Compared to no taxane or docetaxel (M2), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M2$b[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M2$ci.lb[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M2$ci.ub[which(row.names(M$M2$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M2$pval[which(row.names(M$M2$b) == "isPaclitaxelTRUE")])`)
+  * Compared to docetaxel (M3), paclitaxel increased `r mal` rate by `r sprintf("%.03g", exp(M$M3$b[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))` times (95% CI: `r sprintf("%.03g", exp(M$M3$ci.lb[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))`, `r sprintf("%.03g", exp(M$M3$ci.ub[which(row.names(M$M3$b) == "isPaclitaxelTRUE")]))`; p = `r sprintf("%.02g", M$M3$pval[which(row.names(M$M3$b) == "isPaclitaxelTRUE")])`)
+* Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+  * Interaction term estimate was `r sprintf("%.03g", M$M4$b[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])` (95% CI: `r sprintf("%.03g", M$M4$ci.lb[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`, `r sprintf("%.03g", M$M4$ci.ub[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`; p = `r sprintf("%.02g", M$M4$pval[which(row.names(M$M4$b) == "xCyc:isPaclitaxelTRUE")])`)
 
-### Cyclophosphamide: dose response; Taxane: confounder
+### M1
+
+* Cyclophosphamide: dose response
+* Paclitaxel and docetaxel: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
 
 ```{r, fig.width = 9}
-M$rmaLin
-plotreg(M$rmaLin, D3, mal)
+M$M1
+plotreg(M$M1, D3, mal)
 ```
 
-### Cyclophosphamide: dose response; Taxane: effect modifier
+### M2
+
+* Cyclophosphamide: dose response
+* Paclitaxel: confounder
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
 
 ```{r}
-M$rmaLinInt
+M$M2
 ```
 
-### Cyclophosphamide: dichotomous; Taxane: confounder
+### M3
+
+* Cyclophosphamide: dose response
+* Paclitaxel and no taxane: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
 
 ```{r}
-M$rmaBin
+M$M3
 ```
 
-### Cyclophosphamide: dichotomous; Taxane: effect modifier
+### M4
+
+* Cyclophosphamide: dose response
+* Paclitaxel: effect modifier
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
 
 ```{r}
-M$rmaBinInt
+M$M4
 ```
