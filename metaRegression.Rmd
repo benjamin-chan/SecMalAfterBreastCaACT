@@ -212,7 +212,7 @@ plotreg <- function (M, D, title) {
   G <- G + scale_size_continuous(guide = FALSE)
   G <- G + labs(title = title)
   G <- G + theme_bw()
-  filename <- sprintf("%s_Cyclophosphamide_byHighDoseTaxane",
+  filename <- sprintf("%s_Cyclophosphamide_byTaxane",
                       gsub("(\\s)|(-)", "", title))
   ggsave(filename = sprintf("%s.png", filename), width = 9)
   yhat$xCyc <- yhat$xCyc * xscale
