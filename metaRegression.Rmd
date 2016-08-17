@@ -120,22 +120,22 @@ plotreg <- function (M, D, title) {
   X <- data.table(M$X)
   X <- unique(X)
   varnames <- names(X)[2:ncol(X)]
-  X0 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, xCyc]),
+  X1 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, xCyc]),
                             max(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, xCyc]),
                             length.out = 100),
                    x2 = rep(0, 100),
-                   x3 = rep(0, 100))
-  X1 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
-                            max(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
-                            length.out = 100),
-                   x2 = rep(1, 100),
                    x3 = rep(0, 100))
   X2 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, xCyc]),
                             max(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, xCyc]),
                             length.out = 100),
                    x2 = rep(0, 100),
                    x3 = rep(1, 100))
-  X <- rbindlist(list(X0, X1, X2))
+  X3 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
+                            max(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
+                            length.out = 100),
+                   x2 = rep(1, 100),
+                   x3 = rep(0, 100))
+  X <- rbindlist(list(X1, X2, X3))
   names(X) <- varnames
   X$xCyc <- round(X$xCyc, digits = 1)
   X <- unique(X)
@@ -151,7 +151,7 @@ plotreg <- function (M, D, title) {
                       X,
                       # variable = "ci.ub",
                       ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
-  keyvar <- c("malType", "xCyc", "isDocetaxelTRUE", "isPaclitaxelTRUE")
+  keyvar <- c("malType", "xCyc", "isPaclitaxelTRUE", "isDocetaxelTRUE")
   setkeyv(yhat, keyvar)
   setkeyv(ci.lb, keyvar)
   setkeyv(ci.ub, keyvar)
