@@ -1,4 +1,4 @@
-setwd("~/Other/SecMalAfterBreastCaACT")
+setwd("~/SecMalAfterBreastCaACT")
 
 sink("make.log")
 
