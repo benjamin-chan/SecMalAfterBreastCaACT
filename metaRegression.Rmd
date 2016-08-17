@@ -27,6 +27,8 @@ D2 <- D1[,
            xTax = taxaneCumulDose / 1e2,  # scale units
            isTaxDoseHigh = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
            isTaxDoseLow = ifelse(taxaneCumulDose < 500 & isTaxane == TRUE, TRUE, FALSE),
+           isDocetaxel,
+           isPaclitaxel,
            isAnthra,
            isTaxane,
            isFluoro,
@@ -37,7 +39,7 @@ D2 <- D1[,
            py,
            rate)]
 D2 <- D2[isTaxane == FALSE, isTaxDoseHigh := FALSE]
-D2 <- drop_na(D2, xCyc, isCycHighDose, isTaxDoseHigh)
+D2 <- drop_na(D2, xCyc, isCycHighDose, isDocetaxel, isPaclitaxel)
 ```
 
 The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
@@ -80,14 +82,14 @@ pvalToChar <- function (p) {
 }
 metareg <- function (D) {
   require(metafor)
-  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxDoseHigh, malType)])
+  xData <- unique(D[, .(xCyc, isCycHighDose, isDocetaxel, isPaclitaxel, malType)])
   D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ xCyc + isTaxDoseHigh,
+  MLin <- rma.mv(yi ~ xCyc + isDocetaxel + isPaclitaxel,
                  vi,
                  random = randomEffect,
                  data = D)
-  MLinInt <- rma.mv(yi ~ xCyc + isTaxDoseHigh + xCyc * isTaxDoseHigh,
+  MLinInt <- rma.mv(yi ~ xCyc + isDocetaxel + isPaclitaxel + xCyc * isPaclitaxel,
                     vi,
                     random = randomEffect,
                     data = D)
@@ -111,13 +113,22 @@ plotreg <- function (M, D, title) {
   X <- data.table(M$X)
   X <- unique(X)
   varnames <- names(X)[2:ncol(X)]
-  X0 <- data.table(x1 = seq(min(X[isTaxDoseHighTRUE == 0, xCyc]), max(X[isTaxDoseHighTRUE == 0, xCyc]),
+  X0 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, xCyc]),
+                            max(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, xCyc]),
                             length.out = 100),
-                   x2 = rep(0, 100))
-  X1 <- data.table(x1 = seq(min(X[isTaxDoseHighTRUE == 1, xCyc]), max(X[isTaxDoseHighTRUE == 1, xCyc]),
+                   x2 = rep(0, 100),
+                   x3 = rep(0, 100))
+  X1 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
+                            max(X[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, xCyc]),
                             length.out = 100),
-                   x2 = rep(1, 100))
-  X <- rbind(X0, X1)
+                   x2 = rep(1, 100),
+                   x3 = rep(0, 100))
+  X2 <- data.table(x1 = seq(min(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, xCyc]),
+                            max(X[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, xCyc]),
+                            length.out = 100),
+                   x2 = rep(0, 100),
+                   x3 = rep(1, 100))
+  X <- rbindlist(list(X0, X1, X2))
   names(X) <- varnames
   X$xCyc <- round(X$xCyc, digits = 1)
   X <- unique(X)
@@ -133,44 +144,64 @@ plotreg <- function (M, D, title) {
                       X,
                       # variable = "ci.ub",
                       ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
-  keyvar <- c("malType", "xCyc", "isTaxDoseHighTRUE")
+  keyvar <- c("malType", "xCyc", "isDocetaxelTRUE", "isPaclitaxelTRUE")
   setkeyv(yhat, keyvar)
   setkeyv(ci.lb, keyvar)
   setkeyv(ci.ub, keyvar)
   yhat <- merge(merge(yhat, ci.lb), ci.ub)
-  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxDoseHighTRUE")])
-  pal <- brewer.pal(5, name = "Set1")[c(1, 2)]
+  pvalues <- c(M$pval[grep("TRUE$", row.names(M$b))])
+  names(pvalues) <- row.names(M$b)[grep("TRUE$", row.names(M$b))]
+  pal <- brewer.pal(ncol(X), name = "Set1")
+  D <- D[isDocetaxel == FALSE & isPaclitaxel == FALSE, color := "A"]
+  D <- D[isDocetaxel == FALSE & isPaclitaxel == TRUE , color := "B"]
+  D <- D[isDocetaxel == TRUE  & isPaclitaxel == FALSE, color := "C"]
+  D <- D[, color := factor(color, labels = c("A", "B", "C"))]
+  setorder(D, color)
   G <- ggplot(D, aes(x = xCyc * xscale,
                      y = rate + 1/2,
                      size = nITT / min(nITT, na.rm = TRUE),
-                     color = isTaxDoseHigh))
+                     color = color))
   G <- G + geom_point(alpha = 1/2,
                       position = "jitter")
-  G <- G + geom_line(data = yhat[isTaxDoseHighTRUE == 0, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[1])
-  G <- G + geom_line(data = yhat[isTaxDoseHighTRUE == 1, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[2])
-  G <- G + geom_ribbon(data = yhat[isTaxDoseHighTRUE == 0, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[3])
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[1],
                        alpha = 1/8)
-  G <- G + geom_ribbon(data = yhat[isTaxDoseHighTRUE == 1, ],
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[2],
                        alpha = 1/8)
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[3],
+                       alpha = 1/8)
   G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
                          breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
   G <- G + scale_y_log10(sprintf("Rate per %s person-years",
-                                 format(scale, big.mark = ",")))
-  G <- G + scale_color_manual(sprintf("Taxane\n(%s)", pvalToChar(pvalues[c(1)])),
+                                 format(scale, big.mark = ",")),
+                         breaks = c(1, 2, 4, 8, 16, 32))
+  G <- G + scale_color_manual("Taxane",
                               values = pal,
-                              labels = c("None or low dose", "High dose"))
+                              labels = c("None (reference)",
+                                         sprintf("Paclitaxel (%s)",
+                                                 pvalToChar(pvalues[grep("Pacli", names(pvalues))])),
+                                         sprintf("Docetaxel (%s)",
+                                                 pvalToChar(pvalues[grep("Doce", names(pvalues))]))))
   G <- G + scale_size_continuous(guide = FALSE)
   G <- G + labs(title = title)
   G <- G + theme_bw()
