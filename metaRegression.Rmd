@@ -85,7 +85,7 @@ pvalToChar <- function (p) {
   if (p < 0.001) {
     pvalue <- "p < 0.001"
   } else {
-    pvalue <- sprintf("p = %.03f", p)
+    pvalue <- sprintf("p = %.02g", p)
   }
   pvalue
 }
