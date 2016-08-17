@@ -754,14 +754,15 @@ MathJax.Hub.Config({
 <ul>
 <li>Author: <a href="http://careers.stackoverflow.com/benjaminchan">Benjamin Chan</a>
 </li>
-<li>Date: 2016-08-05 15:40:28</li>
+<li>Date: 2016-08-17 11:17:06</li>
 </ul>
 
 <h1>
 <a id="user-content-load-packages" class="anchor" href="#load-packages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Load packages</h1>
 
 <div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">openxlsx</span>)
-library(<span class="pl-smi">data.table</span>)</pre></div>
+library(<span class="pl-smi">data.table</span>)
+library(<span class="pl-smi">tidyr</span>)</pre></div>
 
 <hr>
 
@@ -777,7 +778,7 @@ download.file(<span class="pl-smi">url</span>, <span class="pl-smi">f</span>, <s
 file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pds">"</span>size<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>mtime<span class="pl-pds">"</span></span>)]</pre></div>
 
 <pre><code>##                                    size               mtime
-## /tmp/Rtmpu5Cg98/file1dcbf45103b33 59619 2016-08-05 15:40:30
+## /tmp/RtmpylXwm8/file1559814d87e2b 59619 2016-08-17 11:17:08
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">sheets</span> <span class="pl-k">&lt;-</span> getSheetNames(<span class="pl-smi">f</span>)
@@ -916,18 +917,18 @@ NOTE: Couldn't get this to work: <a href="http://stackoverflow.com/a/16513949/14
 <span class="pl-smi">D</span>[<span class="pl-smi">s</span>, .(<span class="pl-smi">rowid</span>, <span class="pl-smi">malAML</span>, <span class="pl-smi">malMDS</span>, <span class="pl-smi">malAMLOrMDS</span>, <span class="pl-smi">malAMLOrMDSTotal</span>)]</pre></div>
 
 <pre><code>##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    38      1     NA          NA                1
-##  2:    61      1     NA          NA                1
-##  3:     4     NA     NA          NA               NA
-##  4:    34      0      1          NA                1
-##  5:    40      2     NA          NA                2
-##  6:    31      6      2          NA                8
-##  7:    86     NA     NA           5                5
-##  8:    21     NA     NA          NA               NA
-##  9:    44     NA     NA           1                1
-## 10:    49     NA     NA          NA               NA
-## 11:    27     NA     NA          NA               NA
-## 12:    96     NA     NA          NA               NA
+##  1:    85     NA     NA           0                0
+##  2:     7      5      5          NA               10
+##  3:    73     NA     NA           2                2
+##  4:    26     NA     NA           7                7
+##  5:    75      0      0          NA                0
+##  6:    82     NA     NA           1                1
+##  7:    27     NA     NA          NA               NA
+##  8:    55      4      2          NA                6
+##  9:    92     NA     NA          NA               NA
+## 10:    47      0      0          NA                0
+## 11:    51     NA     NA          NA               NA
+## 12:    69     NA     NA          NA               NA
 </code></pre>
 
 <p>Remove text from <code>nITT</code> column.</p>
@@ -939,7 +940,7 @@ NOTE: Couldn't get this to work: <a href="http://stackoverflow.com/a/16513949/14
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.integer(<span class="pl-smi">nITT</span>)]</pre></div>
 
 <p>Clean up the <code>regimen</code> and <code>dose</code> columns.
-Output to <a href="///H://Other/SecMalAfterBreastCaACT/regimens.md">regimens.md</a> for checking.</p>
+Output to <a href="///H://Projects/SecMalAfterBreastCaACT/regimens.md">regimens.md</a> for checking.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">regimen</span> <span class="pl-k">:</span><span class="pl-k">=</span> gsub(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\\</span>s$<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-smi">regimen</span>)]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">regimen</span> <span class="pl-k">:</span><span class="pl-k">=</span> gsub(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\\</span>r*<span class="pl-cce">\\</span>n<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, <span class="pl-smi">regimen</span>)]
@@ -953,9 +954,9 @@ cat(kable(<span class="pl-smi">D</span>[, .<span class="pl-smi">N</span>, c(<spa
 file.info(<span class="pl-s"><span class="pl-pds">"</span>regimens.md<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
+## regimens.md 7215 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
 ##                           atime  uid  gid uname   grname
-## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+## regimens.md 2016-08-17 09:55:33 4051 3010 chanb HPCUsers
 </code></pre>
 
 <p>Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.</p>
@@ -1219,7 +1220,7 @@ save(<span class="pl-smi">D</span>, <span class="pl-v">file</span> <span class="
 file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pds">"</span>size<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>mtime<span class="pl-pds">"</span></span>)]</pre></div>
 
 <pre><code>##            size               mtime
-## data.RData 7448 2016-08-05 15:40:30
+## data.RData 7448 2016-08-17 11:17:08
 </code></pre>
 
 <hr>
@@ -1244,24 +1245,29 @@ file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pd
 }</pre></div>
 
 <p>Summarize the regimens.
-Output to <a href="///H://Other/SecMalAfterBreastCaACT/summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
+Output to <a href="///H://Projects/SecMalAfterBreastCaACT/summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[,
        `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">isAnthra</span> <span class="pl-k">=</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">anthracyclineTotalDose</span>),
              <span class="pl-v">isCyclo</span> <span class="pl-k">=</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideDose</span>),
              <span class="pl-v">isTaxane</span> <span class="pl-k">=</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">taxaneTotalDose</span>),
              <span class="pl-v">isFluoro</span> <span class="pl-k">=</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilTotalDose</span>))]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>,
+       `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">isDocetaxel</span> <span class="pl-k">=</span> grepl(<span class="pl-s"><span class="pl-pds">"</span>doce<span class="pl-pds">"</span></span>, tolower(<span class="pl-smi">taxaneType</span>)),
+             <span class="pl-v">isPaclitaxel</span> <span class="pl-k">=</span> grepl(<span class="pl-s"><span class="pl-pds">"</span>pacli<span class="pl-pds">"</span></span>, tolower(<span class="pl-smi">taxaneType</span>)))]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>,
+       `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">isDocetaxel</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+             <span class="pl-v">isPaclitaxel</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)]
 <span class="pl-smi">D1</span> <span class="pl-k">&lt;-</span> melt(<span class="pl-smi">D</span>,
            <span class="pl-v">id.vars</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>authorYear<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>arm<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isAnthra<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>anthracyclineCumulDose<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isCyclo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>cyclophosphamideCumulDose<span class="pl-pds">"</span></span>,
-                     <span class="pl-s"><span class="pl-pds">"</span>isTaxane<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>taxaneCumulDose<span class="pl-pds">"</span></span>,
+                     <span class="pl-s"><span class="pl-pds">"</span>isTaxane<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>taxaneCumulDose<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isDocetaxel<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isPaclitaxel<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isFluoro<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>fluoroucilCumulDose<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>nITT<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>medianFU<span class="pl-pds">"</span></span>),
            <span class="pl-v">measure.vars</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>malAML<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>malMDS<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>malAMLOrMDSTotal<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>malNonBreastSolid<span class="pl-pds">"</span></span>),
            <span class="pl-v">value.name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>malN<span class="pl-pds">"</span></span>,
            <span class="pl-v">variable.name</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>malType<span class="pl-pds">"</span></span>)
-
 <span class="pl-smi">D1</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D1</span>[, <span class="pl-smi">malType</span> <span class="pl-k">:</span><span class="pl-k">=</span> gsub(<span class="pl-s"><span class="pl-pds">"</span>^mal<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-smi">malType</span>)]
 <span class="pl-smi">D1</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D1</span>[, <span class="pl-smi">malType</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-k">factor</span>(<span class="pl-smi">malType</span>,
                              <span class="pl-v">levels</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>AML<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>MDS<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>AMLOrMDSTotal<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>NonBreastSolid<span class="pl-pds">"</span></span>),
@@ -1286,9 +1292,9 @@ cat(kable(<span class="pl-smi">summaryRegimens</span>),
 file.info(<span class="pl-s"><span class="pl-pds">"</span>summaryRegimens.md<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
+## summaryRegimens.md 4624 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
 ##                                  atime  uid  gid uname   grname
-## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+## summaryRegimens.md 2016-08-17 09:55:34 4051 3010 chanb HPCUsers
 </code></pre>
 
 <hr>
@@ -1323,11 +1329,11 @@ Need columns for</p>
 <p>Output to multiple formats:</p>
 
 <ul>
-<li>Excel workbook, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a>
+<li>Excel workbook, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a>
 </li>
-<li>CSV file, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.csv">appendixTableStudyCharacteristicsAndOutcomes.csv</a>
+<li>CSV file, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.csv">appendixTableStudyCharacteristicsAndOutcomes.csv</a>
 </li>
-<li>Markdown file, <a href="///H://Other/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.md">appendixTableStudyCharacteristicsAndOutcomes.md</a>
+<li>Markdown file, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.md">appendixTableStudyCharacteristicsAndOutcomes.md</a>
 </li>
 </ul>
 
@@ -1383,11 +1389,11 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
 <pre><code>##                                                    size
 ## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9473
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 15:40:32
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 15:40:32
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 15:40:32
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-17 11:17:10
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c1">T</span> <span class="pl-k">&lt;-</span> xtable(<span class="pl-c1">T</span>, <span class="pl-v">digits</span><span class="pl-k">=</span>c(rep(<span class="pl-c1">0</span>, ncol(<span class="pl-c1">T</span>) <span class="pl-k">-</span> <span class="pl-c1">3</span>), <span class="pl-c1">0</span>, <span class="pl-c1">2</span>, <span class="pl-c1">0</span>, <span class="pl-c1">2</span>))</pre></div>
@@ -1412,15 +1418,15 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
 <li>Cyclophosphamide
 
 <ul>
-<li>$\lt 2400$</li>
-<li>$\ge 2400$</li>
+<li>$\lt 2400 \frac{\text{mg}}{\text{m}^2}$</li>
+<li>$\ge 2400 \frac{\text{mg}}{\text{m}^2}$</li>
 </ul>
 </li>
 <li>Taxane
 
 <ul>
-<li>$\lt 500$</li>
-<li>$\ge 500$</li>
+<li>$\lt 500 \frac{\text{mg}}{\text{m}^2}$</li>
+<li>$\ge 500 \frac{\text{mg}}{\text{m}^2}$</li>
 </ul>
 </li>
 </ul>
@@ -1433,9 +1439,13 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
            <span class="pl-v">xCyc</span> <span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">/</span> <span class="pl-smi">xscale</span>,  <span class="pl-c"># scale units</span>
            <span class="pl-v">isCycHighDose</span> <span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">2400</span>,
            <span class="pl-v">xTax</span> <span class="pl-k">=</span> <span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">/</span> <span class="pl-c1">1e2</span>,  <span class="pl-c"># scale units</span>
-           <span class="pl-v">isTaxHighDose</span> <span class="pl-k">=</span> ifelse(<span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">500</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, <span class="pl-c1">TRUE</span>, <span class="pl-c1">FALSE</span>),
+           <span class="pl-v">isTaxDoseHigh</span> <span class="pl-k">=</span> ifelse(<span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">500</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, <span class="pl-c1">TRUE</span>, <span class="pl-c1">FALSE</span>),
+           <span class="pl-v">isTaxDoseLow</span> <span class="pl-k">=</span> ifelse(<span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">&lt;</span> <span class="pl-c1">500</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, <span class="pl-c1">TRUE</span>, <span class="pl-c1">FALSE</span>),
+           <span class="pl-smi">isDocetaxel</span>,
+           <span class="pl-smi">isPaclitaxel</span>,
            <span class="pl-smi">isAnthra</span>,
            <span class="pl-smi">isTaxane</span>,
+           <span class="pl-v">isNoTaxane</span> <span class="pl-k">=</span> <span class="pl-k">!</span>(<span class="pl-smi">isTaxane</span>),
            <span class="pl-smi">isFluoro</span>,
            <span class="pl-smi">nITT</span>,
            <span class="pl-smi">medianFU</span>,
@@ -1443,8 +1453,8 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
            <span class="pl-smi">malN</span>,
            <span class="pl-smi">py</span>,
            <span class="pl-smi">rate</span>)]
-<span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">isTaxHighDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">FALSE</span>]
-<span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-k">!</span>(is.na(<span class="pl-smi">xCyc</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">isCycHighDose</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">isTaxHighDose</span>))]</pre></div>
+<span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">isTaxDoseHigh</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">FALSE</span>]
+<span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> drop_na(<span class="pl-smi">D2</span>, <span class="pl-smi">xCyc</span>, <span class="pl-smi">isCycHighDose</span>, <span class="pl-smi">isDocetaxel</span>, <span class="pl-smi">isPaclitaxel</span>)</pre></div>
 
 <p>The effect of cyclophosphamide could be due to high dose taxanes in the regimen.</p>
 
@@ -1460,20 +1470,39 @@ risk of cyclophosphamide this would be an important addition to the
 literature.</p>
 </blockquote>
 
-<p>Four model are estimated.</p>
+<p>The following models are estimated.</p>
 
 <ol>
-<li>$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$</li>
-<li>$$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$</li>
-<li>$$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$</li>
-<li>$$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$</li>
+<li>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$</li>
+<li>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$</li>
+<li>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$</li>
+<li>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$</li>
 </ol>
+
+<p>where</p>
+
+<ul>
+<li>$x_{1, i}$ is the cumulative cyclophosphamide dose for the $i$-th treatment arm</li>
+<li>$I_{\text{paclitaxel}, i}$ is an indicator for whether the $i$-th treatment arm included paclitaxel is the regimen</li>
+<li>$I_{\text{docetaxel}, i}$ is an indicator for whether the $i$-th treatment arm included docetaxel is the regimen</li>
+<li>$I_{\text{no taxane}, i}$ is an indicator for whether the $i$-th treatment arm did not include any taxane is the regimen</li>
+<li>$\sigma_j$ is a random effect for the $j$-th study.</li>
+</ul>
 
 <p>Models were estimated using the <code>rma.mv()</code> function from the metafor` package for R.</p>
 
 <div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">metafor</span>)</pre></div>
 
 <pre><code>## Loading required package: Matrix
+</code></pre>
+
+<pre><code>## 
+## Attaching package: 'Matrix'
+</code></pre>
+
+<pre><code>## The following object is masked from 'package:tidyr':
+## 
+##     expand
 </code></pre>
 
 <pre><code>## Loading 'metafor' package (version 1.9-8). For an overview 
@@ -1509,50 +1538,57 @@ literature.</p>
   <span class="pl-k">if</span> (<span class="pl-smi">p</span> <span class="pl-k">&lt;</span> <span class="pl-c1">0.001</span>) {
     <span class="pl-smi">pvalue</span> <span class="pl-k">&lt;-</span> <span class="pl-s"><span class="pl-pds">"</span>p &lt; 0.001<span class="pl-pds">"</span></span>
   } <span class="pl-k">else</span> {
-    <span class="pl-smi">pvalue</span> <span class="pl-k">&lt;-</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>p = %.03f<span class="pl-pds">"</span></span>, <span class="pl-smi">p</span>)
+    <span class="pl-smi">pvalue</span> <span class="pl-k">&lt;-</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>p = %.02g<span class="pl-pds">"</span></span>, <span class="pl-smi">p</span>)
   }
   <span class="pl-smi">pvalue</span>
 }
 <span class="pl-en">metareg</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span> (<span class="pl-smi">D</span>) {
   require(<span class="pl-smi">metafor</span>)
-  <span class="pl-smi">xData</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">D</span>[, .(<span class="pl-smi">xCyc</span>, <span class="pl-smi">isCycHighDose</span>, <span class="pl-smi">isTaxHighDose</span>, <span class="pl-smi">malType</span>)])
+  <span class="pl-smi">xData</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">D</span>[, .(<span class="pl-smi">xCyc</span>, <span class="pl-smi">isCycHighDose</span>, <span class="pl-smi">isDocetaxel</span>, <span class="pl-smi">isPaclitaxel</span>, <span class="pl-smi">malType</span>)])
   <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> escalc(<span class="pl-s"><span class="pl-pds">"</span>IRLN<span class="pl-pds">"</span></span>, <span class="pl-v">xi</span> <span class="pl-k">=</span> <span class="pl-smi">malN</span>, <span class="pl-v">ti</span> <span class="pl-k">=</span> <span class="pl-smi">py</span>, <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
   <span class="pl-smi">randomEffect</span> <span class="pl-k">&lt;-</span> <span class="pl-k">list</span>(<span class="pl-k">~</span> <span class="pl-c1">1</span> <span class="pl-k">|</span> <span class="pl-smi">id</span>)
-  <span class="pl-smi">MLin</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isTaxHighDose</span>,
-                 <span class="pl-smi">vi</span>,
-                 <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
-                 <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
-  <span class="pl-smi">MLinInt</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isTaxHighDose</span> <span class="pl-k">+</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">isTaxHighDose</span>,
-                    <span class="pl-smi">vi</span>,
-                    <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
-                    <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
-  <span class="pl-smi">MBin</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">isCycHighDose</span> <span class="pl-k">+</span> <span class="pl-smi">isTaxHighDose</span>,
-                 <span class="pl-smi">vi</span>,
-                 <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
-                 <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
-  <span class="pl-smi">MBinInt</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">isCycHighDose</span> <span class="pl-k">+</span> <span class="pl-smi">isTaxHighDose</span> <span class="pl-k">+</span> <span class="pl-smi">isCycHighDose</span> <span class="pl-k">*</span> <span class="pl-smi">isTaxHighDose</span>,
-                    <span class="pl-smi">vi</span>,
-                    <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
-                    <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
-  <span class="pl-k">list</span>(<span class="pl-v">rmaLin</span> <span class="pl-k">=</span> <span class="pl-smi">MLin</span>,
-       <span class="pl-v">rmaLinInt</span> <span class="pl-k">=</span> <span class="pl-smi">MLinInt</span>,
-       <span class="pl-v">rmaBin</span> <span class="pl-k">=</span> <span class="pl-smi">MBin</span>,
-       <span class="pl-v">rmaBinInt</span> <span class="pl-k">=</span> <span class="pl-smi">MBinInt</span>)
+  <span class="pl-smi">M1</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isPaclitaxel</span> <span class="pl-k">+</span> <span class="pl-smi">isDocetaxel</span>,
+               <span class="pl-smi">vi</span>,
+               <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
+               <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
+  <span class="pl-smi">M2</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isPaclitaxel</span>,
+               <span class="pl-smi">vi</span>,
+               <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
+               <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
+  <span class="pl-smi">M3</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isPaclitaxel</span> <span class="pl-k">+</span> <span class="pl-smi">isNoTaxane</span>,
+               <span class="pl-smi">vi</span>,
+               <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
+               <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
+  <span class="pl-smi">M4</span> <span class="pl-k">&lt;-</span> rma.mv(<span class="pl-smi">yi</span> <span class="pl-k">~</span> <span class="pl-smi">xCyc</span> <span class="pl-k">+</span> <span class="pl-smi">isPaclitaxel</span> <span class="pl-k">+</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">isPaclitaxel</span>,
+               <span class="pl-smi">vi</span>,
+               <span class="pl-v">random</span> <span class="pl-k">=</span> <span class="pl-smi">randomEffect</span>,
+               <span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">D</span>)
+  <span class="pl-k">list</span>(<span class="pl-v">M1</span> <span class="pl-k">=</span> <span class="pl-smi">M1</span>, <span class="pl-v">M2</span> <span class="pl-k">=</span> <span class="pl-smi">M2</span>, <span class="pl-v">M3</span> <span class="pl-k">=</span> <span class="pl-smi">M3</span>, <span class="pl-v">M4</span> <span class="pl-k">=</span> <span class="pl-smi">M4</span>)
 }
 <span class="pl-en">plotreg</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span> (<span class="pl-smi">M</span>, <span class="pl-smi">D</span>, <span class="pl-smi">title</span>) {
   require(<span class="pl-smi">ggplot2</span>)
   require(<span class="pl-smi">RColorBrewer</span>)
   require(<span class="pl-smi">data.table</span>)
+  <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-smi">D</span>)
   <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">X</span>)
   <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">X</span>)
   <span class="pl-smi">varnames</span> <span class="pl-k">&lt;-</span> names(<span class="pl-smi">X</span>)[<span class="pl-c1">2</span><span class="pl-k">:</span>ncol(<span class="pl-smi">X</span>)]
-  <span class="pl-smi">X0</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">x1</span> <span class="pl-k">=</span> seq(min(<span class="pl-smi">X</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]), max(<span class="pl-smi">X</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]),
+  <span class="pl-smi">X1</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">x1</span> <span class="pl-k">=</span> seq(min(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]),
+                            max(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]),
                             <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">100</span>),
-                   <span class="pl-v">x2</span> <span class="pl-k">=</span> rep(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>))
-  <span class="pl-smi">X1</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">x1</span> <span class="pl-k">=</span> seq(min(<span class="pl-smi">X</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">xCyc</span>]), max(<span class="pl-smi">X</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">xCyc</span>]),
+                   <span class="pl-v">x2</span> <span class="pl-k">=</span> rep(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>),
+                   <span class="pl-v">x3</span> <span class="pl-k">=</span> rep(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>))
+  <span class="pl-smi">X2</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">x1</span> <span class="pl-k">=</span> seq(min(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]),
+                            max(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, <span class="pl-smi">xCyc</span>]),
                             <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">100</span>),
-                   <span class="pl-v">x2</span> <span class="pl-k">=</span> rep(<span class="pl-c1">1</span>, <span class="pl-c1">100</span>))
-  <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> rbind(<span class="pl-smi">X0</span>, <span class="pl-smi">X1</span>)
+                   <span class="pl-v">x2</span> <span class="pl-k">=</span> rep(<span class="pl-c1">1</span>, <span class="pl-c1">100</span>),
+                   <span class="pl-v">x3</span> <span class="pl-k">=</span> rep(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>))
+  <span class="pl-smi">X3</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">x1</span> <span class="pl-k">=</span> seq(min(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">xCyc</span>]),
+                            max(<span class="pl-smi">X</span>[<span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">xCyc</span>]),
+                            <span class="pl-v">length.out</span> <span class="pl-k">=</span> <span class="pl-c1">100</span>),
+                   <span class="pl-v">x2</span> <span class="pl-k">=</span> rep(<span class="pl-c1">0</span>, <span class="pl-c1">100</span>),
+                   <span class="pl-v">x3</span> <span class="pl-k">=</span> rep(<span class="pl-c1">1</span>, <span class="pl-c1">100</span>))
+  <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> rbindlist(<span class="pl-k">list</span>(<span class="pl-smi">X1</span>, <span class="pl-smi">X2</span>, <span class="pl-smi">X3</span>))
   names(<span class="pl-smi">X</span>) <span class="pl-k">&lt;-</span> <span class="pl-smi">varnames</span>
   <span class="pl-smi">X</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span> <span class="pl-k">&lt;-</span> round(<span class="pl-smi">X</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span>, <span class="pl-v">digits</span> <span class="pl-k">=</span> <span class="pl-c1">1</span>)
   <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">X</span>)
@@ -1568,48 +1604,68 @@ literature.</p>
                       <span class="pl-smi">X</span>,
                       <span class="pl-c"># variable = "ci.ub",</span>
                       <span class="pl-v">ci.ub</span> <span class="pl-k">=</span> predict(<span class="pl-smi">M</span>, as.matrix(<span class="pl-smi">X</span>), <span class="pl-v">transf</span> <span class="pl-k">=</span> <span class="pl-smi">exp</span>)[[<span class="pl-s"><span class="pl-pds">"</span>ci.ub<span class="pl-pds">"</span></span>]] <span class="pl-k">*</span> <span class="pl-smi">scale</span>)
-  <span class="pl-smi">keyvar</span> <span class="pl-k">&lt;-</span> c(<span class="pl-s"><span class="pl-pds">"</span>malType<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>xCyc<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isTaxHighDoseTRUE<span class="pl-pds">"</span></span>)
+  <span class="pl-smi">keyvar</span> <span class="pl-k">&lt;-</span> c(<span class="pl-s"><span class="pl-pds">"</span>malType<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>xCyc<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isPaclitaxelTRUE<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isDocetaxelTRUE<span class="pl-pds">"</span></span>)
   setkeyv(<span class="pl-smi">yhat</span>, <span class="pl-smi">keyvar</span>)
   setkeyv(<span class="pl-smi">ci.lb</span>, <span class="pl-smi">keyvar</span>)
   setkeyv(<span class="pl-smi">ci.ub</span>, <span class="pl-smi">keyvar</span>)
   <span class="pl-smi">yhat</span> <span class="pl-k">&lt;-</span> merge(merge(<span class="pl-smi">yhat</span>, <span class="pl-smi">ci.lb</span>), <span class="pl-smi">ci.ub</span>)
-  <span class="pl-smi">pvalues</span> <span class="pl-k">&lt;-</span> c(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">pval</span>[which(row.names(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">b</span>) <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>isTaxHighDoseTRUE<span class="pl-pds">"</span></span>)])
-  <span class="pl-smi">pal</span> <span class="pl-k">&lt;-</span> brewer.pal(<span class="pl-c1">5</span>, <span class="pl-v">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>RdBu<span class="pl-pds">"</span></span>)[c(<span class="pl-c1">1</span>, <span class="pl-c1">5</span>)]
+  <span class="pl-smi">pvalues</span> <span class="pl-k">&lt;-</span> c(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">pval</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>TRUE$<span class="pl-pds">"</span></span>, row.names(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">b</span>))])
+  names(<span class="pl-smi">pvalues</span>) <span class="pl-k">&lt;-</span> row.names(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">b</span>)[grep(<span class="pl-s"><span class="pl-pds">"</span>TRUE$<span class="pl-pds">"</span></span>, row.names(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">b</span>))]
+  <span class="pl-smi">pal</span> <span class="pl-k">&lt;-</span> brewer.pal(ncol(<span class="pl-smi">X</span>), <span class="pl-v">name</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Set1<span class="pl-pds">"</span></span>)
+  <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">isPaclitaxel</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxel</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">color</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span>]
+  <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">isPaclitaxel</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>  <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxel</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">color</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>B<span class="pl-pds">"</span></span>]
+  <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">isPaclitaxel</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isDocetaxel</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span> , <span class="pl-smi">color</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span>]
+  <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">color</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-k">factor</span>(<span class="pl-smi">color</span>, <span class="pl-v">labels</span> <span class="pl-k">=</span> c(<span class="pl-s"><span class="pl-pds">"</span>A<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>B<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>C<span class="pl-pds">"</span></span>))]
+  setorder(<span class="pl-smi">D</span>, <span class="pl-smi">color</span>)
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> ggplot(<span class="pl-smi">D</span>, aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>,
                      <span class="pl-v">y</span> <span class="pl-k">=</span> <span class="pl-smi">rate</span> <span class="pl-k">+</span> <span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>,
                      <span class="pl-v">size</span> <span class="pl-k">=</span> <span class="pl-smi">nITT</span> <span class="pl-k">/</span> min(<span class="pl-smi">nITT</span>, <span class="pl-v">na.rm</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>),
-                     <span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-smi">isTaxHighDose</span>))
+                     <span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-smi">color</span>))
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_point(<span class="pl-v">alpha</span> <span class="pl-k">=</span> <span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">2</span>,
                       <span class="pl-v">position</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>jitter<span class="pl-pds">"</span></span>)
-  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_line(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_line(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
                      aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> <span class="pl-smi">pred</span>),
                      <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
                      <span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">1</span>])
-  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_line(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, ],
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_line(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, ],
                      aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> <span class="pl-smi">pred</span>),
                      <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
                      <span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">2</span>])
-  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_ribbon(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_line(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
+                     aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">y</span> <span class="pl-k">=</span> <span class="pl-smi">pred</span>),
+                     <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+                     <span class="pl-v">color</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">3</span>])
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_ribbon(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
                        aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">ymax</span> <span class="pl-k">=</span> <span class="pl-smi">ci.ub</span>, <span class="pl-v">ymin</span> <span class="pl-k">=</span> <span class="pl-smi">ci.lb</span>),
                        <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
                        <span class="pl-v">fill</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">1</span>],
                        <span class="pl-v">alpha</span> <span class="pl-k">=</span> <span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">8</span>)
-  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_ribbon(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isTaxHighDoseTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, ],
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_ribbon(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, ],
                        aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">ymax</span> <span class="pl-k">=</span> <span class="pl-smi">ci.ub</span>, <span class="pl-v">ymin</span> <span class="pl-k">=</span> <span class="pl-smi">ci.lb</span>),
                        <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
                        <span class="pl-v">fill</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">2</span>],
                        <span class="pl-v">alpha</span> <span class="pl-k">=</span> <span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">8</span>)
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> geom_ribbon(<span class="pl-v">data</span> <span class="pl-k">=</span> <span class="pl-smi">yhat</span>[<span class="pl-smi">isDocetaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">1</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isPaclitaxelTRUE</span> <span class="pl-k">==</span> <span class="pl-c1">0</span>, ],
+                       aes(<span class="pl-v">x</span> <span class="pl-k">=</span> <span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>, <span class="pl-v">ymax</span> <span class="pl-k">=</span> <span class="pl-smi">ci.ub</span>, <span class="pl-v">ymin</span> <span class="pl-k">=</span> <span class="pl-smi">ci.lb</span>),
+                       <span class="pl-v">inherit.aes</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
+                       <span class="pl-v">fill</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>[<span class="pl-c1">3</span>],
+                       <span class="pl-v">alpha</span> <span class="pl-k">=</span> <span class="pl-c1">1</span><span class="pl-k">/</span><span class="pl-c1">8</span>)
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> scale_x_log10(<span class="pl-s"><span class="pl-pds">"</span>Cyclophosphamide cumulative dose<span class="pl-pds">"</span></span>,
-                         <span class="pl-v">breaks</span> <span class="pl-k">=</span> <span class="pl-c1">1e3</span> <span class="pl-k">*</span> c(<span class="pl-c1">0.5</span>, <span class="pl-c1">1</span>, <span class="pl-c1">2</span>, <span class="pl-c1">4</span>, <span class="pl-c1">8</span>, <span class="pl-c1">16</span>))
+                         <span class="pl-v">breaks</span> <span class="pl-k">=</span> <span class="pl-c1">1e3</span> <span class="pl-k">*</span> (<span class="pl-c1">2</span> <span class="pl-k">^</span> seq(<span class="pl-k">-</span><span class="pl-c1">1</span>, <span class="pl-c1">6</span>)))
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> scale_y_log10(sprintf(<span class="pl-s"><span class="pl-pds">"</span>Rate per %s person-years<span class="pl-pds">"</span></span>,
-                                 format(<span class="pl-smi">scale</span>, <span class="pl-v">big.mark</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>,<span class="pl-pds">"</span></span>)))
-  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> scale_color_manual(sprintf(<span class="pl-s"><span class="pl-pds">"</span>Taxane<span class="pl-cce">\n</span>(%s)<span class="pl-pds">"</span></span>, pvalToChar(<span class="pl-smi">pvalues</span>[c(<span class="pl-c1">1</span>)])),
+                                 format(<span class="pl-smi">scale</span>, <span class="pl-v">big.mark</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>,<span class="pl-pds">"</span></span>)),
+                         <span class="pl-v">breaks</span> <span class="pl-k">=</span> <span class="pl-c1">2</span> <span class="pl-k">^</span> seq(<span class="pl-k">-</span><span class="pl-c1">1</span>, <span class="pl-c1">6</span>))
+  <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> scale_color_manual(<span class="pl-s"><span class="pl-pds">"</span>Taxane<span class="pl-pds">"</span></span>,
                               <span class="pl-v">values</span> <span class="pl-k">=</span> <span class="pl-smi">pal</span>,
-                              <span class="pl-v">labels</span> <span class="pl-k">=</span> c(<span class="pl-s"><span class="pl-pds">"</span>None or low dose<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>High dose<span class="pl-pds">"</span></span>))
+                              <span class="pl-v">labels</span> <span class="pl-k">=</span> c(<span class="pl-s"><span class="pl-pds">"</span>None (reference)<span class="pl-pds">"</span></span>,
+                                         sprintf(<span class="pl-s"><span class="pl-pds">"</span>Paclitaxel (%s)<span class="pl-pds">"</span></span>,
+                                                 pvalToChar(<span class="pl-smi">pvalues</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>Pacli<span class="pl-pds">"</span></span>, names(<span class="pl-smi">pvalues</span>))])),
+                                         sprintf(<span class="pl-s"><span class="pl-pds">"</span>Docetaxel (%s)<span class="pl-pds">"</span></span>,
+                                                 pvalToChar(<span class="pl-smi">pvalues</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>Doce<span class="pl-pds">"</span></span>, names(<span class="pl-smi">pvalues</span>))]))))
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> scale_size_continuous(<span class="pl-v">guide</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> labs(<span class="pl-v">title</span> <span class="pl-k">=</span> <span class="pl-smi">title</span>)
   <span class="pl-smi">G</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">G</span> <span class="pl-k">+</span> theme_bw()
-  <span class="pl-smi">filename</span> <span class="pl-k">&lt;-</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s_Cyclophosphamide_byHighDoseTaxane<span class="pl-pds">"</span></span>,
+  <span class="pl-smi">filename</span> <span class="pl-k">&lt;-</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s_Cyclophosphamide_byTaxane<span class="pl-pds">"</span></span>,
                       gsub(<span class="pl-s"><span class="pl-pds">"</span>(<span class="pl-cce">\\</span>s)|(-)<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-smi">title</span>))
   ggsave(<span class="pl-v">filename</span> <span class="pl-k">=</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s.png<span class="pl-pds">"</span></span>, <span class="pl-smi">filename</span>), <span class="pl-v">width</span> <span class="pl-k">=</span> <span class="pl-c1">9</span>)
   <span class="pl-smi">yhat</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">yhat</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>
@@ -1623,69 +1679,88 @@ literature.</p>
 <a id="user-content-amlmds" class="anchor" href="#amlmds" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>AML/MDS</h2>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">mal</span> <span class="pl-k">&lt;-</span> <span class="pl-s"><span class="pl-pds">"</span>AML or MDS<span class="pl-pds">"</span></span>
-<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">malType</span> <span class="pl-k">==</span> <span class="pl-smi">mal</span>]
-<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D3</span>[<span class="pl-k">!</span>(is.na(<span class="pl-smi">rate</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">nITT</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">malType</span>))]
+<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> drop_na(<span class="pl-smi">D2</span>[<span class="pl-smi">malType</span> <span class="pl-k">==</span> <span class="pl-smi">mal</span>], <span class="pl-smi">rate</span>, <span class="pl-smi">nITT</span>, <span class="pl-smi">malType</span>)
 <span class="pl-smi">M</span> <span class="pl-k">&lt;-</span> metareg(<span class="pl-smi">D3</span>)</pre></div>
 
 <h3>
 <a id="user-content-findings" class="anchor" href="#findings" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Findings</h3>
 
 <ul>
-<li>AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose
+<li>Crude statistics
 
 <ul>
-<li>AML or MDS rate increased 1.17 times (95% CI: 1.05, 1.31; p = 0.0035) for each 1000 $\text{mg} / \text{m}^2$</li>
+<li>Total person-years of follow-up: 261,433</li>
+<li>Total number of persons (ITT): 44,628</li>
+<li>Total number of AML or MDS: 171</li>
+<li>Crude incidence rate: 6.54 per 10,000 person-years</li>
 </ul>
 </li>
-<li>High dose taxane confounded the cyclophosphamide dose response
+<li>AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
 
 <ul>
-<li>High dose taxane increased AML or MDS rate by 1.71 times (95% CI: 1.07, 2.76; p = 0.0264)</li>
+<li>AML or MDS rate increased 1.16 times (95% CI: 1.04, 1.29; p = 0.0057) for each 1000 $\text{mg} / \text{m}^2$</li>
 </ul>
 </li>
-<li>High dose taxane did not modify the dose response effect of cyclophosphamide
+<li>Paclitaxel confounded the cyclophosphamide dose response
 
 <ul>
-<li>Interaction term estimate was 0.0149 (95% CI: -1.02, 1.05; p = 0.978)</li>
+<li>Compared to no taxane (M1), paclitaxel increased AML or MDS rate by 1.48 times (95% CI: 0.933, 2.33; p = 0.096)</li>
+<li>Compared to no taxane or docetaxel (M2), paclitaxel increased AML or MDS rate by 1.62 times (95% CI: 1.05, 2.47; p = 0.028)</li>
+<li>Compared to docetaxel (M3), paclitaxel increased AML or MDS rate by 2.01 times (95% CI: 1.13, 3.57; p = 0.018)</li>
+</ul>
+</li>
+<li>Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+
+<ul>
+<li>Interaction term estimate was -0.0476 (95% CI: -1.07, 0.974; p = 0.93)</li>
 </ul>
 </li>
 </ul>
 
 <h3>
-<a id="user-content-cyclophosphamide-dose-response-taxane-confounder" class="anchor" href="#cyclophosphamide-dose-response-taxane-confounder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dose response; Taxane: confounder</h3>
+<a id="user-content-m1" class="anchor" href="#m1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M1</h3>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLin</span></pre></div>
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel and docetaxel: confounders</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span></pre></div>
 
 <pre><code>## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1206  0.3473     26     no      id
+## sigma^2    0.0965  0.3106     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 52) = 58.1475, p-val = 0.2593
+## QE(df = 52) = 56.3932, p-val = 0.3141
 ## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 10.5094, p-val = 0.0052
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 12.4683, p-val = 0.0059
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -7.8796  0.2447  -32.1959  &lt;.0001  -8.3593  -7.3999
-## xCyc                 0.1611  0.0552    2.9204  0.0035   0.0530   0.2692
-## isTaxHighDoseTRUE    0.5386  0.2425    2.2209  0.0264   0.0633   1.0139
-##                       
-## intrcpt            ***
-## xCyc                **
-## isTaxHighDoseTRUE    *
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -7.7560  0.2610  -29.7194  &lt;.0001  -8.2675  -7.2445
+## xCyc                0.1503  0.0544    2.7651  0.0057   0.0438   0.2569
+## isPaclitaxelTRUE    0.3889  0.2339    1.6626  0.0964  -0.0696   0.8474
+## isDocetaxelTRUE    -0.3081  0.2915   -1.0571  0.2905  -0.8794   0.2631
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    .
+## isDocetaxelTRUE      
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 </code></pre>
 
-<div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLin</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
+<div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
 
 <pre><code>## Loading required package: ggplot2
 </code></pre>
@@ -1696,119 +1771,136 @@ literature.</p>
 <pre><code>## Saving 9 x 7 in image
 </code></pre>
 
-<pre><code>##                                                       size
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   6979
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv        5787
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      188921
-##                                                                   mtime
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:34
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:34
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:34
+<pre><code>##                                               size               mtime
+## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   8317 2016-08-17 11:17:13
+## AMLorMDS_Cyclophosphamide_byTaxane.csv        7334 2016-08-17 11:17:13
+## AMLorMDS_Cyclophosphamide_byTaxane.png      213539 2016-08-17 11:17:13
 </code></pre>
 
-<p><a href="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" target="_blank"><img src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27" style="max-width:100%;"></a></p>
+<p><a href="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" target="_blank"><img src="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27" style="max-width:100%;"></a></p>
 
 <h3>
-<a id="user-content-cyclophosphamide-dose-response-taxane-effect-modifier" class="anchor" href="#cyclophosphamide-dose-response-taxane-effect-modifier" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dose response; Taxane: effect modifier</h3>
+<a id="user-content-m2" class="anchor" href="#m2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M2</h3>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLinInt</span></pre></div>
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel: confounder</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M2</span></pre></div>
 
 <pre><code>## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1264  0.3555     26     no      id
+## sigma^2    0.1079  0.3285     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 51) = 57.9982, p-val = 0.2330
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 10.2679, p-val = 0.0164
-## 
-## Model Results:
-## 
-##                         estimate      se      zval    pval    ci.lb
-## intrcpt                  -7.8777  0.2469  -31.9122  &lt;.0001  -8.3616
-## xCyc                      0.1599  0.0558    2.8640  0.0042   0.0505
-## isTaxHighDoseTRUE         0.5031  1.2358    0.4071  0.6839  -1.9191
-## xCyc:isTaxHighDoseTRUE    0.0149  0.5303    0.0282  0.9775  -1.0244
-##                           ci.ub     
-## intrcpt                 -7.3939  ***
-## xCyc                     0.2694   **
-## isTaxHighDoseTRUE        2.9253     
-## xCyc:isTaxHighDoseTRUE   1.0543     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-</code></pre>
-
-<h3>
-<a id="user-content-cyclophosphamide-dichotomous-taxane-confounder" class="anchor" href="#cyclophosphamide-dichotomous-taxane-confounder" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dichotomous; Taxane: confounder</h3>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaBin</span></pre></div>
-
-<pre><code>## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2601  0.5100     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 52) = 80.3700, p-val = 0.0070
+## QE(df = 53) = 58.3218, p-val = 0.2861
 ## 
 ## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 2.8181, p-val = 0.2444
+## QM(df = 2) = 10.7316, p-val = 0.0047
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -7.7392  0.4487  -17.2490  &lt;.0001  -8.6186  -6.8599
-## isCycHighDoseTRUE    0.4177  0.4453    0.9381  0.3482  -0.4550   1.2904
-## isTaxHighDoseTRUE    0.4035  0.2642    1.5274  0.1267  -0.1143   0.9213
-##                       
-## intrcpt            ***
-## isCycHighDoseTRUE     
-## isTaxHighDoseTRUE     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -7.8677  0.2400  -32.7779  &lt;.0001  -8.3381  -7.3972
+## xCyc                0.1610  0.0540    2.9839  0.0028   0.0553   0.2668
+## isPaclitaxelTRUE    0.4794  0.2176    2.2029  0.0276   0.0529   0.9060
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    *
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 </code></pre>
 
 <h3>
-<a id="user-content-cyclophosphamide-dichotomous-taxane-effect-modifier" class="anchor" href="#cyclophosphamide-dichotomous-taxane-effect-modifier" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dichotomous; Taxane: effect modifier</h3>
+<a id="user-content-m3" class="anchor" href="#m3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M3</h3>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaBinInt</span></pre></div>
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel and no taxane: confounders</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M3</span></pre></div>
 
 <pre><code>## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2756  0.5250     26     no      id
+## sigma^2    0.0965  0.3106     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 51) = 80.3564, p-val = 0.0054
+## QE(df = 52) = 56.3932, p-val = 0.3141
 ## 
 ## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 3.0856, p-val = 0.3786
+## QM(df = 3) = 12.4683, p-val = 0.0059
 ## 
 ## Model Results:
 ## 
-##                                      estimate      se      zval    pval
-## intrcpt                               -7.5614  0.5739  -13.1758  &lt;.0001
-## isCycHighDoseTRUE                      0.2211  0.5874    0.3764  0.7067
-## isTaxHighDoseTRUE                     -0.0237  0.8653   -0.0274  0.9782
-## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.4790  0.9145    0.5238  0.6004
-##                                        ci.lb    ci.ub     
-## intrcpt                              -8.6862  -6.4366  ***
-## isCycHighDoseTRUE                    -0.9302   1.3723     
-## isTaxHighDoseTRUE                    -1.7197   1.6723     
-## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.3133   2.2714     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -8.0641  0.2986  -27.0102  &lt;.0001  -8.6493  -7.4789
+## xCyc                0.1503  0.0544    2.7651  0.0057   0.0438   0.2569
+## isPaclitaxelTRUE    0.6970  0.2939    2.3713  0.0177   0.1209   1.2731
+## isNoTaxaneTRUE      0.3081  0.2915    1.0571  0.2905  -0.2631   0.8794
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    *
+## isNoTaxaneTRUE       
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<h3>
+<a id="user-content-m4" class="anchor" href="#m4" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M4</h3>
+
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel: effect modifier</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M4</span></pre></div>
+
+<pre><code>## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1108  0.3329     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 58.1427, p-val = 0.2595
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 10.5951, p-val = 0.0141
+## 
+## Model Results:
+## 
+##                        estimate      se      zval    pval    ci.lb
+## intrcpt                 -7.8684  0.2416  -32.5620  &lt;.0001  -8.3421
+## xCyc                     0.1609  0.0545    2.9541  0.0031   0.0542
+## isPaclitaxelTRUE         0.5880  1.2258    0.4797  0.6314  -1.8145
+## xCyc:isPaclitaxelTRUE   -0.0476  0.5214   -0.0912  0.9273  -1.0695
+##                          ci.ub     
+## intrcpt                -7.3948  ***
+## xCyc                    0.2677   **
+## isPaclitaxelTRUE        2.9905     
+## xCyc:isPaclitaxelTRUE   0.9744     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1818,29 +1910,115 @@ literature.</p>
 <a id="user-content-non-breast-solid" class="anchor" href="#non-breast-solid" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Non-Breast Solid</h2>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">mal</span> <span class="pl-k">&lt;-</span> <span class="pl-s"><span class="pl-pds">"</span>Non-Breast Solid<span class="pl-pds">"</span></span>
-<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">malType</span> <span class="pl-k">==</span> <span class="pl-smi">mal</span>]
-<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D3</span>[<span class="pl-k">!</span>(is.na(<span class="pl-smi">rate</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">nITT</span>) <span class="pl-k">|</span> is.na(<span class="pl-smi">malType</span>))]
+<span class="pl-smi">D3</span> <span class="pl-k">&lt;-</span> drop_na(<span class="pl-smi">D2</span>[<span class="pl-smi">malType</span> <span class="pl-k">==</span> <span class="pl-smi">mal</span>], <span class="pl-smi">rate</span>, <span class="pl-smi">nITT</span>, <span class="pl-smi">malType</span>)
 <span class="pl-smi">M</span> <span class="pl-k">&lt;-</span> metareg(<span class="pl-smi">D3</span>)</pre></div>
 
-<ul>
-<li>Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose
+<h3>
+<a id="user-content-findings-1" class="anchor" href="#findings-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Findings</h3>
 
 <ul>
-<li>Non-Breast Solid rate increased 1.01 times (95% CI: 0.917, 1.11; p = 0.846) for each 1000 $\text{mg} / \text{m}^2$</li>
+<li>Crude statistics
+
+<ul>
+<li>Total person-years of follow-up: 112,778</li>
+<li>Total number of persons (ITT): 19,289</li>
+<li>Total number of Non-Breast Solid: 363</li>
+<li>Crude incidence rate: 32.2 per 10,000 person-years</li>
 </ul>
 </li>
-<li>High dose taxane did not confound the cyclophosphamide dose response
+<li>Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
 
 <ul>
-<li>High dose taxane increased Non-Breast Solid rate by 1.37 times (95% CI: 0.799, 2.35; p = 0.253)</li>
+<li>Non-Breast Solid rate increased 1 times (95% CI: 0.906, 1.11; p = 0.96) for each 1000 $\text{mg} / \text{m}^2$</li>
+</ul>
+</li>
+<li>Paclitaxel did not confound the cyclophosphamide dose response
+
+<ul>
+<li>Compared to no taxane (M1), paclitaxel increased Non-Breast Solid rate by 1.32 times (95% CI: 0.752, 2.31; p = 0.33)</li>
+<li>Compared to no taxane or docetaxel (M2), paclitaxel increased Non-Breast Solid rate by 1.37 times (95% CI: 0.799, 2.35; p = 0.25)</li>
+<li>Compared to docetaxel (M3), paclitaxel increased Non-Breast Solid rate by 1.5 times (95% CI: 0.78, 2.9; p = 0.22)</li>
+</ul>
+</li>
+<li>Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+
+<ul>
+<li>Interaction term estimate was 2.19 (95% CI: -0.24, 4.62; p = 0.077)</li>
 </ul>
 </li>
 </ul>
 
 <h3>
-<a id="user-content-cyclophosphamide-dose-response-taxane-confounder-1" class="anchor" href="#cyclophosphamide-dose-response-taxane-confounder-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dose response; Taxane: confounder</h3>
+<a id="user-content-m1-1" class="anchor" href="#m1-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M1</h3>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLin</span></pre></div>
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel and docetaxel: confounders</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span></pre></div>
+
+<pre><code>## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1465  0.3827     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 27) = 60.1884, p-val = 0.0002
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.5252, p-val = 0.6765
+## 
+## Model Results:
+## 
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.8352  0.2606  -22.3910  &lt;.0001  -6.3460  -5.3244
+## xCyc                0.0025  0.0514    0.0480  0.9618  -0.0982   0.1032
+## isPaclitaxelTRUE    0.2766  0.2864    0.9656  0.3342  -0.2848   0.8379
+## isDocetaxelTRUE    -0.1307  0.2455   -0.5325  0.5944  -0.6118   0.3504
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
+## isDocetaxelTRUE      
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
+
+<pre><code>## Saving 9 x 7 in image
+</code></pre>
+
+<pre><code>##                                                     size
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv   8679
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv        4433
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      151406
+##                                                                 mtime
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      2016-08-17 11:17:14
+</code></pre>
+
+<p><a href="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" target="_blank"><img src="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32" style="max-width:100%;"></a></p>
+
+<h3>
+<a id="user-content-m2-1" class="anchor" href="#m2-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M2</h3>
+
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel: confounder</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M2</span></pre></div>
 
 <pre><code>## 
 ## Multivariate Meta-Analysis Model (k = 31; method: REML)
@@ -1858,40 +2036,73 @@ literature.</p>
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -5.8909  0.2354  -25.0234  &lt;.0001  -6.3523  -5.4295
-## xCyc                 0.0096  0.0493    0.1944  0.8459  -0.0870   0.1062
-## isTaxHighDoseTRUE    0.3148  0.2752    1.1437  0.2527  -0.2246   0.8542
-##                       
-## intrcpt            ***
-## xCyc                  
-## isTaxHighDoseTRUE     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.8909  0.2354  -25.0234  &lt;.0001  -6.3523  -5.4295
+## xCyc                0.0096  0.0493    0.1944  0.8459  -0.0870   0.1062
+## isPaclitaxelTRUE    0.3148  0.2752    1.1437  0.2527  -0.2246   0.8542
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 </code></pre>
 
-<div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLin</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
+<h3>
+<a id="user-content-m3-1" class="anchor" href="#m3-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M3</h3>
 
-<pre><code>## Saving 9 x 7 in image
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel and no taxane: confounders</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M3</span></pre></div>
+
+<pre><code>## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1465  0.3827     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 27) = 60.1884, p-val = 0.0002
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.5252, p-val = 0.6765
+## 
+## Model Results:
+## 
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.9659  0.2790  -21.3815  &lt;.0001  -6.5128  -5.4191
+## xCyc                0.0025  0.0514    0.0480  0.9618  -0.0982   0.1032
+## isPaclitaxelTRUE    0.4073  0.3347    1.2169  0.2236  -0.2487   1.0632
+## isNoTaxaneTRUE      0.1307  0.2455    0.5325  0.5944  -0.3504   0.6118
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
+## isNoTaxaneTRUE       
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 </code></pre>
-
-<pre><code>##                                                             size
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv   7917
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv        3608
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      147159
-##                                                                         mtime
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:35
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:35
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:35
-</code></pre>
-
-<p><a href="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" target="_blank"><img src="///H://Other/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32" style="max-width:100%;"></a></p>
 
 <h3>
-<a id="user-content-cyclophosphamide-dose-response-taxane-effect-modifier-1" class="anchor" href="#cyclophosphamide-dose-response-taxane-effect-modifier-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dose response; Taxane: effect modifier</h3>
+<a id="user-content-m4-1" class="anchor" href="#m4-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M4</h3>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaLinInt</span></pre></div>
+<ul>
+<li>Cyclophosphamide: dose response</li>
+<li>Paclitaxel: effect modifier</li>
+</ul>
+
+<p>$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$</p>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M4</span></pre></div>
 
 <pre><code>## 
 ## Multivariate Meta-Analysis Model (k = 31; method: REML)
@@ -1909,86 +2120,16 @@ literature.</p>
 ## 
 ## Model Results:
 ## 
-##                         estimate      se      zval    pval     ci.lb
-## intrcpt                  -5.9262  0.2235  -26.5193  &lt;.0001   -6.3642
-## xCyc                      0.0137  0.0470    0.2913  0.7708   -0.0785
-## isTaxHighDoseTRUE        -4.6163  2.8129   -1.6411  0.1008  -10.1296
-## xCyc:isTaxHighDoseTRUE    2.1894  1.2396    1.7662  0.0774   -0.2402
-##                           ci.ub     
-## intrcpt                 -5.4882  ***
-## xCyc                     0.1059     
-## isTaxHighDoseTRUE        0.8970     
-## xCyc:isTaxHighDoseTRUE   4.6190    .
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-</code></pre>
-
-<h3>
-<a id="user-content-cyclophosphamide-dichotomous-taxane-confounder-1" class="anchor" href="#cyclophosphamide-dichotomous-taxane-confounder-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dichotomous; Taxane: confounder</h3>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaBin</span></pre></div>
-
-<pre><code>## 
-## Multivariate Meta-Analysis Model (k = 31; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.0822  0.2867     16     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 28) = 51.0912, p-val = 0.0049
-## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 7.9497, p-val = 0.0188
-## 
-## Model Results:
-## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -6.5972  0.3296  -20.0147  &lt;.0001  -7.2432  -5.9511
-## isCycHighDoseTRUE    0.7851  0.3185    2.4647  0.0137   0.1608   1.4094
-## isTaxHighDoseTRUE    0.5320  0.2491    2.1359  0.0327   0.0438   1.0202
-##                       
-## intrcpt            ***
-## isCycHighDoseTRUE    *
-## isTaxHighDoseTRUE    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-</code></pre>
-
-<h3>
-<a id="user-content-cyclophosphamide-dichotomous-taxane-effect-modifier-1" class="anchor" href="#cyclophosphamide-dichotomous-taxane-effect-modifier-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Cyclophosphamide: dichotomous; Taxane: effect modifier</h3>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">rmaBinInt</span></pre></div>
-
-<pre><code>## 
-## Multivariate Meta-Analysis Model (k = 31; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.0872  0.2952     16     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 27) = 51.0178, p-val = 0.0035
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 7.7889, p-val = 0.0506
-## 
-## Model Results:
-## 
-##                                      estimate      se      zval    pval
-## intrcpt                               -6.5200  0.4346  -15.0023  &lt;.0001
-## isCycHighDoseTRUE                      0.6981  0.4421    1.5791  0.1143
-## isTaxHighDoseTRUE                      0.3923  0.5885    0.6666  0.5051
-## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.1757  0.6572    0.2673  0.7892
-##                                        ci.lb    ci.ub     
-## intrcpt                              -7.3718  -5.6682  ***
-## isCycHighDoseTRUE                    -0.1684   1.5646     
-## isTaxHighDoseTRUE                    -0.7612   1.5457     
-## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.1124   1.4638     
+##                        estimate      se      zval    pval     ci.lb
+## intrcpt                 -5.9262  0.2235  -26.5193  &lt;.0001   -6.3642
+## xCyc                     0.0137  0.0470    0.2913  0.7708   -0.0785
+## isPaclitaxelTRUE        -4.6163  2.8129   -1.6411  0.1008  -10.1296
+## xCyc:isPaclitaxelTRUE    2.1894  1.2396    1.7662  0.0774   -0.2402
+##                          ci.ub     
+## intrcpt                -5.4882  ***
+## xCyc                    0.1059     
+## isPaclitaxelTRUE        0.8970     
+## xCyc:isPaclitaxelTRUE   4.6190    .
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1

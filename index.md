@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-05 15:40:28
+* Date: 2016-08-17 11:17:06
 
 
 # Load packages
@@ -10,6 +10,7 @@
 ```r
 library(openxlsx)
 library(data.table)
+library(tidyr)
 ```
 
 ---
@@ -30,7 +31,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##                                    size               mtime
-## /tmp/Rtmpu5Cg98/file1dcbf45103b33 59619 2016-08-05 15:40:30
+## /tmp/RtmpylXwm8/file1559814d87e2b 59619 2016-08-17 11:17:08
 ```
 
 ```r
@@ -210,18 +211,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    38      1     NA          NA                1
-##  2:    61      1     NA          NA                1
-##  3:     4     NA     NA          NA               NA
-##  4:    34      0      1          NA                1
-##  5:    40      2     NA          NA                2
-##  6:    31      6      2          NA                8
-##  7:    86     NA     NA           5                5
-##  8:    21     NA     NA          NA               NA
-##  9:    44     NA     NA           1                1
-## 10:    49     NA     NA          NA               NA
-## 11:    27     NA     NA          NA               NA
-## 12:    96     NA     NA          NA               NA
+##  1:    85     NA     NA           0                0
+##  2:     7      5      5          NA               10
+##  3:    73     NA     NA           2                2
+##  4:    26     NA     NA           7                7
+##  5:    75      0      0          NA                0
+##  6:    82     NA     NA           1                1
+##  7:    27     NA     NA          NA               NA
+##  8:    55      4      2          NA                6
+##  9:    92     NA     NA          NA               NA
+## 10:    47      0      0          NA                0
+## 11:    51     NA     NA          NA               NA
+## 12:    69     NA     NA          NA               NA
 ```
 
 Remove text from `nITT` column.
@@ -256,9 +257,9 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
+## regimens.md 7215 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
 ##                           atime  uid  gid uname   grname
-## regimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+## regimens.md 2016-08-17 09:55:33 4051 3010 chanb HPCUsers
 ```
 
 Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.
@@ -575,7 +576,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-05 15:40:30
+## data.RData 7448 2016-08-17 11:17:08
 ```
 
 ---
@@ -613,17 +614,22 @@ D <- D[,
              isCyclo = !is.na(cyclophosphamideDose),
              isTaxane = !is.na(taxaneTotalDose),
              isFluoro = !is.na(fluoroucilTotalDose))]
+D <- D[isTaxane == TRUE,
+       `:=` (isDocetaxel = grepl("doce", tolower(taxaneType)),
+             isPaclitaxel = grepl("pacli", tolower(taxaneType)))]
+D <- D[isTaxane == FALSE,
+       `:=` (isDocetaxel = FALSE,
+             isPaclitaxel = FALSE)]
 D1 <- melt(D,
            id.vars=c("id", "authorYear", "arm",
                      "isAnthra", "anthracyclineCumulDose",
                      "isCyclo", "cyclophosphamideCumulDose",
-                     "isTaxane", "taxaneCumulDose",
+                     "isTaxane", "taxaneCumulDose", "isDocetaxel", "isPaclitaxel",
                      "isFluoro", "fluoroucilCumulDose",
                      "nITT", "medianFU"),
            measure.vars=c("malAML", "malMDS", "malAMLOrMDSTotal", "malNonBreastSolid"),
            value.name="malN",
            variable.name="malType")
-
 D1 <- D1[, malType := gsub("^mal", "", malType)]
 D1 <- D1[, malType := factor(malType,
                              levels=c("AML", "MDS", "AMLOrMDSTotal", "NonBreastSolid"),
@@ -650,9 +656,9 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-05 15:40:30 2016-08-05 15:40:30
+## summaryRegimens.md 4624 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
 ##                                  atime  uid  gid uname   grname
-## summaryRegimens.md 2016-08-01 15:33:32 4051 3010 chanb HPCUsers
+## summaryRegimens.md 2016-08-17 09:55:34 4051 3010 chanb HPCUsers
 ```
 
 ---
@@ -747,11 +753,11 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 ##                                                    size
 ## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
 ## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9473
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-05 15:40:32
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-05 15:40:32
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-05 15:40:32
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-17 11:17:10
 ```
 
 ```r
@@ -772,11 +778,11 @@ Two outcomes are modeled separately.
 Cumulative doses are dichotomized into low and high doses.
 
 * Cyclophosphamide
-    * $\lt 2400$
-    * $\ge 2400$
+    * $\lt 2400 \frac{\text{mg}}{\text{m}^2}$
+    * $\ge 2400 \frac{\text{mg}}{\text{m}^2}$
 * Taxane
-    * $\lt 500$
-    * $\ge 500$
+    * $\lt 500 \frac{\text{mg}}{\text{m}^2}$
+    * $\ge 500 \frac{\text{mg}}{\text{m}^2}$
 
 
 ```r
@@ -788,9 +794,13 @@ D2 <- D1[,
            xCyc = cyclophosphamideCumulDose / xscale,  # scale units
            isCycHighDose = cyclophosphamideCumulDose >= 2400,
            xTax = taxaneCumulDose / 1e2,  # scale units
-           isTaxHighDose = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isTaxDoseHigh = ifelse(taxaneCumulDose >= 500 & isTaxane == TRUE, TRUE, FALSE),
+           isTaxDoseLow = ifelse(taxaneCumulDose < 500 & isTaxane == TRUE, TRUE, FALSE),
+           isDocetaxel,
+           isPaclitaxel,
            isAnthra,
            isTaxane,
+           isNoTaxane = !(isTaxane),
            isFluoro,
            nITT,
            medianFU,
@@ -798,8 +808,8 @@ D2 <- D1[,
            malN,
            py,
            rate)]
-D2 <- D2[isTaxane == FALSE, isTaxHighDose := FALSE]
-D2 <- D2[!(is.na(xCyc) | is.na(isCycHighDose) | is.na(isTaxHighDose))]
+D2 <- D2[isTaxane == FALSE, isTaxDoseHigh := FALSE]
+D2 <- drop_na(D2, xCyc, isCycHighDose, isDocetaxel, isPaclitaxel)
 ```
 
 The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
@@ -814,12 +824,20 @@ The effect of cyclophosphamide could be due to high dose taxanes in the regimen.
 > risk of cyclophosphamide this would be an important addition to the
 > literature.
 
-Four model are estimated.
+The following models are estimated.
 
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 x_{\text{cyclophosphamide dose}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma x_{\text{cyclophosphamide dose}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
-1. $$\frac{y_i}{t_i} = \beta_0 + \beta_1 I_{\text{high dose cyclophosphamide}, i} + \beta_2 I_{\text{high dose taxane}, i} + \gamma I_{\text{high dose cyclophosphamide}, i} I_{\text{high dose taxane}, i} + \sigma_\text{study}$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
+1. $$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
+
+where
+
+* $x_{1, i}$ is the cumulative cyclophosphamide dose for the $i$-th treatment arm
+* $I_{\text{paclitaxel}, i}$ is an indicator for whether the $i$-th treatment arm included paclitaxel is the regimen
+* $I_{\text{docetaxel}, i}$ is an indicator for whether the $i$-th treatment arm included docetaxel is the regimen
+* $I_{\text{no taxane}, i}$ is an indicator for whether the $i$-th treatment arm did not include any taxane is the regimen
+* $\sigma_j$ is a random effect for the $j$-th study.
 
 Models were estimated using the `rma.mv()` function from the metafor` package for R.
 
@@ -830,6 +848,17 @@ library(metafor)
 
 ```
 ## Loading required package: Matrix
+```
+
+```
+## 
+## Attaching package: 'Matrix'
+```
+
+```
+## The following object is masked from 'package:tidyr':
+## 
+##     expand
 ```
 
 ```
@@ -872,50 +901,57 @@ pvalToChar <- function (p) {
   if (p < 0.001) {
     pvalue <- "p < 0.001"
   } else {
-    pvalue <- sprintf("p = %.03f", p)
+    pvalue <- sprintf("p = %.02g", p)
   }
   pvalue
 }
 metareg <- function (D) {
   require(metafor)
-  xData <- unique(D[, .(xCyc, isCycHighDose, isTaxHighDose, malType)])
+  xData <- unique(D[, .(xCyc, isCycHighDose, isDocetaxel, isPaclitaxel, malType)])
   D <- escalc("IRLN", xi = malN, ti = py, data = D)
   randomEffect <- list(~ 1 | id)
-  MLin <- rma.mv(yi ~ xCyc + isTaxHighDose,
-                 vi,
-                 random = randomEffect,
-                 data = D)
-  MLinInt <- rma.mv(yi ~ xCyc + isTaxHighDose + xCyc * isTaxHighDose,
-                    vi,
-                    random = randomEffect,
-                    data = D)
-  MBin <- rma.mv(yi ~ isCycHighDose + isTaxHighDose,
-                 vi,
-                 random = randomEffect,
-                 data = D)
-  MBinInt <- rma.mv(yi ~ isCycHighDose + isTaxHighDose + isCycHighDose * isTaxHighDose,
-                    vi,
-                    random = randomEffect,
-                    data = D)
-  list(rmaLin = MLin,
-       rmaLinInt = MLinInt,
-       rmaBin = MBin,
-       rmaBinInt = MBinInt)
+  M1 <- rma.mv(yi ~ xCyc + isPaclitaxel + isDocetaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  M2 <- rma.mv(yi ~ xCyc + isPaclitaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  M3 <- rma.mv(yi ~ xCyc + isPaclitaxel + isNoTaxane,
+               vi,
+               random = randomEffect,
+               data = D)
+  M4 <- rma.mv(yi ~ xCyc + isPaclitaxel + xCyc * isPaclitaxel,
+               vi,
+               random = randomEffect,
+               data = D)
+  list(M1 = M1, M2 = M2, M3 = M3, M4 = M4)
 }
 plotreg <- function (M, D, title) {
   require(ggplot2)
   require(RColorBrewer)
   require(data.table)
+  D <- data.table(D)
   X <- data.table(M$X)
   X <- unique(X)
   varnames <- names(X)[2:ncol(X)]
-  X0 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 0, xCyc]), max(X[isTaxHighDoseTRUE == 0, xCyc]),
+  X1 <- data.table(x1 = seq(min(X[isPaclitaxelTRUE == 0 & isDocetaxelTRUE == 0, xCyc]),
+                            max(X[isPaclitaxelTRUE == 0 & isDocetaxelTRUE == 0, xCyc]),
                             length.out = 100),
-                   x2 = rep(0, 100))
-  X1 <- data.table(x1 = seq(min(X[isTaxHighDoseTRUE == 1, xCyc]), max(X[isTaxHighDoseTRUE == 1, xCyc]),
+                   x2 = rep(0, 100),
+                   x3 = rep(0, 100))
+  X2 <- data.table(x1 = seq(min(X[isPaclitaxelTRUE == 1 & isDocetaxelTRUE == 0, xCyc]),
+                            max(X[isPaclitaxelTRUE == 1 & isDocetaxelTRUE == 0, xCyc]),
                             length.out = 100),
-                   x2 = rep(1, 100))
-  X <- rbind(X0, X1)
+                   x2 = rep(1, 100),
+                   x3 = rep(0, 100))
+  X3 <- data.table(x1 = seq(min(X[isPaclitaxelTRUE == 0 & isDocetaxelTRUE == 1, xCyc]),
+                            max(X[isPaclitaxelTRUE == 0 & isDocetaxelTRUE == 1, xCyc]),
+                            length.out = 100),
+                   x2 = rep(0, 100),
+                   x3 = rep(1, 100))
+  X <- rbindlist(list(X1, X2, X3))
   names(X) <- varnames
   X$xCyc <- round(X$xCyc, digits = 1)
   X <- unique(X)
@@ -931,48 +967,68 @@ plotreg <- function (M, D, title) {
                       X,
                       # variable = "ci.ub",
                       ci.ub = predict(M, as.matrix(X), transf = exp)[["ci.ub"]] * scale)
-  keyvar <- c("malType", "xCyc", "isTaxHighDoseTRUE")
+  keyvar <- c("malType", "xCyc", "isPaclitaxelTRUE", "isDocetaxelTRUE")
   setkeyv(yhat, keyvar)
   setkeyv(ci.lb, keyvar)
   setkeyv(ci.ub, keyvar)
   yhat <- merge(merge(yhat, ci.lb), ci.ub)
-  pvalues <- c(M$pval[which(row.names(M$b) == "isTaxHighDoseTRUE")])
-  pal <- brewer.pal(5, name = "RdBu")[c(1, 5)]
+  pvalues <- c(M$pval[grep("TRUE$", row.names(M$b))])
+  names(pvalues) <- row.names(M$b)[grep("TRUE$", row.names(M$b))]
+  pal <- brewer.pal(ncol(X), name = "Set1")
+  D <- D[isPaclitaxel == FALSE & isDocetaxel == FALSE, color := "A"]
+  D <- D[isPaclitaxel == TRUE  & isDocetaxel == FALSE, color := "B"]
+  D <- D[isPaclitaxel == FALSE & isDocetaxel == TRUE , color := "C"]
+  D <- D[, color := factor(color, labels = c("A", "B", "C"))]
+  setorder(D, color)
   G <- ggplot(D, aes(x = xCyc * xscale,
                      y = rate + 1/2,
                      size = nITT / min(nITT, na.rm = TRUE),
-                     color = isTaxHighDose))
+                     color = color))
   G <- G + geom_point(alpha = 1/2,
                       position = "jitter")
-  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 0, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[1])
-  G <- G + geom_line(data = yhat[isTaxHighDoseTRUE == 1, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, ],
                      aes(x = xCyc * xscale, y = pred),
                      inherit.aes = FALSE,
                      color = pal[2])
-  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 0, ],
+  G <- G + geom_line(data = yhat[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, ],
+                     aes(x = xCyc * xscale, y = pred),
+                     inherit.aes = FALSE,
+                     color = pal[3])
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 0, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[1],
                        alpha = 1/8)
-  G <- G + geom_ribbon(data = yhat[isTaxHighDoseTRUE == 1, ],
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 0 & isPaclitaxelTRUE == 1, ],
                        aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
                        inherit.aes = FALSE,
                        fill = pal[2],
                        alpha = 1/8)
+  G <- G + geom_ribbon(data = yhat[isDocetaxelTRUE == 1 & isPaclitaxelTRUE == 0, ],
+                       aes(x = xCyc * xscale, ymax = ci.ub, ymin = ci.lb),
+                       inherit.aes = FALSE,
+                       fill = pal[3],
+                       alpha = 1/8)
   G <- G + scale_x_log10("Cyclophosphamide cumulative dose",
-                         breaks = 1e3 * c(0.5, 1, 2, 4, 8, 16))
+                         breaks = 1e3 * (2 ^ seq(-1, 6)))
   G <- G + scale_y_log10(sprintf("Rate per %s person-years",
-                                 format(scale, big.mark = ",")))
-  G <- G + scale_color_manual(sprintf("Taxane\n(%s)", pvalToChar(pvalues[c(1)])),
+                                 format(scale, big.mark = ",")),
+                         breaks = 2 ^ seq(-1, 6))
+  G <- G + scale_color_manual("Taxane",
                               values = pal,
-                              labels = c("None or low dose", "High dose"))
+                              labels = c("None (reference)",
+                                         sprintf("Paclitaxel (%s)",
+                                                 pvalToChar(pvalues[grep("Pacli", names(pvalues))])),
+                                         sprintf("Docetaxel (%s)",
+                                                 pvalToChar(pvalues[grep("Doce", names(pvalues))]))))
   G <- G + scale_size_continuous(guide = FALSE)
   G <- G + labs(title = title)
   G <- G + theme_bw()
-  filename <- sprintf("%s_Cyclophosphamide_byHighDoseTaxane",
+  filename <- sprintf("%s_Cyclophosphamide_byTaxane",
                       gsub("(\\s)|(-)", "", title))
   ggsave(filename = sprintf("%s.png", filename), width = 9)
   yhat$xCyc <- yhat$xCyc * xscale
@@ -988,59 +1044,72 @@ plotreg <- function (M, D, title) {
 
 ```r
 mal <- "AML or MDS"
-D3 <- D2[malType == mal]
-D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+D3 <- drop_na(D2[malType == mal], rate, nITT, malType)
 M <- metareg(D3)
 ```
 
 ### Findings
 
-* AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose
-  * AML or MDS rate increased 1.17 times (95% CI: 1.05, 1.31; p = 0.0035) for each 1000 $\text{mg} / \text{m}^2$
-* High dose taxane confounded the cyclophosphamide dose response
-  * High dose taxane increased AML or MDS rate by 1.71 times (95% CI: 1.07, 2.76; p = 0.0264)
-* High dose taxane did not modify the dose response effect of cyclophosphamide
-  * Interaction term estimate was 0.0149 (95% CI: -1.02, 1.05; p = 0.978)
+* Crude statistics
+  * Total person-years of follow-up: 261,433
+  * Total number of persons (ITT): 44,628
+  * Total number of AML or MDS: 171
+  * Crude incidence rate: 6.54 per 10,000 person-years
+* AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
+  * AML or MDS rate increased 1.16 times (95% CI: 1.04, 1.29; p = 0.0057) for each 1000 $\text{mg} / \text{m}^2$
+* Paclitaxel confounded the cyclophosphamide dose response
+  * Compared to no taxane (M1), paclitaxel increased AML or MDS rate by 1.48 times (95% CI: 0.933, 2.33; p = 0.096)
+  * Compared to no taxane or docetaxel (M2), paclitaxel increased AML or MDS rate by 1.62 times (95% CI: 1.05, 2.47; p = 0.028)
+  * Compared to docetaxel (M3), paclitaxel increased AML or MDS rate by 2.01 times (95% CI: 1.13, 3.57; p = 0.018)
+* Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+  * Interaction term estimate was -0.0476 (95% CI: -1.07, 0.974; p = 0.93)
 
-### Cyclophosphamide: dose response; Taxane: confounder
+### M1
+
+* Cyclophosphamide: dose response
+* Paclitaxel and docetaxel: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
 
 
 ```r
-M$rmaLin
+M$M1
 ```
 
 ```
 ## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1206  0.3473     26     no      id
+## sigma^2    0.0965  0.3106     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 52) = 58.1475, p-val = 0.2593
+## QE(df = 52) = 56.3932, p-val = 0.3141
 ## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 10.5094, p-val = 0.0052
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 12.4683, p-val = 0.0059
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -7.8796  0.2447  -32.1959  <.0001  -8.3593  -7.3999
-## xCyc                 0.1611  0.0552    2.9204  0.0035   0.0530   0.2692
-## isTaxHighDoseTRUE    0.5386  0.2425    2.2209  0.0264   0.0633   1.0139
-##                       
-## intrcpt            ***
-## xCyc                **
-## isTaxHighDoseTRUE    *
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -7.7560  0.2610  -29.7194  <.0001  -8.2675  -7.2445
+## xCyc                0.1503  0.0544    2.7651  0.0057   0.0438   0.2569
+## isPaclitaxelTRUE    0.3889  0.2339    1.6626  0.0964  -0.0696   0.8474
+## isDocetaxelTRUE    -0.3081  0.2915   -1.0571  0.2905  -0.8794   0.2631
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    .
+## isDocetaxelTRUE      
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
 ```r
-plotreg(M$rmaLin, D3, mal)
+plotreg(M$M1, D3, mal)
 ```
 
 ```
@@ -1056,128 +1125,139 @@ plotreg(M$rmaLin, D3, mal)
 ```
 
 ```
-##                                                       size
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv   6979
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv        5787
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      188921
-##                                                                   mtime
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:34
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:34
-## AMLorMDS_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:34
+##                                               size               mtime
+## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   8317 2016-08-17 11:17:13
+## AMLorMDS_Cyclophosphamide_byTaxane.csv        7334 2016-08-17 11:17:13
+## AMLorMDS_Cyclophosphamide_byTaxane.png      213539 2016-08-17 11:17:13
 ```
 
 ![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
 
-### Cyclophosphamide: dose response; Taxane: effect modifier
+### M2
+
+* Cyclophosphamide: dose response
+* Paclitaxel: confounder
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
 
 
 ```r
-M$rmaLinInt
+M$M2
 ```
 
 ```
 ## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.1264  0.3555     26     no      id
+## sigma^2    0.1079  0.3285     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 51) = 57.9982, p-val = 0.2330
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 10.2679, p-val = 0.0164
-## 
-## Model Results:
-## 
-##                         estimate      se      zval    pval    ci.lb
-## intrcpt                  -7.8777  0.2469  -31.9122  <.0001  -8.3616
-## xCyc                      0.1599  0.0558    2.8640  0.0042   0.0505
-## isTaxHighDoseTRUE         0.5031  1.2358    0.4071  0.6839  -1.9191
-## xCyc:isTaxHighDoseTRUE    0.0149  0.5303    0.0282  0.9775  -1.0244
-##                           ci.ub     
-## intrcpt                 -7.3939  ***
-## xCyc                     0.2694   **
-## isTaxHighDoseTRUE        2.9253     
-## xCyc:isTaxHighDoseTRUE   1.0543     
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-### Cyclophosphamide: dichotomous; Taxane: confounder
-
-
-```r
-M$rmaBin
-```
-
-```
-## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2601  0.5100     26     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 52) = 80.3700, p-val = 0.0070
+## QE(df = 53) = 58.3218, p-val = 0.2861
 ## 
 ## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 2.8181, p-val = 0.2444
+## QM(df = 2) = 10.7316, p-val = 0.0047
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -7.7392  0.4487  -17.2490  <.0001  -8.6186  -6.8599
-## isCycHighDoseTRUE    0.4177  0.4453    0.9381  0.3482  -0.4550   1.2904
-## isTaxHighDoseTRUE    0.4035  0.2642    1.5274  0.1267  -0.1143   0.9213
-##                       
-## intrcpt            ***
-## isCycHighDoseTRUE     
-## isTaxHighDoseTRUE     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -7.8677  0.2400  -32.7779  <.0001  -8.3381  -7.3972
+## xCyc                0.1610  0.0540    2.9839  0.0028   0.0553   0.2668
+## isPaclitaxelTRUE    0.4794  0.2176    2.2029  0.0276   0.0529   0.9060
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    *
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-### Cyclophosphamide: dichotomous; Taxane: effect modifier
+### M3
+
+* Cyclophosphamide: dose response
+* Paclitaxel and no taxane: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
 
 
 ```r
-M$rmaBinInt
+M$M3
 ```
 
 ```
 ## 
-## Multivariate Meta-Analysis Model (k = 55; method: REML)
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
 ## 
 ## Variance Components: 
 ## 
 ##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.2756  0.5250     26     no      id
+## sigma^2    0.0965  0.3106     26     no      id
 ## 
 ## Test for Residual Heterogeneity: 
-## QE(df = 51) = 80.3564, p-val = 0.0054
+## QE(df = 52) = 56.3932, p-val = 0.3141
 ## 
 ## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 3.0856, p-val = 0.3786
+## QM(df = 3) = 12.4683, p-val = 0.0059
 ## 
 ## Model Results:
 ## 
-##                                      estimate      se      zval    pval
-## intrcpt                               -7.5614  0.5739  -13.1758  <.0001
-## isCycHighDoseTRUE                      0.2211  0.5874    0.3764  0.7067
-## isTaxHighDoseTRUE                     -0.0237  0.8653   -0.0274  0.9782
-## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.4790  0.9145    0.5238  0.6004
-##                                        ci.lb    ci.ub     
-## intrcpt                              -8.6862  -6.4366  ***
-## isCycHighDoseTRUE                    -0.9302   1.3723     
-## isTaxHighDoseTRUE                    -1.7197   1.6723     
-## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.3133   2.2714     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -8.0641  0.2986  -27.0102  <.0001  -8.6493  -7.4789
+## xCyc                0.1503  0.0544    2.7651  0.0057   0.0438   0.2569
+## isPaclitaxelTRUE    0.6970  0.2939    2.3713  0.0177   0.1209   1.2731
+## isNoTaxaneTRUE      0.3081  0.2915    1.0571  0.2905  -0.2631   0.8794
+##                      
+## intrcpt           ***
+## xCyc               **
+## isPaclitaxelTRUE    *
+## isNoTaxaneTRUE       
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+### M4
+
+* Cyclophosphamide: dose response
+* Paclitaxel: effect modifier
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
+
+
+```r
+M$M4
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 56; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1108  0.3329     26     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 52) = 58.1427, p-val = 0.2595
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 10.5951, p-val = 0.0141
+## 
+## Model Results:
+## 
+##                        estimate      se      zval    pval    ci.lb
+## intrcpt                 -7.8684  0.2416  -32.5620  <.0001  -8.3421
+## xCyc                     0.1609  0.0545    2.9541  0.0031   0.0542
+## isPaclitaxelTRUE         0.5880  1.2258    0.4797  0.6314  -1.8145
+## xCyc:isPaclitaxelTRUE   -0.0476  0.5214   -0.0912  0.9273  -1.0695
+##                          ci.ub     
+## intrcpt                -7.3948  ***
+## xCyc                    0.2677   **
+## isPaclitaxelTRUE        2.9905     
+## xCyc:isPaclitaxelTRUE   0.9744     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1189,21 +1269,101 @@ M$rmaBinInt
 
 ```r
 mal <- "Non-Breast Solid"
-D3 <- D2[malType == mal]
-D3 <- D3[!(is.na(rate) | is.na(nITT) | is.na(malType))]
+D3 <- drop_na(D2[malType == mal], rate, nITT, malType)
 M <- metareg(D3)
 ```
 
-* Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose
-  * Non-Breast Solid rate increased 1.01 times (95% CI: 0.917, 1.11; p = 0.846) for each 1000 $\text{mg} / \text{m}^2$
-* High dose taxane did not confound the cyclophosphamide dose response
-  * High dose taxane increased Non-Breast Solid rate by 1.37 times (95% CI: 0.799, 2.35; p = 0.253)
+### Findings
 
-### Cyclophosphamide: dose response; Taxane: confounder
+* Crude statistics
+  * Total person-years of follow-up: 112,778
+  * Total number of persons (ITT): 19,289
+  * Total number of Non-Breast Solid: 363
+  * Crude incidence rate: 32.2 per 10,000 person-years
+* Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
+  * Non-Breast Solid rate increased 1 times (95% CI: 0.906, 1.11; p = 0.96) for each 1000 $\text{mg} / \text{m}^2$
+* Paclitaxel did not confound the cyclophosphamide dose response
+  * Compared to no taxane (M1), paclitaxel increased Non-Breast Solid rate by 1.32 times (95% CI: 0.752, 2.31; p = 0.33)
+  * Compared to no taxane or docetaxel (M2), paclitaxel increased Non-Breast Solid rate by 1.37 times (95% CI: 0.799, 2.35; p = 0.25)
+  * Compared to docetaxel (M3), paclitaxel increased Non-Breast Solid rate by 1.5 times (95% CI: 0.78, 2.9; p = 0.22)
+* Paclitaxel did not modify the dose response effect of cyclophosphamide (M4)
+  * Interaction term estimate was 2.19 (95% CI: -0.24, 4.62; p = 0.077)
+
+### M1
+
+* Cyclophosphamide: dose response
+* Paclitaxel and docetaxel: confounders
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_3 I_{\text{docetaxel}, i} + \sigma_j$$
 
 
 ```r
-M$rmaLin
+M$M1
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1465  0.3827     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 27) = 60.1884, p-val = 0.0002
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.5252, p-val = 0.6765
+## 
+## Model Results:
+## 
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.8352  0.2606  -22.3910  <.0001  -6.3460  -5.3244
+## xCyc                0.0025  0.0514    0.0480  0.9618  -0.0982   0.1032
+## isPaclitaxelTRUE    0.2766  0.2864    0.9656  0.3342  -0.2848   0.8379
+## isDocetaxelTRUE    -0.1307  0.2455   -0.5325  0.5944  -0.6118   0.3504
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
+## isDocetaxelTRUE      
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+plotreg(M$M1, D3, mal)
+```
+
+```
+## Saving 9 x 7 in image
+```
+
+```
+##                                                     size
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv   8679
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv        4433
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      151406
+##                                                                 mtime
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      2016-08-17 11:17:14
+```
+
+![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
+
+### M2
+
+* Cyclophosphamide: dose response
+* Paclitaxel: confounder
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \sigma_j$$
+
+
+```r
+M$M2
 ```
 
 ```
@@ -1223,45 +1383,73 @@ M$rmaLin
 ## 
 ## Model Results:
 ## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -5.8909  0.2354  -25.0234  <.0001  -6.3523  -5.4295
-## xCyc                 0.0096  0.0493    0.1944  0.8459  -0.0870   0.1062
-## isTaxHighDoseTRUE    0.3148  0.2752    1.1437  0.2527  -0.2246   0.8542
-##                       
-## intrcpt            ***
-## xCyc                  
-## isTaxHighDoseTRUE     
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.8909  0.2354  -25.0234  <.0001  -6.3523  -5.4295
+## xCyc                0.0096  0.0493    0.1944  0.8459  -0.0870   0.1062
+## isPaclitaxelTRUE    0.3148  0.2752    1.1437  0.2527  -0.2246   0.8542
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-```r
-plotreg(M$rmaLin, D3, mal)
-```
+### M3
 
-```
-## Saving 9 x 7 in image
-```
+* Cyclophosphamide: dose response
+* Paclitaxel and no taxane: confounders
 
-```
-##                                                             size
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv   7917
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv        3608
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      147159
-##                                                                         mtime
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane_Pred.csv 2016-08-05 15:40:35
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.csv      2016-08-05 15:40:35
-## NonBreastSolid_Cyclophosphamide_byHighDoseTaxane.png      2016-08-05 15:40:35
-```
-
-![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
-
-### Cyclophosphamide: dose response; Taxane: effect modifier
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \beta_4 I_{\text{no taxane}, i} + \sigma_j$$
 
 
 ```r
-M$rmaLinInt
+M$M3
+```
+
+```
+## 
+## Multivariate Meta-Analysis Model (k = 31; method: REML)
+## 
+## Variance Components: 
+## 
+##             estim    sqrt  nlvls  fixed  factor
+## sigma^2    0.1465  0.3827     16     no      id
+## 
+## Test for Residual Heterogeneity: 
+## QE(df = 27) = 60.1884, p-val = 0.0002
+## 
+## Test of Moderators (coefficient(s) 2,3,4): 
+## QM(df = 3) = 1.5252, p-val = 0.6765
+## 
+## Model Results:
+## 
+##                   estimate      se      zval    pval    ci.lb    ci.ub
+## intrcpt            -5.9659  0.2790  -21.3815  <.0001  -6.5128  -5.4191
+## xCyc                0.0025  0.0514    0.0480  0.9618  -0.0982   0.1032
+## isPaclitaxelTRUE    0.4073  0.3347    1.2169  0.2236  -0.2487   1.0632
+## isNoTaxaneTRUE      0.1307  0.2455    0.5325  0.5944  -0.3504   0.6118
+##                      
+## intrcpt           ***
+## xCyc                 
+## isPaclitaxelTRUE     
+## isNoTaxaneTRUE       
+## 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+### M4
+
+* Cyclophosphamide: dose response
+* Paclitaxel: effect modifier
+
+$$\log \left( \frac{y_i}{t_i} \right) = \beta_0 + \beta_1 x_{1, i} + \beta_2 I_{\text{paclitaxel}, i} + \gamma x_{1, i} I_{\text{paclitaxel}, i} + \sigma_j$$
+
+
+```r
+M$M4
 ```
 
 ```
@@ -1281,92 +1469,16 @@ M$rmaLinInt
 ## 
 ## Model Results:
 ## 
-##                         estimate      se      zval    pval     ci.lb
-## intrcpt                  -5.9262  0.2235  -26.5193  <.0001   -6.3642
-## xCyc                      0.0137  0.0470    0.2913  0.7708   -0.0785
-## isTaxHighDoseTRUE        -4.6163  2.8129   -1.6411  0.1008  -10.1296
-## xCyc:isTaxHighDoseTRUE    2.1894  1.2396    1.7662  0.0774   -0.2402
-##                           ci.ub     
-## intrcpt                 -5.4882  ***
-## xCyc                     0.1059     
-## isTaxHighDoseTRUE        0.8970     
-## xCyc:isTaxHighDoseTRUE   4.6190    .
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-### Cyclophosphamide: dichotomous; Taxane: confounder
-
-
-```r
-M$rmaBin
-```
-
-```
-## 
-## Multivariate Meta-Analysis Model (k = 31; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.0822  0.2867     16     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 28) = 51.0912, p-val = 0.0049
-## 
-## Test of Moderators (coefficient(s) 2,3): 
-## QM(df = 2) = 7.9497, p-val = 0.0188
-## 
-## Model Results:
-## 
-##                    estimate      se      zval    pval    ci.lb    ci.ub
-## intrcpt             -6.5972  0.3296  -20.0147  <.0001  -7.2432  -5.9511
-## isCycHighDoseTRUE    0.7851  0.3185    2.4647  0.0137   0.1608   1.4094
-## isTaxHighDoseTRUE    0.5320  0.2491    2.1359  0.0327   0.0438   1.0202
-##                       
-## intrcpt            ***
-## isCycHighDoseTRUE    *
-## isTaxHighDoseTRUE    *
-## 
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-```
-
-### Cyclophosphamide: dichotomous; Taxane: effect modifier
-
-
-```r
-M$rmaBinInt
-```
-
-```
-## 
-## Multivariate Meta-Analysis Model (k = 31; method: REML)
-## 
-## Variance Components: 
-## 
-##             estim    sqrt  nlvls  fixed  factor
-## sigma^2    0.0872  0.2952     16     no      id
-## 
-## Test for Residual Heterogeneity: 
-## QE(df = 27) = 51.0178, p-val = 0.0035
-## 
-## Test of Moderators (coefficient(s) 2,3,4): 
-## QM(df = 3) = 7.7889, p-val = 0.0506
-## 
-## Model Results:
-## 
-##                                      estimate      se      zval    pval
-## intrcpt                               -6.5200  0.4346  -15.0023  <.0001
-## isCycHighDoseTRUE                      0.6981  0.4421    1.5791  0.1143
-## isTaxHighDoseTRUE                      0.3923  0.5885    0.6666  0.5051
-## isCycHighDoseTRUE:isTaxHighDoseTRUE    0.1757  0.6572    0.2673  0.7892
-##                                        ci.lb    ci.ub     
-## intrcpt                              -7.3718  -5.6682  ***
-## isCycHighDoseTRUE                    -0.1684   1.5646     
-## isTaxHighDoseTRUE                    -0.7612   1.5457     
-## isCycHighDoseTRUE:isTaxHighDoseTRUE  -1.1124   1.4638     
+##                        estimate      se      zval    pval     ci.lb
+## intrcpt                 -5.9262  0.2235  -26.5193  <.0001   -6.3642
+## xCyc                     0.0137  0.0470    0.2913  0.7708   -0.0785
+## isPaclitaxelTRUE        -4.6163  2.8129   -1.6411  0.1008  -10.1296
+## xCyc:isPaclitaxelTRUE    2.1894  1.2396    1.7662  0.0774   -0.2402
+##                          ci.ub     
+## intrcpt                -5.4882  ***
+## xCyc                    0.1059     
+## isPaclitaxelTRUE        0.8970     
+## xCyc:isPaclitaxelTRUE   4.6190    .
 ## 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1

@@ -1,5 +1,5 @@
 $completionDateTime
-[1] "2016-08-05 15:40:36 PDT"
+[1] "2016-08-17 11:17:14 PDT"
 
 $sessionInfo
 R version 3.3.0 (2016-05-03)
@@ -20,12 +20,14 @@ attached base packages:
 other attached packages:
  [1] RColorBrewer_1.1-2 ggplot2_2.1.0      metafor_1.9-8      Matrix_1.2-6      
  [5] xtable_1.8-2       xlsx_0.5.7         xlsxjars_0.6.1     rJava_0.9-8       
- [9] data.table_1.9.6   openxlsx_3.0.0     rmarkdown_0.9.6    knitr_1.13        
+ [9] tidyr_0.6.0        data.table_1.9.6   openxlsx_3.0.0     rmarkdown_0.9.6   
+[13] knitr_1.13        
 
 loaded via a namespace (and not attached):
  [1] Rcpp_0.12.5      magrittr_1.5     munsell_0.4.3    colorspace_1.2-6
- [5] lattice_0.20-33  plyr_1.8.4       stringr_1.0.0    highr_0.6       
- [9] tools_3.3.0      grid_3.3.0       gtable_0.2.0     htmltools_0.3.5 
-[13] digest_0.6.9     formatR_1.4      evaluate_0.9     stringi_1.1.1   
-[17] scales_0.4.0     chron_2.3-47    
+ [5] lattice_0.20-33  R6_2.1.2         plyr_1.8.4       stringr_1.0.0   
+ [9] highr_0.6        dplyr_0.5.0      tools_3.3.0      grid_3.3.0      
+[13] gtable_0.2.0     DBI_0.4-1        htmltools_0.3.5  lazyeval_0.2.0  
+[17] assertthat_0.1   digest_0.6.9     tibble_1.1       formatR_1.4     
+[21] evaluate_0.9     stringi_1.1.1    scales_0.4.0     chron_2.3-47    
 
