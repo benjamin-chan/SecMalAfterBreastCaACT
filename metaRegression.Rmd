@@ -21,6 +21,8 @@ xscale <- 1e3
 D2 <- D1[,
          .(id = factor(id),
            authorYear,
+           arm,
+           regimen,
            isCyclo,
            xCyc = cyclophosphamideCumulDose / xscale,  # scale units
            isCycHighDose = cyclophosphamideCumulDose >= 2400,

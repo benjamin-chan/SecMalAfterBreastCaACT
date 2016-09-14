@@ -36,7 +36,7 @@ D <- D[isTaxane == FALSE,
        `:=` (isDocetaxel = FALSE,
              isPaclitaxel = FALSE)]
 D1 <- melt(D,
-           id.vars=c("id", "authorYear", "arm",
+           id.vars=c("id", "authorYear", "arm", "regimen",
                      "isAnthra", "anthracyclineCumulDose",
                      "isCyclo", "cyclophosphamideCumulDose",
                      "isTaxane", "taxaneCumulDose", "isDocetaxel", "isPaclitaxel",
