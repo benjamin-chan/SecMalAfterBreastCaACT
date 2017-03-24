@@ -1,4 +1,10 @@
-setwd("~/SecMalAfterBreastCaACT")
+setwd("~/Projects/SecMalAfterBreastCaACT")
+
+if(!require(checkpoint)){
+  install.packages("checkpoint")
+  library(checkpoint)
+}
+checkpoint("2016-08-17", use.knitr = TRUE)
 
 sink("make.log")
 
