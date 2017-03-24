@@ -26,10 +26,9 @@ library(knitr)
 library(rmarkdown)
 knit("master.Rmd", output = "index.md")
 file.remove("master.Rmd")
+sink()
 
 sink("session.log")
 list(completionDateTime = Sys.time(),
      sessionInfo = sessionInfo())
-sink()
-
 sink()

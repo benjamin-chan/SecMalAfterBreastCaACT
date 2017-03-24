@@ -10,7 +10,9 @@ See [index.md](index.md) or [index.html](index.html) for full details, including
 	* Crude statistics
 		* Total person-years of follow-up: 261,433
 		* Total number of persons (ITT): 44,628
-		* Total number of AML or MDS: 171
+		* Total number of outcomes: 171
+		* Number of treatment arms: 56
+		* Number of studies: 26
 		* Crude incidence rate: 6.54 per 10,000 person-years
 	* AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
 		* AML or MDS rate increased 1.16 times (95% CI: 1.04, 1.29; p = 0.0057) for each 1000 $\text{mg} / \text{m}^2$
@@ -32,7 +34,9 @@ See [index.md](index.md) or [index.html](index.html) for full details, including
 	* Crude statistics
 		* Total person-years of follow-up: 112,778
 		* Total number of persons (ITT): 19,289
-		* Total number of Non-Breast Solid: 363
+		* Total number of outcomes: 363
+		* Number of treatment arms: 31
+		* Number of studies: 16
 		* Crude incidence rate: 32.2 per 10,000 person-years
 	* Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
 		* Non-Breast Solid rate increased 1 times (95% CI: 0.906, 1.11; p = 0.96) for each 1000 $\text{mg} / \text{m}^2$

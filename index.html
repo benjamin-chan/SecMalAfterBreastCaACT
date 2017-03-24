@@ -754,7 +754,7 @@ MathJax.Hub.Config({
 <ul>
 <li>Author: <a href="http://careers.stackoverflow.com/benjaminchan">Benjamin Chan</a>
 </li>
-<li>Date: 2016-08-17 11:17:06</li>
+<li>Date: 2017-03-24 10:12:30</li>
 </ul>
 
 <h1>
@@ -777,14 +777,20 @@ library(<span class="pl-smi">tidyr</span>)</pre></div>
 download.file(<span class="pl-smi">url</span>, <span class="pl-smi">f</span>, <span class="pl-v">mode</span><span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>wb<span class="pl-pds">"</span></span>)
 file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pds">"</span>size<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>mtime<span class="pl-pds">"</span></span>)]</pre></div>
 
-<pre><code>##                                    size               mtime
-## /tmp/RtmpylXwm8/file1559814d87e2b 59619 2016-08-17 11:17:08
+<pre><code>##                                                                          size
+## C:\\Users\\chanb\\AppData\\Local\\Temp\\1\\RtmpElIKxo\\file2660201c25b3 59619
+##                                                                                       mtime
+## C:\\Users\\chanb\\AppData\\Local\\Temp\\1\\RtmpElIKxo\\file2660201c25b3 2017-03-24 10:12:31
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">sheets</span> <span class="pl-k">&lt;-</span> getSheetNames(<span class="pl-smi">f</span>)
-<span class="pl-c"># sheets</span>
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> read.xlsx(<span class="pl-smi">f</span>, <span class="pl-v">sheet</span> <span class="pl-k">=</span> <span class="pl-smi">sheets</span>[<span class="pl-c1">1</span>], <span class="pl-v">startRow</span> <span class="pl-k">=</span> <span class="pl-c1">3</span>, <span class="pl-v">colNames</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-smi">D</span>)
+<span class="pl-c"><span class="pl-c">#</span> sheets</span>
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> read.xlsx(<span class="pl-smi">f</span>, <span class="pl-v">sheet</span> <span class="pl-k">=</span> <span class="pl-smi">sheets</span>[<span class="pl-c1">1</span>], <span class="pl-v">startRow</span> <span class="pl-k">=</span> <span class="pl-c1">3</span>, <span class="pl-v">colNames</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)</pre></div>
+
+<pre><code>## Error in read.xlsx(f, sheet = sheets[1], startRow = 3, colNames = FALSE): argument 2 matches multiple formal arguments
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-smi">D</span>)
 <span class="pl-smi">oldnames</span> <span class="pl-k">&lt;-</span> names(<span class="pl-smi">D</span>)
 <span class="pl-smi">newnames</span> <span class="pl-k">&lt;-</span> c(<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>,
               <span class="pl-s"><span class="pl-pds">"</span>authorYear<span class="pl-pds">"</span></span>,
@@ -793,7 +799,7 @@ file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pd
               <span class="pl-s"><span class="pl-pds">"</span>arm<span class="pl-pds">"</span></span>,
               <span class="pl-s"><span class="pl-pds">"</span>nRandomized<span class="pl-pds">"</span></span>,
               <span class="pl-s"><span class="pl-pds">"</span>nITT<span class="pl-pds">"</span></span>,
-              <span class="pl-c"># "pctCompletingTx",</span>
+              <span class="pl-c"><span class="pl-c">#</span> "pctCompletingTx",</span>
               <span class="pl-s"><span class="pl-pds">"</span>medianFU<span class="pl-pds">"</span></span>,
               <span class="pl-s"><span class="pl-pds">"</span>regimen<span class="pl-pds">"</span></span>,
               <span class="pl-s"><span class="pl-pds">"</span>anthracyclineType<span class="pl-pds">"</span></span>,
@@ -822,6 +828,9 @@ file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pd
               <span class="pl-s"><span class="pl-pds">"</span>NOTES<span class="pl-pds">"</span></span>)
 setnames(<span class="pl-smi">D</span>, <span class="pl-smi">oldnames</span>, <span class="pl-smi">newnames</span>[<span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">33</span>])</pre></div>
 
+<pre><code>## Error in setnames(D, oldnames, newnames[1:33]): 'old' is length 45 but 'new' is length 33
+</code></pre>
+
 <h1>
 <a id="user-content-tidy-data" class="anchor" href="#tidy-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tidy data</h1>
 
@@ -839,8 +848,8 @@ This will be handy later.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">col</span> <span class="pl-k">&lt;-</span> grep(<span class="pl-s"><span class="pl-pds">"</span>^cyclophosphamide<span class="pl-pds">"</span></span>, names(<span class="pl-smi">D</span>), <span class="pl-v">invert</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>)
 <span class="pl-smi">D</span>[<span class="pl-c1">11</span>, <span class="pl-smi">col</span>] <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-c1">10</span>, <span class="pl-smi">col</span>, <span class="pl-v">with</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>]
-<span class="pl-c"># D[11, ]</span>
-<span class="pl-c"># D[10, ]</span></pre></div>
+<span class="pl-c"><span class="pl-c">#</span> D[11, ]</span>
+<span class="pl-c"><span class="pl-c">#</span> D[10, ]</span></pre></div>
 
 <p>Fix trial column for Romond (2005).</p>
 
@@ -850,10 +859,22 @@ This will be handy later.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>, <span class="pl-smi">medianFU</span>, <span class="pl-v">invert</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>), <span class="pl-smi">medianFUNum</span> <span class="pl-k">:</span><span class="pl-k">=</span> round(as.numeric(<span class="pl-smi">medianFU</span>), <span class="pl-v">digits</span> <span class="pl-k">=</span> <span class="pl-c1">2</span>)]
 <span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>, <span class="pl-smi">medianFU</span>), <span class="pl-smi">medianFU</span>]
-<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> as.numeric(unlist(strsplit(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>)))
-<span class="pl-smi">x1</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span>[seq(<span class="pl-c1">1</span>, length(<span class="pl-smi">x</span>), <span class="pl-c1">2</span>)]
-<span class="pl-smi">x2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span>[seq(<span class="pl-c1">2</span>, length(<span class="pl-smi">x</span>), <span class="pl-c1">2</span>)]
-<span class="pl-smi">xbar</span> <span class="pl-k">&lt;-</span> rowMeans(cbind(<span class="pl-smi">x1</span>, <span class="pl-smi">x2</span>))
+<span class="pl-smi">x</span> <span class="pl-k">&lt;-</span> as.numeric(unlist(strsplit(<span class="pl-smi">x</span>, <span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>)))</pre></div>
+
+<pre><code>## Error in strsplit(x, "-"): non-character argument
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">x1</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span>[seq(<span class="pl-c1">1</span>, length(<span class="pl-smi">x</span>), <span class="pl-c1">2</span>)]</pre></div>
+
+<pre><code>## Error in seq.default(1, length(x), 2): wrong sign in 'by' argument
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">x2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">x</span>[seq(<span class="pl-c1">2</span>, length(<span class="pl-smi">x</span>), <span class="pl-c1">2</span>)]</pre></div>
+
+<pre><code>## Error in seq.default(2, length(x), 2): wrong sign in 'by' argument
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">xbar</span> <span class="pl-k">&lt;-</span> rowMeans(cbind(<span class="pl-smi">x1</span>, <span class="pl-smi">x2</span>))
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[grep(<span class="pl-s"><span class="pl-pds">"</span>-<span class="pl-pds">"</span></span>, <span class="pl-smi">medianFU</span>), <span class="pl-smi">medianFUNum</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">xbar</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[,
        `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">medianFUChar</span> <span class="pl-k">=</span> <span class="pl-smi">medianFU</span>,
@@ -861,11 +882,7 @@ This will be handy later.</p>
              <span class="pl-v">medianFUNum</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>)]
 unique(<span class="pl-smi">D</span>[as.character(<span class="pl-smi">medianFU</span>) <span class="pl-k">!=</span> <span class="pl-smi">medianFUChar</span>, .(<span class="pl-smi">medianFU</span>, <span class="pl-smi">medianFUChar</span>)])</pre></div>
 
-<pre><code>##    medianFU       medianFUChar
-## 1:     38.3 38.299999999999997
-## 2:     73.0              71-75
-## 3:     99.6 99.600000000000009
-## 4:     28.8 28.799999999999997
+<pre><code>## Empty data.table (0 rows) of 2 cols: medianFU,medianFUChar
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">medianFUChar</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">NULL</span>]</pre></div>
@@ -892,14 +909,14 @@ unique(<span class="pl-smi">D</span>[as.character(<span class="pl-smi">medianFU<
 }
 <span class="pl-smi">col</span> <span class="pl-k">&lt;-</span> grep(<span class="pl-s"><span class="pl-pds">"</span>^mal<span class="pl-pds">"</span></span>, names(<span class="pl-smi">D</span>), <span class="pl-v">value</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>)
 <span class="pl-k">for</span> (<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>) {
-    <span class="pl-c"># Only substitute a subset of mal* columns</span>
+    <span class="pl-c"><span class="pl-c">#</span> Only substitute a subset of mal* columns</span>
     <span class="pl-smi">D</span>[, <span class="pl-smi">col</span>[<span class="pl-smi">i</span>]] <span class="pl-k">&lt;-</span> substitute(<span class="pl-smi">col</span>[<span class="pl-smi">i</span>])
 }</pre></div>
 
 <p>Convert mal* values to numeric.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-k">for</span> (<span class="pl-smi">i</span> <span class="pl-k">in</span> <span class="pl-c1">1</span><span class="pl-k">:</span><span class="pl-c1">4</span>) {
-    <span class="pl-c"># Only convert a subset of mal* columns</span>
+    <span class="pl-c"><span class="pl-c">#</span> Only convert a subset of mal* columns</span>
     <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">col</span>[<span class="pl-smi">i</span>] <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(get(<span class="pl-smi">col</span>[<span class="pl-smi">i</span>]))]
 }</pre></div>
 
@@ -917,30 +934,71 @@ NOTE: Couldn't get this to work: <a href="http://stackoverflow.com/a/16513949/14
 <span class="pl-smi">D</span>[<span class="pl-smi">s</span>, .(<span class="pl-smi">rowid</span>, <span class="pl-smi">malAML</span>, <span class="pl-smi">malMDS</span>, <span class="pl-smi">malAMLOrMDS</span>, <span class="pl-smi">malAMLOrMDSTotal</span>)]</pre></div>
 
 <pre><code>##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    85     NA     NA           0                0
-##  2:     7      5      5          NA               10
-##  3:    73     NA     NA           2                2
-##  4:    26     NA     NA           7                7
-##  5:    75      0      0          NA                0
-##  6:    82     NA     NA           1                1
-##  7:    27     NA     NA          NA               NA
-##  8:    55      4      2          NA                6
-##  9:    92     NA     NA          NA               NA
-## 10:    47      0      0          NA                0
-## 11:    51     NA     NA          NA               NA
-## 12:    69     NA     NA          NA               NA
+##  1:    15     NA     NA          NA               NA
+##  2:    40     NA     NA          NA               NA
+##  3:    20     NA     NA          NA               NA
+##  4:    82     NA     NA           5                5
+##  5:    23      0     NA          NA                0
+##  6:    22      4     NA          NA                4
+##  7:    37     NA     NA          NA               NA
+##  8:    44      0     NA          NA                0
+##  9:    70      0     NA          NA                0
+## 10:     7      1     NA          NA                1
+## 11:     6      1     NA          NA                1
+## 12:    79     NA     NA          NA               NA
 </code></pre>
 
 <p>Remove text from <code>nITT</code> column.</p>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Misset (1996)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">2</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>137<span class="pl-pds">"</span></span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>210<span class="pl-pds">"</span></span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">2</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>197<span class="pl-pds">"</span></span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">3</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>195<span class="pl-pds">"</span></span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.integer(<span class="pl-smi">nITT</span>)]</pre></div>
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Misset (1996)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">2</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>137<span class="pl-pds">"</span></span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, authorYear == "Misset (1996)" &amp; arm == 2,
+## `:=`(nITT, : Coerced 'character' RHS to 'integer' to match the column's
+## type. Either change the target column to 'character' first (by creating a
+## new 'character' vector length 95 (nrows of entire table) and assign that;
+## i.e. 'replace' column), or coerce RHS to 'integer' (e.g. 1L, NA_[real|
+## integer]_, as.*, etc) to make your intent clear and for speed. Or, set the
+## column type correctly up front when you create the table and stick to it,
+## please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">1</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>210<span class="pl-pds">"</span></span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, authorYear == "Fumoleu (2003)" &amp; arm ==
+## 1, : Coerced 'character' RHS to 'integer' to match the column's type.
+## Either change the target column to 'character' first (by creating a new
+## 'character' vector length 95 (nrows of entire table) and assign that; i.e.
+## 'replace' column), or coerce RHS to 'integer' (e.g. 1L, NA_[real|integer]_,
+## as.*, etc) to make your intent clear and for speed. Or, set the column type
+## correctly up front when you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">2</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>197<span class="pl-pds">"</span></span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, authorYear == "Fumoleu (2003)" &amp; arm ==
+## 2, : Coerced 'character' RHS to 'integer' to match the column's type.
+## Either change the target column to 'character' first (by creating a new
+## 'character' vector length 95 (nrows of entire table) and assign that; i.e.
+## 'replace' column), or coerce RHS to 'integer' (e.g. 1L, NA_[real|integer]_,
+## as.*, etc) to make your intent clear and for speed. Or, set the column type
+## correctly up front when you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Fumoleu (2003)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">3</span>, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>195<span class="pl-pds">"</span></span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, authorYear == "Fumoleu (2003)" &amp; arm ==
+## 3, : Coerced 'character' RHS to 'integer' to match the column's type.
+## Either change the target column to 'character' first (by creating a new
+## 'character' vector length 95 (nrows of entire table) and assign that; i.e.
+## 'replace' column), or coerce RHS to 'integer' (e.g. 1L, NA_[real|integer]_,
+## as.*, etc) to make your intent clear and for speed. Or, set the column type
+## correctly up front when you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">nITT</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.integer(<span class="pl-smi">nITT</span>)]</pre></div>
 
 <p>Clean up the <code>regimen</code> and <code>dose</code> columns.
-Output to <a href="///H://Projects/SecMalAfterBreastCaACT/regimens.md">regimens.md</a> for checking.</p>
+Output to <a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/regimens.md">regimens.md</a> for checking.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">regimen</span> <span class="pl-k">:</span><span class="pl-k">=</span> gsub(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\\</span>s$<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-smi">regimen</span>)]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">regimen</span> <span class="pl-k">:</span><span class="pl-k">=</span> gsub(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\\</span>r*<span class="pl-cce">\\</span>n<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, <span class="pl-smi">regimen</span>)]
@@ -953,126 +1011,154 @@ cat(kable(<span class="pl-smi">D</span>[, .<span class="pl-smi">N</span>, c(<spa
     <span class="pl-v">sep</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>)
 file.info(<span class="pl-s"><span class="pl-pds">"</span>regimens.md<span class="pl-pds">"</span></span>)</pre></div>
 
-<pre><code>##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
-##                           atime  uid  gid uname   grname
-## regimens.md 2016-08-17 09:55:33 4051 3010 chanb HPCUsers
+<pre><code>##              size isdir mode               mtime               ctime
+## regimens.md 12998 FALSE  666 2017-03-24 10:12:31 2016-10-07 11:24:23
+##                           atime exe
+## regimens.md 2016-10-07 11:24:23  no
 </code></pre>
 
 <p>Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.</p>
 
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">anthracyclineTotalDose</span>)]</pre></div>
-
-<pre><code>## Warning: NAs introduced by coercion
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Bergh (2000)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>FEC<span class="pl-cce">\n</span>Tailored<span class="pl-pds">"</span></span>, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">75</span>]
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">anthracyclineTotalDose</span>)]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Bergh (2000)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>FEC<span class="pl-cce">\n</span>Tailored<span class="pl-pds">"</span></span>, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">75</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Henderson (2003)<span class="pl-pds">"</span></span>, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">75</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Colleoni (2009)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>AC-CMF<span class="pl-pds">"</span></span>, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">75</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">cyclophosphamideDose</span>)]</pre></div>
-
-<pre><code>## Warning: NAs introduced by coercion
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Colleoni (2009)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>EC<span class="pl-pds">"</span></span>, <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">600</span>]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">cyclophosphamideDose</span>)]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Colleoni (2009)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>EC<span class="pl-pds">"</span></span>, <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">600</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Bergh (2000)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>FEC<span class="pl-cce">\n</span>Tailored<span class="pl-pds">"</span></span>, <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">900</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Henderson (2003)<span class="pl-pds">"</span></span>, <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">75</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">taxaneCourses</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">taxaneCourses</span>)]</pre></div>
-
-<pre><code>## Warning: NAs introduced by coercion
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Shulman (2014)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>T<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">3</span>, <span class="pl-smi">taxaneCourses</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">4</span>]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">taxaneCourses</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">taxaneCourses</span>)]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Shulman (2014)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>T<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">3</span>, <span class="pl-smi">taxaneCourses</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">4</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Shulman (2014)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>T<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">arm</span> <span class="pl-k">==</span> <span class="pl-c1">4</span>, <span class="pl-smi">taxaneCourses</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">6</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">fluoroucilTotalDose</span>)]</pre></div>
-
-<pre><code>## Warning: NAs introduced by coercion
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Bergh (2000)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>FEC<span class="pl-cce">\n</span>Tailored<span class="pl-pds">"</span></span>, <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">600</span>]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">fluoroucilTotalDose</span>)]
+<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Bergh (2000)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>FEC<span class="pl-cce">\n</span>Tailored<span class="pl-pds">"</span></span>, <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">600</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Joensuu (2012)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">regimen</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>TX-CEX<span class="pl-pds">"</span></span>, <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">NA</span>]
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">anthracyclineTotalDose</span>) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">anthracyclineTotalDose</span>),
-       <span class="pl-smi">anthracyclineCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">*</span> <span class="pl-smi">anthracyclineCourses</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideDose</span>) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideCourses</span>),
-       <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">*</span> <span class="pl-smi">cyclophosphamideCourses</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(as.numeric(<span class="pl-smi">taxaneTotalDose</span>)) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">taxaneCourses</span>),
-       <span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">taxaneTotalDose</span>) <span class="pl-k">*</span> <span class="pl-smi">taxaneCourses</span>]
-<span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilTotalDose</span>) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilCourses</span>),
-       <span class="pl-smi">fluoroucilCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">*</span> <span class="pl-smi">fluoroucilCourses</span>]
-<span class="pl-c"># D &lt;- D[is.na(anthracyclineCumulDose), anthracyclineCumulDose := 0]</span>
-<span class="pl-c"># D &lt;- D[is.na(cyclophosphamideCumulDose), cyclophosphamideCumulDose := 0]</span>
-<span class="pl-c"># D &lt;- D[is.na(taxaneCumulDose), taxaneCumulDose := 0]</span>
-<span class="pl-c"># D &lt;- D[is.na(fluoroucilCumulDose), fluoroucilCumulDose := 0]</span></pre></div>
+       <span class="pl-smi">anthracyclineCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">anthracyclineTotalDose</span> <span class="pl-k">*</span> <span class="pl-smi">anthracyclineCourses</span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, !is.na(anthracyclineTotalDose) &amp; !
+## is.na(anthracyclineTotalDose), : Coerced 'double' RHS to 'character' to
+## match the column's type; may have truncated precision. Either change the
+## target column to 'double' first (by creating a new 'double' vector length
+## 95 (nrows of entire table) and assign that; i.e. 'replace' column), or
+## coerce RHS to 'character' (e.g. 1L, NA_[real|integer]_, as.*, etc) to make
+## your intent clear and for speed. Or, set the column type correctly up front
+## when you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideDose</span>) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideCourses</span>),
+       <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideDose</span> <span class="pl-k">*</span> <span class="pl-smi">cyclophosphamideCourses</span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, !is.na(cyclophosphamideDose) &amp; !
+## is.na(cyclophosphamideCourses), : Coerced 'double' RHS to 'character' to
+## match the column's type; may have truncated precision. Either change the
+## target column to 'double' first (by creating a new 'double' vector length
+## 95 (nrows of entire table) and assign that; i.e. 'replace' column), or
+## coerce RHS to 'character' (e.g. 1L, NA_[real|integer]_, as.*, etc) to make
+## your intent clear and for speed. Or, set the column type correctly up front
+## when you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(as.numeric(<span class="pl-smi">taxaneTotalDose</span>)) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">taxaneCourses</span>),
+       <span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> as.numeric(<span class="pl-smi">taxaneTotalDose</span>) <span class="pl-k">*</span> <span class="pl-smi">taxaneCourses</span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, !is.na(as.numeric(taxaneTotalDose)) &amp; !
+## is.na(taxaneCourses), : Coerced 'double' RHS to 'character' to match the
+## column's type; may have truncated precision. Either change the target
+## column to 'double' first (by creating a new 'double' vector length 95
+## (nrows of entire table) and assign that; i.e. 'replace' column), or coerce
+## RHS to 'character' (e.g. 1L, NA_[real|integer]_, as.*, etc) to make your
+## intent clear and for speed. Or, set the column type correctly up front when
+## you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilTotalDose</span>) <span class="pl-k">&amp;</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilCourses</span>),
+       <span class="pl-smi">fluoroucilCumulDose</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-smi">fluoroucilTotalDose</span> <span class="pl-k">*</span> <span class="pl-smi">fluoroucilCourses</span>]</pre></div>
+
+<pre><code>## Warning in `[.data.table`(D, !is.na(fluoroucilTotalDose) &amp; !
+## is.na(fluoroucilCourses), : Coerced 'double' RHS to 'character' to match
+## the column's type; may have truncated precision. Either change the target
+## column to 'double' first (by creating a new 'double' vector length 95
+## (nrows of entire table) and assign that; i.e. 'replace' column), or coerce
+## RHS to 'character' (e.g. 1L, NA_[real|integer]_, as.*, etc) to make your
+## intent clear and for speed. Or, set the column type correctly up front when
+## you create the table and stick to it, please.
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-c"><span class="pl-c">#</span> D &lt;- D[is.na(anthracyclineCumulDose), anthracyclineCumulDose := 0]</span>
+<span class="pl-c"><span class="pl-c">#</span> D &lt;- D[is.na(cyclophosphamideCumulDose), cyclophosphamideCumulDose := 0]</span>
+<span class="pl-c"><span class="pl-c">#</span> D &lt;- D[is.na(taxaneCumulDose), taxaneCumulDose := 0]</span>
+<span class="pl-c"><span class="pl-c">#</span> D &lt;- D[is.na(fluoroucilCumulDose), fluoroucilCumulDose := 0]</span></pre></div>
 
 <p>Check.</p>
 
 <div class="highlight highlight-source-r"><pre>head(<span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">anthracyclineCumulDose</span>),
        .(<span class="pl-smi">authorYear</span>, <span class="pl-smi">regimen</span>, <span class="pl-smi">anthracyclineCumulDose</span>, <span class="pl-smi">anthracyclineTotalDose</span>, <span class="pl-smi">anthracyclineCourses</span>)])</pre></div>
 
-<pre><code>##       authorYear regimen anthracyclineCumulDose anthracyclineTotalDose
-## 1: Fisher (1990)      AC                    240                     60
-## 2: Fisher (1990)  AC-CMF                    240                     60
-## 3: Misset (1996)    AVCF                    360                     30
-## 4: Fisher (1999)      AC                    240                     60
-## 5: Fisher (1999)      AC                    240                     60
-## 6: Fisher (1999)      AC                    240                     60
-##    anthracyclineCourses
-## 1:                    4
-## 2:                    4
-## 3:                   12
-## 4:                    4
-## 5:                    4
-## 6:                    4
+<pre><code>##              authorYear  regimen anthracyclineCumulDose
+## 1:         Bergh (2000) FEC CTCb                    180
+## 2: Bernard-Marty (2003)       EC                    480
+## 3: Bernard-Marty (2003)       EC                    800
+## 4:    Bonneterre (2005)   FEC 50                    300
+## 5:    Bonneterre (2005)  FEC 100                    600
+## 6:        Citron (2003)    A-T-C                    240
+##    anthracyclineTotalDose anthracyclineCourses
+## 1:                     60                    3
+## 2:                     60                    8
+## 3:                    100                    8
+## 4:                     50                    6
+## 5:                    100                    6
+## 6:                     60                    4
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre>head(<span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">cyclophosphamideCumulDose</span>),
        .(<span class="pl-smi">authorYear</span>, <span class="pl-smi">regimen</span>, <span class="pl-smi">cyclophosphamideCumulDose</span>, <span class="pl-smi">cyclophosphamideDose</span>, <span class="pl-smi">cyclophosphamideCourses</span>)])</pre></div>
 
-<pre><code>##       authorYear regimen cyclophosphamideCumulDose cyclophosphamideDose
-## 1: Fisher (1990)      AC                      2400                  600
-## 2: Fisher (1990)  AC-CMF                      2400                  600
-## 3: Misset (1996)    AVCF                     14400                 1200
-## 4: Fisher (1999)      AC                      4800                 1200
-## 5: Fisher (1999)      AC                      4800                 2400
-## 6: Fisher (1999)      AC                      9600                 2400
-##    cyclophosphamideCourses
-## 1:                       4
-## 2:                       4
-## 3:                      12
-## 4:                       4
-## 5:                       2
-## 6:                       4
+<pre><code>##              authorYear  regimen cyclophosphamideCumulDose
+## 1:         Bergh (2000) FEC CTCb                      1200
+## 2: Bernard-Marty (2003)       EC                      4000
+## 3: Bernard-Marty (2003)       EC                      6640
+## 4:    Bonneterre (2005)   FEC 50                      3000
+## 5:    Bonneterre (2005)  FEC 100                      3000
+## 6:        Citron (2003)    A-T-C                      2400
+##    cyclophosphamideDose cyclophosphamideCourses
+## 1:                  600                       2
+## 2:                  500                       8
+## 3:                  830                       8
+## 4:                  500                       6
+## 5:                  500                       6
+## 6:                  600                       4
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre>head(<span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">taxaneCumulDose</span>),
        .(<span class="pl-smi">authorYear</span>, <span class="pl-smi">regimen</span>, <span class="pl-smi">taxaneCumulDose</span>, <span class="pl-smi">taxaneTotalDose</span>, <span class="pl-smi">taxaneCourses</span>)])</pre></div>
 
-<pre><code>##        authorYear regimen taxaneCumulDose taxaneTotalDose taxaneCourses
-## 1:  Citron (2003)   A-T-C             700             175             4
-## 2:  Citron (2003)   A-T-C             700             175             4
-## 3:  Citron (2003)    AC-T             700             175             4
-## 4:  Citron (2003)    AC-T             700             175             4
-## 5: Francis (2008) A-T-CMF             300             100             3
-## 6: Francis (2008)  AT-CMF             300              75             4
+<pre><code>##           authorYear regimen taxaneCumulDose taxaneTotalDose taxaneCourses
+## 1:     Citron (2003)   A-T-C             700             175             4
+## 2:     Citron (2003)   A-T-C             700             175             4
+## 3:     Citron (2003)    AC-T             700             175             4
+## 4:     Citron (2003)    AC-T             700             175             4
+## 5: Del Mastro (2015)    EC-T             700             175             4
+## 6: Del Mastro (2015)   FEC-T             700             175             4
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre>head(<span class="pl-smi">D</span>[<span class="pl-k">!</span>is.na(<span class="pl-smi">fluoroucilCumulDose</span>),
        .(<span class="pl-smi">authorYear</span>, <span class="pl-smi">regimen</span>, <span class="pl-smi">fluoroucilCumulDose</span>, <span class="pl-smi">fluoroucilTotalDose</span>, <span class="pl-smi">fluoroucilCourses</span>)])</pre></div>
 
-<pre><code>##          authorYear regimen fluoroucilCumulDose fluoroucilTotalDose
-## 1:    Misset (1996)    AVCF               19200                1600
-## 2: Venturini (2005)     FEC                3600                 600
-## 3: Venturini (2005)     FEC                3600                 600
-## 4:    Martin (2010)     FAC                3000                 500
-## 5:     Roche (2006)     FEC                3000                 500
-## 6:     Roche (2006)   FEC-T                1500                 500
+<pre><code>##           authorYear regimen fluoroucilCumulDose fluoroucilTotalDose
+## 1: Bonneterre (2005)  FEC 50                3000                 500
+## 2: Bonneterre (2005) FEC 100                3000                 500
+## 3:    Coombes (1996)     FEC                4800                 600
+## 4:    Coombes (1996)     FEC                7200                1200
+## 5: Del Mastro (2015)   FEC-T                2400                 600
+## 6: Del Mastro (2015)   FEC-T                2400                 600
 ##    fluoroucilCourses
-## 1:                12
+## 1:                 6
 ## 2:                 6
-## 3:                 6
+## 3:                 8
 ## 4:                 6
-## 5:                 6
-## 6:                 3
+## 5:                 4
+## 6:                 4
 </code></pre>
 
 <h2>
@@ -1103,29 +1189,10 @@ file.info(<span class="pl-s"><span class="pl-pds">"</span>regimens.md<span class
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[<span class="pl-smi">authorYear</span> <span class="pl-k">==</span> <span class="pl-s"><span class="pl-pds">"</span>Swain (2013)<span class="pl-pds">"</span></span> <span class="pl-k">&amp;</span> <span class="pl-smi">nITT</span> <span class="pl-k">==</span> <span class="pl-c1">1618</span>, `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">nITTOld</span> <span class="pl-k">=</span> <span class="pl-smi">nITT</span>, <span class="pl-v">nITT</span> <span class="pl-k">=</span> <span class="pl-c1">1630</span>, <span class="pl-v">isFixed</span> <span class="pl-k">=</span> <span class="pl-c1">TRUE</span>)]
 <span class="pl-smi">D</span>[<span class="pl-smi">isFixed</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, .(<span class="pl-smi">authorYear</span>, <span class="pl-smi">regimen</span>, <span class="pl-smi">nITTOld</span>, <span class="pl-smi">nITT</span>)]</pre></div>
 
-<pre><code>##            authorYear   regimen nITTOld nITT
-##  1:   Mamounas (2005)        AC    1528 1529
-##  2:    Fumoleu (2003)    FEC 50     210  212
-##  3:    Fumoleu (2003)  3 FEC 50     197  209
-##  4:    Fumoleu (2003)    FEC 75     195  200
-##  5:    Fargeot (2004) Tamoxifen     155  164
-##  6:    Fargeot (2004)   EPI-Tam     163  174
-##  7:    Kerbrat (2007)       FEC     235  241
-##  8:    Kerbrat (2007)     E+Vnr     236  241
-##  9:     Fisher (1997)        AC     763  767
-## 10:     Fisher (1997)        AC     771  772
-## 11: Bonneterre (2005)    FEC 50     271  289
-## 12: Bonneterre (2005)   FEC 100     266  276
-## 13:      Roche (2006) Tamoxifen     163  164
-## 14:      Roche (2006)       FEC     168  169
-## 15:    Shulman (2014)        AC    1107 1142
-## 16:    Shulman (2014)        AC     766  789
-## 17:    Shulman (2014)         T    1119 1151
-## 18:    Shulman (2014)         T     782  789
-## 19:      Swain (2013)       ACT    1617 1630
-## 20:      Swain (2013)      AC-T    1624 1634
-## 21:      Swain (2013)     AC-TG    1618 1630
-##            authorYear   regimen nITTOld nITT
+<pre><code>##        authorYear  regimen nITTOld nITT
+## 1: Fumoleu (2003)   FEC 50     210  212
+## 2: Fumoleu (2003) 3 FEC 50     197  209
+## 3: Fumoleu (2003)   FEC 75     195  200
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">nITTOld</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>, <span class="pl-v">isFixed</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>)]</pre></div>
@@ -1169,36 +1236,34 @@ file.info(<span class="pl-s"><span class="pl-pds">"</span>regimens.md<span class
 
 <pre><code>##               authorYear     regimen nITT malAMLOrMDSTotalOld
 ##  1: Bernard-Marty (2003)          EC  267                  NA
-##  2:        Citron (2003)       A-T-C  493                  NA
-##  3:        Citron (2003)        AC-T  495                  NA
-##  4:        Martin (2010)         TAC  539                  NA
-##  5:        Martin (2010)         FAC  521                  NA
-##  6:    Bonneterre (2005)      FEC 50  289                  NA
-##  7:    Bonneterre (2005)     FEC 100  276                  NA
-##  8:      Eiermann (2011)        AC-T 1649                  NA
-##  9:      Eiermann (2011)         TAC 1649                  NA
-## 10:        Romond (2005)        AC-T  872                  NA
-## 11:        Romond (2005) ACT-T-Trast  864                  NA
-## 12:    Del Mastro (2015)        EC-T  545                  NA
-## 13:    Del Mastro (2015)       FEC-T  544                  NA
-## 14:    Del Mastro (2015)        EC-T  502                   0
-## 15:    Del Mastro (2015)       FEC-T  500                  NA
+##  2:    Bonneterre (2005)      FEC 50  289                  NA
+##  3:    Bonneterre (2005)     FEC 100  276                  NA
+##  4:        Citron (2003)       A-T-C  493                  NA
+##  5:    Del Mastro (2015)        EC-T  545                  NA
+##  6:    Del Mastro (2015)       FEC-T  544                  NA
+##  7:    Del Mastro (2015)        EC-T  502                   0
+##  8:    Del Mastro (2015)       FEC-T  500                  NA
+##  9:      Eiermann (2011)        AC-T 1649                  NA
+## 10:      Eiermann (2011)         TAC 1649                  NA
+## 11:        Martin (2010)         TAC  539                  NA
+## 12:        Martin (2010)         FAC  521                  NA
+## 13:        Romond (2005)        AC-T  872                  NA
+## 14:        Romond (2005) ACT-T-Trast  864                  NA
 ##     malAMLOrMDSTotal malNonBreastSolidOld malNonBreastSolid
-##  1:                0                    3                 4
-##  2:                3                   10                11
-##  3:                2                   10                11
-##  4:                0                   NA                 9
-##  5:                0                   NA                16
-##  6:                1                    9                11
-##  7:                1                   12                15
-##  8:                2                   NA                34
-##  9:                4                   NA                31
-## 10:                2                   NA                13
-## 11:                1                   NA                 4
-## 12:                0                   NA                NA
-## 13:                0                   NA                NA
-## 14:                2                   NA                NA
-## 15:                0                   NA                NA
+##  1:                0                    4                 4
+##  2:                1                   11                11
+##  3:                1                   15                15
+##  4:                3                   11                11
+##  5:                0                   NA                NA
+##  6:                0                   NA                NA
+##  7:                2                   NA                NA
+##  8:                0                   NA                NA
+##  9:                2                   34                34
+## 10:                4                   31                31
+## 11:                0                   NA                 9
+## 12:                0                   NA                16
+## 13:                2                   13                13
+## 14:                1                    4                 4
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[, `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">malAMLOrMDSTotalOld</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>, <span class="pl-v">malNonBreastSolidOld</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>, <span class="pl-v">isFixed</span> <span class="pl-k">=</span> <span class="pl-c1">NULL</span>)]</pre></div>
@@ -1210,7 +1275,7 @@ setkey(<span class="pl-smi">D</span>, <span class="pl-smi">authorYear</span>, <s
 <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">D</span>)
 message(sprintf(<span class="pl-s"><span class="pl-pds">"</span>Removed %d duplicate row(s) (%.03g%%)<span class="pl-pds">"</span></span>, <span class="pl-smi">n0</span> <span class="pl-k">-</span> nrow(<span class="pl-smi">D</span>), (<span class="pl-smi">n0</span> <span class="pl-k">-</span> nrow(<span class="pl-smi">D</span>)) <span class="pl-k">/</span> <span class="pl-smi">n0</span> <span class="pl-k">*</span> <span class="pl-c1">100</span>))</pre></div>
 
-<pre><code>## Removed 1 duplicate row(s) (1.03%)
+<pre><code>## Removed 1 duplicate row(s) (1.05%)
 </code></pre>
 
 <p>Save data.table to file.</p>
@@ -1220,7 +1285,7 @@ save(<span class="pl-smi">D</span>, <span class="pl-v">file</span> <span class="
 file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pds">"</span>size<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>mtime<span class="pl-pds">"</span></span>)]</pre></div>
 
 <pre><code>##            size               mtime
-## data.RData 7448 2016-08-17 11:17:08
+## data.RData 7602 2017-03-24 10:12:31
 </code></pre>
 
 <hr>
@@ -1245,7 +1310,7 @@ file.info(<span class="pl-smi">f</span>)[c(<span class="pl-s"><span class="pl-pd
 }</pre></div>
 
 <p>Summarize the regimens.
-Output to <a href="///H://Projects/SecMalAfterBreastCaACT/summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
+Output to <a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/summaryRegimens.md">summaryRegimens.md</a> for checking.</p>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[,
        `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">isAnthra</span> <span class="pl-k">=</span> <span class="pl-k">!</span>is.na(<span class="pl-smi">anthracyclineTotalDose</span>),
@@ -1259,7 +1324,7 @@ Output to <a href="///H://Projects/SecMalAfterBreastCaACT/summaryRegimens.md">su
        `<span class="pl-k">:</span><span class="pl-k">=</span>` (<span class="pl-v">isDocetaxel</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>,
              <span class="pl-v">isPaclitaxel</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)]
 <span class="pl-smi">D1</span> <span class="pl-k">&lt;-</span> melt(<span class="pl-smi">D</span>,
-           <span class="pl-v">id.vars</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>authorYear<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>arm<span class="pl-pds">"</span></span>,
+           <span class="pl-v">id.vars</span><span class="pl-k">=</span>c(<span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>authorYear<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>arm<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>regimen<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isAnthra<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>anthracyclineCumulDose<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isCyclo<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>cyclophosphamideCumulDose<span class="pl-pds">"</span></span>,
                      <span class="pl-s"><span class="pl-pds">"</span>isTaxane<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>taxaneCumulDose<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isDocetaxel<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isPaclitaxel<span class="pl-pds">"</span></span>,
@@ -1292,9 +1357,9 @@ cat(kable(<span class="pl-smi">summaryRegimens</span>),
 file.info(<span class="pl-s"><span class="pl-pds">"</span>summaryRegimens.md<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
-##                                  atime  uid  gid uname   grname
-## summaryRegimens.md 2016-08-17 09:55:34 4051 3010 chanb HPCUsers
+## summaryRegimens.md 4658 FALSE  666 2017-03-24 10:12:32 2016-10-07 11:24:23
+##                                  atime exe
+## summaryRegimens.md 2016-10-07 11:24:23  no
 </code></pre>
 
 <hr>
@@ -1329,36 +1394,16 @@ Need columns for</p>
 <p>Output to multiple formats:</p>
 
 <ul>
-<li>Excel workbook, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a>
+<li>Excel workbook, <a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.xlsx">appendixTableStudyCharacteristicsAndOutcomes.xlsx</a>
 </li>
-<li>CSV file, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.csv">appendixTableStudyCharacteristicsAndOutcomes.csv</a>
+<li>CSV file, <a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.csv">appendixTableStudyCharacteristicsAndOutcomes.csv</a>
 </li>
-<li>Markdown file, <a href="///H://Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.md">appendixTableStudyCharacteristicsAndOutcomes.md</a>
+<li>Markdown file, <a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/appendixTableStudyCharacteristicsAndOutcomes.md">appendixTableStudyCharacteristicsAndOutcomes.md</a>
 </li>
 </ul>
 
-<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">xlsx</span>)</pre></div>
-
-<pre><code>## Loading required package: rJava
-</code></pre>
-
-<pre><code>## Loading required package: methods
-</code></pre>
-
-<pre><code>## Loading required package: xlsxjars
-</code></pre>
-
-<pre><code>## 
-## Attaching package: 'xlsx'
-</code></pre>
-
-<pre><code>## The following objects are masked from 'package:openxlsx':
-## 
-##     createWorkbook, loadWorkbook, read.xlsx, saveWorkbook,
-##     write.xlsx
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">xtable</span>)
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">xlsx</span>)
+library(<span class="pl-smi">xtable</span>)
 <span class="pl-c1">T</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D</span>[,
        .(<span class="pl-v">study</span> <span class="pl-k">=</span> ifelse(<span class="pl-k">!</span>is.na(<span class="pl-smi">trial</span>), paste(<span class="pl-smi">authorYear</span>, <span class="pl-smi">trial</span>), <span class="pl-smi">authorYear</span>),
          <span class="pl-v">country</span> <span class="pl-k">=</span> <span class="pl-c1">NA</span>,
@@ -1372,8 +1417,12 @@ Need columns for</p>
          <span class="pl-v">nAMLOrMDS</span> <span class="pl-k">=</span> <span class="pl-smi">malAMLOrMDSTotal</span>,
          <span class="pl-v">incidenceAMLOrMDS</span> <span class="pl-k">=</span> signif(<span class="pl-smi">malAMLOrMDSTotal</span> <span class="pl-k">/</span> (<span class="pl-smi">nITT</span> <span class="pl-k">*</span> (<span class="pl-smi">medianFU</span> <span class="pl-k">/</span> <span class="pl-c1">12</span>)) <span class="pl-k">*</span> <span class="pl-smi">scale</span>, <span class="pl-v">digits</span><span class="pl-k">=</span><span class="pl-c1">3</span>),
          <span class="pl-v">nNonBreastSolid</span> <span class="pl-k">=</span> <span class="pl-smi">malNonBreastSolid</span>,
-         <span class="pl-v">incidenceNonBreastSolid</span> <span class="pl-k">=</span> signif(<span class="pl-smi">malNonBreastSolid</span> <span class="pl-k">/</span> (<span class="pl-smi">nITT</span> <span class="pl-k">*</span> (<span class="pl-smi">medianFU</span> <span class="pl-k">/</span> <span class="pl-c1">12</span>)) <span class="pl-k">*</span> <span class="pl-smi">scale</span>, <span class="pl-v">digits</span><span class="pl-k">=</span><span class="pl-c1">3</span>))]
-write.xlsx(<span class="pl-c1">T</span>,
+         <span class="pl-v">incidenceNonBreastSolid</span> <span class="pl-k">=</span> signif(<span class="pl-smi">malNonBreastSolid</span> <span class="pl-k">/</span> (<span class="pl-smi">nITT</span> <span class="pl-k">*</span> (<span class="pl-smi">medianFU</span> <span class="pl-k">/</span> <span class="pl-c1">12</span>)) <span class="pl-k">*</span> <span class="pl-smi">scale</span>, <span class="pl-v">digits</span><span class="pl-k">=</span><span class="pl-c1">3</span>))]</pre></div>
+
+<pre><code>## Error in round(anthracyclineCumulDose): non-numeric argument to mathematical function
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre>write.xlsx(<span class="pl-c1">T</span>,
            <span class="pl-s"><span class="pl-pds">"</span>appendixTableStudyCharacteristicsAndOutcomes.xlsx<span class="pl-pds">"</span></span>,
            <span class="pl-v">row.names</span><span class="pl-k">=</span><span class="pl-c1">FALSE</span>,
            <span class="pl-v">showNA</span><span class="pl-k">=</span><span class="pl-c1">FALSE</span>)
@@ -1387,13 +1436,13 @@ cat(kable(<span class="pl-c1">T</span>),
 file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStudyCharacteristicsAndOutcomes<span class="pl-pds">"</span></span>, list.files(), <span class="pl-v">value</span><span class="pl-k">=</span><span class="pl-c1">TRUE</span>))[c(<span class="pl-s"><span class="pl-pds">"</span>size<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>mtime<span class="pl-pds">"</span></span>)]</pre></div>
 
 <pre><code>##                                                    size
-## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
-## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
+## appendixTableStudyCharacteristicsAndOutcomes.csv   7302
+## appendixTableStudyCharacteristicsAndOutcomes.md   20678
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9484
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-17 11:17:10
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-17 11:17:10
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2017-03-24 10:12:32
+## appendixTableStudyCharacteristicsAndOutcomes.md   2017-03-24 10:12:32
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2017-03-24 10:12:32
 </code></pre>
 
 <div class="highlight highlight-source-r"><pre><span class="pl-c1">T</span> <span class="pl-k">&lt;-</span> xtable(<span class="pl-c1">T</span>, <span class="pl-v">digits</span><span class="pl-k">=</span>c(rep(<span class="pl-c1">0</span>, ncol(<span class="pl-c1">T</span>) <span class="pl-k">-</span> <span class="pl-c1">3</span>), <span class="pl-c1">0</span>, <span class="pl-c1">2</span>, <span class="pl-c1">0</span>, <span class="pl-c1">2</span>))</pre></div>
@@ -1435,10 +1484,12 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
 <span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D1</span>[,
          .(<span class="pl-v">id</span> <span class="pl-k">=</span> <span class="pl-k">factor</span>(<span class="pl-smi">id</span>),
            <span class="pl-smi">authorYear</span>,
+           <span class="pl-smi">arm</span>,
+           <span class="pl-smi">regimen</span>,
            <span class="pl-smi">isCyclo</span>,
-           <span class="pl-v">xCyc</span> <span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">/</span> <span class="pl-smi">xscale</span>,  <span class="pl-c"># scale units</span>
+           <span class="pl-v">xCyc</span> <span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">/</span> <span class="pl-smi">xscale</span>,  <span class="pl-c"><span class="pl-c">#</span> scale units</span>
            <span class="pl-v">isCycHighDose</span> <span class="pl-k">=</span> <span class="pl-smi">cyclophosphamideCumulDose</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">2400</span>,
-           <span class="pl-v">xTax</span> <span class="pl-k">=</span> <span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">/</span> <span class="pl-c1">1e2</span>,  <span class="pl-c"># scale units</span>
+           <span class="pl-v">xTax</span> <span class="pl-k">=</span> <span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">/</span> <span class="pl-c1">1e2</span>,  <span class="pl-c"><span class="pl-c">#</span> scale units</span>
            <span class="pl-v">isTaxDoseHigh</span> <span class="pl-k">=</span> ifelse(<span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">&gt;</span><span class="pl-k">=</span> <span class="pl-c1">500</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, <span class="pl-c1">TRUE</span>, <span class="pl-c1">FALSE</span>),
            <span class="pl-v">isTaxDoseLow</span> <span class="pl-k">=</span> ifelse(<span class="pl-smi">taxaneCumulDose</span> <span class="pl-k">&lt;</span> <span class="pl-c1">500</span> <span class="pl-k">&amp;</span> <span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">TRUE</span>, <span class="pl-c1">TRUE</span>, <span class="pl-c1">FALSE</span>),
            <span class="pl-smi">isDocetaxel</span>,
@@ -1452,8 +1503,12 @@ file.info(grep(<span class="pl-s"><span class="pl-pds">"</span>appendixTableStud
            <span class="pl-smi">malType</span>,
            <span class="pl-smi">malN</span>,
            <span class="pl-smi">py</span>,
-           <span class="pl-smi">rate</span>)]
-<span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">isTaxDoseHigh</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">FALSE</span>]
+           <span class="pl-smi">rate</span>)]</pre></div>
+
+<pre><code>## Error in cyclophosphamideCumulDose/xscale: non-numeric argument to binary operator
+</code></pre>
+
+<div class="highlight highlight-source-r"><pre><span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">D2</span>[<span class="pl-smi">isTaxane</span> <span class="pl-k">==</span> <span class="pl-c1">FALSE</span>, <span class="pl-smi">isTaxDoseHigh</span> <span class="pl-k">:</span><span class="pl-k">=</span> <span class="pl-c1">FALSE</span>]
 <span class="pl-smi">D2</span> <span class="pl-k">&lt;-</span> drop_na(<span class="pl-smi">D2</span>, <span class="pl-smi">xCyc</span>, <span class="pl-smi">isCycHighDose</span>, <span class="pl-smi">isDocetaxel</span>, <span class="pl-smi">isPaclitaxel</span>)</pre></div>
 
 <p>The effect of cyclophosphamide could be due to high dose taxanes in the regimen.</p>
@@ -1491,25 +1546,8 @@ literature.</p>
 
 <p>Models were estimated using the <code>rma.mv()</code> function from the metafor` package for R.</p>
 
-<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">metafor</span>)</pre></div>
-
-<pre><code>## Loading required package: Matrix
-</code></pre>
-
-<pre><code>## 
-## Attaching package: 'Matrix'
-</code></pre>
-
-<pre><code>## The following object is masked from 'package:tidyr':
-## 
-##     expand
-</code></pre>
-
-<pre><code>## Loading 'metafor' package (version 1.9-8). For an overview 
-## and introduction to the package please type: help(metafor).
-</code></pre>
-
-<div class="highlight highlight-source-r"><pre>citation(<span class="pl-s"><span class="pl-pds">"</span>metafor<span class="pl-pds">"</span></span>)</pre></div>
+<div class="highlight highlight-source-r"><pre>library(<span class="pl-smi">metafor</span>)
+citation(<span class="pl-s"><span class="pl-pds">"</span>metafor<span class="pl-pds">"</span></span>)</pre></div>
 
 <pre><code>## 
 ## To cite the metafor package in publications, please use:
@@ -1567,6 +1605,7 @@ literature.</p>
 }
 <span class="pl-en">plotreg</span> <span class="pl-k">&lt;-</span> <span class="pl-k">function</span> (<span class="pl-smi">M</span>, <span class="pl-smi">D</span>, <span class="pl-smi">title</span>) {
   require(<span class="pl-smi">ggplot2</span>)
+  require(<span class="pl-smi">svglite</span>)
   require(<span class="pl-smi">RColorBrewer</span>)
   require(<span class="pl-smi">data.table</span>)
   <span class="pl-smi">D</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-smi">D</span>)
@@ -1594,15 +1633,15 @@ literature.</p>
   <span class="pl-smi">X</span> <span class="pl-k">&lt;-</span> unique(<span class="pl-smi">X</span>)
   <span class="pl-smi">yhat</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">malType</span> <span class="pl-k">=</span> <span class="pl-smi">mal</span>,
                      <span class="pl-smi">X</span>,
-                     <span class="pl-c"># variable = "pred",</span>
+                     <span class="pl-c"><span class="pl-c">#</span> variable = "pred",</span>
                      <span class="pl-v">pred</span> <span class="pl-k">=</span> predict(<span class="pl-smi">M</span>, as.matrix(<span class="pl-smi">X</span>), <span class="pl-v">transf</span> <span class="pl-k">=</span> <span class="pl-smi">exp</span>)[[<span class="pl-s"><span class="pl-pds">"</span>pred<span class="pl-pds">"</span></span>]] <span class="pl-k">*</span> <span class="pl-smi">scale</span>)
   <span class="pl-smi">ci.lb</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">malType</span> <span class="pl-k">=</span> <span class="pl-smi">mal</span>,
                       <span class="pl-smi">X</span>,
-                      <span class="pl-c"># variable = "ci.lb",</span>
+                      <span class="pl-c"><span class="pl-c">#</span> variable = "ci.lb",</span>
                       <span class="pl-v">ci.lb</span> <span class="pl-k">=</span> predict(<span class="pl-smi">M</span>, as.matrix(<span class="pl-smi">X</span>), <span class="pl-v">transf</span> <span class="pl-k">=</span> <span class="pl-smi">exp</span>)[[<span class="pl-s"><span class="pl-pds">"</span>ci.lb<span class="pl-pds">"</span></span>]] <span class="pl-k">*</span> <span class="pl-smi">scale</span>)
   <span class="pl-smi">ci.ub</span> <span class="pl-k">&lt;-</span> data.table(<span class="pl-v">malType</span> <span class="pl-k">=</span> <span class="pl-smi">mal</span>,
                       <span class="pl-smi">X</span>,
-                      <span class="pl-c"># variable = "ci.ub",</span>
+                      <span class="pl-c"><span class="pl-c">#</span> variable = "ci.ub",</span>
                       <span class="pl-v">ci.ub</span> <span class="pl-k">=</span> predict(<span class="pl-smi">M</span>, as.matrix(<span class="pl-smi">X</span>), <span class="pl-v">transf</span> <span class="pl-k">=</span> <span class="pl-smi">exp</span>)[[<span class="pl-s"><span class="pl-pds">"</span>ci.ub<span class="pl-pds">"</span></span>]] <span class="pl-k">*</span> <span class="pl-smi">scale</span>)
   <span class="pl-smi">keyvar</span> <span class="pl-k">&lt;-</span> c(<span class="pl-s"><span class="pl-pds">"</span>malType<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>xCyc<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isPaclitaxelTRUE<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>isDocetaxelTRUE<span class="pl-pds">"</span></span>)
   setkeyv(<span class="pl-smi">yhat</span>, <span class="pl-smi">keyvar</span>)
@@ -1668,6 +1707,7 @@ literature.</p>
   <span class="pl-smi">filename</span> <span class="pl-k">&lt;-</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s_Cyclophosphamide_byTaxane<span class="pl-pds">"</span></span>,
                       gsub(<span class="pl-s"><span class="pl-pds">"</span>(<span class="pl-cce">\\</span>s)|(-)<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>, <span class="pl-smi">title</span>))
   ggsave(<span class="pl-v">filename</span> <span class="pl-k">=</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s.png<span class="pl-pds">"</span></span>, <span class="pl-smi">filename</span>), <span class="pl-v">width</span> <span class="pl-k">=</span> <span class="pl-c1">9</span>)
+  ggsave(<span class="pl-v">filename</span> <span class="pl-k">=</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s.svg<span class="pl-pds">"</span></span>, <span class="pl-smi">filename</span>), <span class="pl-v">width</span> <span class="pl-k">=</span> <span class="pl-c1">9</span>)
   <span class="pl-smi">yhat</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span> <span class="pl-k">&lt;-</span> <span class="pl-smi">yhat</span><span class="pl-k">$</span><span class="pl-smi">xCyc</span> <span class="pl-k">*</span> <span class="pl-smi">xscale</span>
   write.csv(<span class="pl-smi">D</span>, <span class="pl-v">file</span> <span class="pl-k">=</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s.csv<span class="pl-pds">"</span></span>, <span class="pl-smi">filename</span>), <span class="pl-v">row.names</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>, <span class="pl-v">quote</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
   write.csv(<span class="pl-smi">yhat</span>, <span class="pl-v">file</span> <span class="pl-k">=</span> sprintf(<span class="pl-s"><span class="pl-pds">"</span>%s_Pred.csv<span class="pl-pds">"</span></span>, <span class="pl-smi">filename</span>), <span class="pl-v">row.names</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>, <span class="pl-v">quote</span> <span class="pl-k">=</span> <span class="pl-c1">FALSE</span>)
@@ -1689,9 +1729,12 @@ literature.</p>
 <li>Crude statistics
 
 <ul>
+<li>Outcome: AML or MDS</li>
 <li>Total person-years of follow-up: 261,433</li>
 <li>Total number of persons (ITT): 44,628</li>
-<li>Total number of AML or MDS: 171</li>
+<li>Total number of outcomes: 171</li>
+<li>Number of treatment arms: 56</li>
+<li>Number of studies: 26</li>
 <li>Crude incidence rate: 6.54 per 10,000 person-years</li>
 </ul>
 </li>
@@ -1762,22 +1805,21 @@ literature.</p>
 
 <div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
 
-<pre><code>## Loading required package: ggplot2
-</code></pre>
-
-<pre><code>## Loading required package: RColorBrewer
+<pre><code>## Loading required package: svglite
 </code></pre>
 
 <pre><code>## Saving 9 x 7 in image
+## Saving 9 x 7 in image
 </code></pre>
 
-<pre><code>##                                               size               mtime
-## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   8317 2016-08-17 11:17:13
-## AMLorMDS_Cyclophosphamide_byTaxane.csv        7334 2016-08-17 11:17:13
-## AMLorMDS_Cyclophosphamide_byTaxane.png      213539 2016-08-17 11:17:13
+<pre><code>##                                              size               mtime
+## AMLorMDS_Cyclophosphamide_byTaxane.csv       7779 2017-03-24 10:12:34
+## AMLorMDS_Cyclophosphamide_byTaxane.png      81670 2017-03-24 10:12:33
+## AMLorMDS_Cyclophosphamide_byTaxane.svg      23726 2017-03-24 10:12:34
+## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv  8439 2017-03-24 10:12:34
 </code></pre>
 
-<p><a href="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" target="_blank"><img src="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27" style="max-width:100%;"></a></p>
+<p><a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" target="_blank"><img src="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-27-1.png" alt="plot of chunk unnamed-chunk-27" style="max-width:100%;"></a></p>
 
 <h3>
 <a id="user-content-m2" class="anchor" href="#m2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M2</h3>
@@ -1920,9 +1962,12 @@ literature.</p>
 <li>Crude statistics
 
 <ul>
+<li>Outcome: Non-Breast Solid</li>
 <li>Total person-years of follow-up: 112,778</li>
 <li>Total number of persons (ITT): 19,289</li>
-<li>Total number of Non-Breast Solid: 363</li>
+<li>Total number of outcomes: 363</li>
+<li>Number of treatment arms: 31</li>
+<li>Number of studies: 16</li>
 <li>Crude incidence rate: 32.2 per 10,000 person-years</li>
 </ul>
 </li>
@@ -1994,19 +2039,22 @@ literature.</p>
 <div class="highlight highlight-source-r"><pre>plotreg(<span class="pl-smi">M</span><span class="pl-k">$</span><span class="pl-smi">M1</span>, <span class="pl-smi">D3</span>, <span class="pl-smi">mal</span>)</pre></div>
 
 <pre><code>## Saving 9 x 7 in image
+## Saving 9 x 7 in image
 </code></pre>
 
-<pre><code>##                                                     size
-## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv   8679
-## NonBreastSolid_Cyclophosphamide_byTaxane.csv        4433
-## NonBreastSolid_Cyclophosphamide_byTaxane.png      151406
+<pre><code>##                                                    size
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv       4703
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      68761
+## NonBreastSolid_Cyclophosphamide_byTaxane.svg      17604
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv  8788
 ##                                                                 mtime
-## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2016-08-17 11:17:14
-## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2016-08-17 11:17:14
-## NonBreastSolid_Cyclophosphamide_byTaxane.png      2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2017-03-24 10:12:36
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      2017-03-24 10:12:35
+## NonBreastSolid_Cyclophosphamide_byTaxane.svg      2017-03-24 10:12:36
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2017-03-24 10:12:36
 </code></pre>
 
-<p><a href="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" target="_blank"><img src="///H://Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32" style="max-width:100%;"></a></p>
+<p><a href="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" target="_blank"><img src="///C://Users/chanb/Documents/Projects/SecMalAfterBreastCaACT/figure/unnamed-chunk-32-1.png" alt="plot of chunk unnamed-chunk-32" style="max-width:100%;"></a></p>
 
 <h3>
 <a id="user-content-m2-1" class="anchor" href="#m2-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>M2</h3>

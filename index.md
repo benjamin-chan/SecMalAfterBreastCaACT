@@ -1,7 +1,7 @@
 # Risks of Long-term Secondary Malignancies in Breast Cancer Patients Treated with Adjuvant Chemotherapy
 
 * Author: [Benjamin Chan](http://careers.stackoverflow.com/benjaminchan)
-* Date: 2016-08-17 11:17:06
+* Date: 2017-03-24 10:18:54
 
 
 # Load packages
@@ -30,8 +30,10 @@ file.info(f)[c("size", "mtime")]
 ```
 
 ```
-##                                    size               mtime
-## /tmp/RtmpylXwm8/file1559814d87e2b 59619 2016-08-17 11:17:08
+##                                                                        size
+## C:\\Users\\chanb\\AppData\\Local\\Temp\\1\\RtmpUZfE01\\file34c326883a 59619
+##                                                                                     mtime
+## C:\\Users\\chanb\\AppData\\Local\\Temp\\1\\RtmpUZfE01\\file34c326883a 2017-03-24 10:18:55
 ```
 
 ```r
@@ -211,18 +213,18 @@ D[s, .(rowid, malAML, malMDS, malAMLOrMDS, malAMLOrMDSTotal)]
 
 ```
 ##     rowid malAML malMDS malAMLOrMDS malAMLOrMDSTotal
-##  1:    85     NA     NA           0                0
-##  2:     7      5      5          NA               10
-##  3:    73     NA     NA           2                2
-##  4:    26     NA     NA           7                7
-##  5:    75      0      0          NA                0
-##  6:    82     NA     NA           1                1
-##  7:    27     NA     NA          NA               NA
-##  8:    55      4      2          NA                6
-##  9:    92     NA     NA          NA               NA
-## 10:    47      0      0          NA                0
-## 11:    51     NA     NA          NA               NA
-## 12:    69     NA     NA          NA               NA
+##  1:    83     NA     NA           5                5
+##  2:    34      0      1          NA                1
+##  3:    51     NA     NA          NA               NA
+##  4:    53      1      0          NA                1
+##  5:    33      0      0          NA                0
+##  6:    86     NA     NA           5                5
+##  7:    48     NA     NA          NA               NA
+##  8:    49     NA     NA          NA               NA
+##  9:    46      2      0          NA                2
+## 10:    40      2     NA          NA                2
+## 11:    55      4      2          NA                6
+## 12:    41      1     NA          NA                1
 ```
 
 Remove text from `nITT` column.
@@ -257,9 +259,9 @@ file.info("regimens.md")
 
 ```
 ##             size isdir mode               mtime               ctime
-## regimens.md 7215 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
-##                           atime  uid  gid uname   grname
-## regimens.md 2016-08-17 09:55:33 4051 3010 chanb HPCUsers
+## regimens.md 7280 FALSE  666 2017-03-24 10:18:56 2016-10-07 11:24:23
+##                           atime exe
+## regimens.md 2016-10-07 11:24:23  no
 ```
 
 Calculate cumulative dose: $\text{total dose} \times \text{number of courses}$.
@@ -576,7 +578,7 @@ file.info(f)[c("size", "mtime")]
 
 ```
 ##            size               mtime
-## data.RData 7448 2016-08-17 11:17:08
+## data.RData 7440 2017-03-24 10:18:57
 ```
 
 ---
@@ -621,7 +623,7 @@ D <- D[isTaxane == FALSE,
        `:=` (isDocetaxel = FALSE,
              isPaclitaxel = FALSE)]
 D1 <- melt(D,
-           id.vars=c("id", "authorYear", "arm",
+           id.vars=c("id", "authorYear", "arm", "regimen",
                      "isAnthra", "anthracyclineCumulDose",
                      "isCyclo", "cyclophosphamideCumulDose",
                      "isTaxane", "taxaneCumulDose", "isDocetaxel", "isPaclitaxel",
@@ -656,9 +658,9 @@ file.info("summaryRegimens.md")
 
 ```
 ##                    size isdir mode               mtime               ctime
-## summaryRegimens.md 4624 FALSE  644 2016-08-17 11:17:08 2016-08-17 11:17:08
-##                                  atime  uid  gid uname   grname
-## summaryRegimens.md 2016-08-17 09:55:34 4051 3010 chanb HPCUsers
+## summaryRegimens.md 4658 FALSE  666 2017-03-24 10:18:57 2016-10-07 11:24:23
+##                                  atime exe
+## summaryRegimens.md 2016-10-07 11:24:23  no
 ```
 
 ---
@@ -751,13 +753,13 @@ file.info(grep("appendixTableStudyCharacteristicsAndOutcomes", list.files(), val
 
 ```
 ##                                                    size
-## appendixTableStudyCharacteristicsAndOutcomes.csv   7205
-## appendixTableStudyCharacteristicsAndOutcomes.md   20580
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9474
+## appendixTableStudyCharacteristicsAndOutcomes.csv   7302
+## appendixTableStudyCharacteristicsAndOutcomes.md   20678
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx  9485
 ##                                                                 mtime
-## appendixTableStudyCharacteristicsAndOutcomes.csv  2016-08-17 11:17:10
-## appendixTableStudyCharacteristicsAndOutcomes.md   2016-08-17 11:17:10
-## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2016-08-17 11:17:10
+## appendixTableStudyCharacteristicsAndOutcomes.csv  2017-03-24 10:18:59
+## appendixTableStudyCharacteristicsAndOutcomes.md   2017-03-24 10:18:59
+## appendixTableStudyCharacteristicsAndOutcomes.xlsx 2017-03-24 10:18:59
 ```
 
 ```r
@@ -790,6 +792,8 @@ xscale <- 1e3
 D2 <- D1[,
          .(id = factor(id),
            authorYear,
+           arm,
+           regimen,
            isCyclo,
            xCyc = cyclophosphamideCumulDose / xscale,  # scale units
            isCycHighDose = cyclophosphamideCumulDose >= 2400,
@@ -930,6 +934,7 @@ metareg <- function (D) {
 }
 plotreg <- function (M, D, title) {
   require(ggplot2)
+  require(svglite)
   require(RColorBrewer)
   require(data.table)
   D <- data.table(D)
@@ -1031,6 +1036,7 @@ plotreg <- function (M, D, title) {
   filename <- sprintf("%s_Cyclophosphamide_byTaxane",
                       gsub("(\\s)|(-)", "", title))
   ggsave(filename = sprintf("%s.png", filename), width = 9)
+  ggsave(filename = sprintf("%s.svg", filename), width = 9)
   yhat$xCyc <- yhat$xCyc * xscale
   write.csv(D, file = sprintf("%s.csv", filename), row.names = FALSE, quote = FALSE)
   write.csv(yhat, file = sprintf("%s_Pred.csv", filename), row.names = FALSE, quote = FALSE)
@@ -1051,9 +1057,12 @@ M <- metareg(D3)
 ### Findings
 
 * Crude statistics
+  * Outcome: AML or MDS
   * Total person-years of follow-up: 261,433
   * Total number of persons (ITT): 44,628
-  * Total number of AML or MDS: 171
+  * Total number of outcomes: 171
+  * Number of treatment arms: 56
+  * Number of studies: 26
   * Crude incidence rate: 6.54 per 10,000 person-years
 * AML or MDS rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
   * AML or MDS rate increased 1.16 times (95% CI: 1.04, 1.29; p = 0.0057) for each 1000 $\text{mg} / \text{m}^2$
@@ -1117,18 +1126,24 @@ plotreg(M$M1, D3, mal)
 ```
 
 ```
+## Loading required package: svglite
+```
+
+```
 ## Loading required package: RColorBrewer
 ```
 
 ```
 ## Saving 9 x 7 in image
+## Saving 9 x 7 in image
 ```
 
 ```
-##                                               size               mtime
-## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv   8317 2016-08-17 11:17:13
-## AMLorMDS_Cyclophosphamide_byTaxane.csv        7334 2016-08-17 11:17:13
-## AMLorMDS_Cyclophosphamide_byTaxane.png      213539 2016-08-17 11:17:13
+##                                              size               mtime
+## AMLorMDS_Cyclophosphamide_byTaxane.csv       7779 2017-03-24 10:19:02
+## AMLorMDS_Cyclophosphamide_byTaxane.png      83608 2017-03-24 10:19:02
+## AMLorMDS_Cyclophosphamide_byTaxane.svg      23726 2017-03-24 10:19:02
+## AMLorMDS_Cyclophosphamide_byTaxane_Pred.csv  8439 2017-03-24 10:19:02
 ```
 
 ![plot of chunk unnamed-chunk-27](figure/unnamed-chunk-27-1.png)
@@ -1276,9 +1291,12 @@ M <- metareg(D3)
 ### Findings
 
 * Crude statistics
+  * Outcome: Non-Breast Solid
   * Total person-years of follow-up: 112,778
   * Total number of persons (ITT): 19,289
-  * Total number of Non-Breast Solid: 363
+  * Total number of outcomes: 363
+  * Number of treatment arms: 31
+  * Number of studies: 16
   * Crude incidence rate: 32.2 per 10,000 person-years
 * Non-Breast Solid rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
   * Non-Breast Solid rate increased 1 times (95% CI: 0.906, 1.11; p = 0.96) for each 1000 $\text{mg} / \text{m}^2$
@@ -1339,17 +1357,20 @@ plotreg(M$M1, D3, mal)
 
 ```
 ## Saving 9 x 7 in image
+## Saving 9 x 7 in image
 ```
 
 ```
-##                                                     size
-## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv   8679
-## NonBreastSolid_Cyclophosphamide_byTaxane.csv        4433
-## NonBreastSolid_Cyclophosphamide_byTaxane.png      151406
+##                                                    size
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv       4703
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      70880
+## NonBreastSolid_Cyclophosphamide_byTaxane.svg      17606
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv  8788
 ##                                                                 mtime
-## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2016-08-17 11:17:14
-## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2016-08-17 11:17:14
-## NonBreastSolid_Cyclophosphamide_byTaxane.png      2016-08-17 11:17:14
+## NonBreastSolid_Cyclophosphamide_byTaxane.csv      2017-03-24 10:19:04
+## NonBreastSolid_Cyclophosphamide_byTaxane.png      2017-03-24 10:19:03
+## NonBreastSolid_Cyclophosphamide_byTaxane.svg      2017-03-24 10:19:04
+## NonBreastSolid_Cyclophosphamide_byTaxane_Pred.csv 2017-03-24 10:19:04
 ```
 
 ![plot of chunk unnamed-chunk-32](figure/unnamed-chunk-32-1.png)
