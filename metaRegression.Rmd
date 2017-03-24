@@ -236,9 +236,12 @@ M <- metareg(D3)
 ### Findings
 
 * Crude statistics
+  * Outcome: `r mal`
   * Total person-years of follow-up: `r D3[, format(round(sum(py)), big.mark = ",")]`
   * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
-  * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Total number of outcomes: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Number of treatment arms: `r nrow(D3)`
+  * Number of studies: `r length(unique(D3$id))`
   * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
 * `r mal` rate had a dose response relationship with cumulative cyclophosphamide dose (M1)
   * `r mal` rate increased `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "xCyc")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
@@ -306,9 +309,12 @@ M <- metareg(D3)
 ### Findings
 
 * Crude statistics
+  * Outcome: `r mal`
   * Total person-years of follow-up: `r D3[, format(round(sum(py)), big.mark = ",")]`
   * Total number of persons (ITT): `r D3[, format(sum(nITT), big.mark = ",")]`
-  * Total number of `r mal`: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Total number of outcomes: `r D3[, format(sum(malN), big.mark = ",")]`
+  * Number of treatment arms: `r nrow(D3)`
+  * Number of studies: `r length(unique(D3$id))`
   * Crude incidence rate: `r D3[, sprintf("%.03g per %s person-years", sum(malN) / sum(py) * scale, format(scale, big.mark = ","))]`
 * `r mal` rate did not have a dose response relationship with cumulative cyclophosphamide dose (M1)
   * `r mal` rate increased `r sprintf("%.03g", exp(M$M1$b[which(row.names(M$M1$b) == "xCyc")]))` times (95% CI: `r sprintf("%.03g", exp(M$M1$ci.lb[which(row.names(M$M1$b) == "xCyc")]))`, `r sprintf("%.03g", exp(M$M1$ci.ub[which(row.names(M$M1$b) == "xCyc")]))`; p = `r sprintf("%.02g", M$M1$pval[which(row.names(M$M1$b) == "xCyc")])`) for each `r xscale` $\text{mg} / \text{m}^2$
